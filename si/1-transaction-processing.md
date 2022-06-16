@@ -56,8 +56,8 @@ As **transações** são uma forma de os programadores poderem definir, com base
 
 ### Estados
 
-<a align="center">
-    <img src="./docs/transaction_states.png" alt="Transaction States" width="80%">
+<a>
+    <img src="./docs/transaction_states.png" alt="Transaction States" width="80%" align="center"/>
 </a>
 
 * **Active**: estado após o início da transação, onde ocorrem escritas e leituras;
@@ -82,8 +82,8 @@ Existe **conflito** entre duas operações num escalonamento, se se verificarem,
 
 Os escalonamentos podem ser mostrados como linhas de tempo, nas quais as ações são colocadas nos tempos correspondente às posições que ocupam no escalonamento:
 
-<a align="center">
-    <img src="./docs/escalonamento.png" alt="Escalonamentos" width="80%">
+<a>
+    <img src="./docs/escalonamento.png" alt="Escalonamentos" width="80%" align="center"/>
 </a>
 
 Tipos de escalonamento:
@@ -199,8 +199,8 @@ Nós consideramos que existe um dirty read a partir do momento que é dados inst
 
 Definem como uma transação é isolada de outras transações.
 
-<a align="center">
-    <img src="./docs/isolation_levels.png" alt="Níveis de isolamento" width="80%">
+<a>
+    <img src="./docs/isolation_levels.png" alt="Níveis de isolamento" width="80%" align="center"/>
 </a>
 
 É consesual que _lost updates_ (dirty writes) não devem ocorrer com a norma ISO SQL.
@@ -213,17 +213,17 @@ _A method of concurrency control in DBMS that ensures serializability by applyin
 
 Cada transação protege-se das outras tanto quanto necessário, escolhendo o nível de isolamento adequado.
 
-<a align="center">
-    <img src="./docs/2pl_matrix.png" alt="Matriz de compatibilidade" width="80%">
+<a>
+    <img src="./docs/2pl_matrix.png" alt="Matriz de compatibilidade" width="80%" align="center"/>
 </a>
 
 * **Leituras** utilizam locks partilhados (**shared**);
 * **Escritas** utilizam locks exclusivos (**exclusive**);
 
-#### Tipos de Ação:
+#### Tipos de Ação
 
 * **Ação bem formada**: protegida por um par lock/unlock: lock -> action -> unlock;
-* **Ação de duas fases**: nãoe xecuta unlock antes de locks de outras ações da mesma transação: lock -> action -> (other actions...) -> unlock.
+* **Ação de duas fases**: não executa unlock antes de locks de outras ações da mesma transação: lock -> action -> (other actions...) -> unlock.
 
 * **Transação bem formada**: todas as suas ações são bem formadas;
 * **Transação de duas fases**: todas as suas ações são de duas fases.
@@ -239,3 +239,175 @@ Cada transação protege-se das outras tanto quanto necessário, escolhendo o n�
 **NOTA**: Na prática, o _predicate locking_ é substituído por um lock a toda a tabela.
 
 **NOTA**: O nível de isolamento _Chaos_ apresenta a anomalia _dirty write_.
+
+#### Deadlock
+
+* _A deadlock happens when two (or more) transactions block each other by holding locks on resources that each of the transactions also need_;
+* Formas de lidar com deadlocks:
+  * **Pessimista**: não se permite o início de uma transação até que se garanta que ela consegue adquirir todos os locks de que necessita;
+  * **Otimista**: permitir que as transações se iniciem sem restrições, mas quando existir um deadlock, abortar uma ou mais das transações envolvidas no deadlock.
+
+#### Starvation
+
+* Se o esquema de seleção de qual das transações bloqueadas terá acesso ao item for **injusto**, uma transação pode ficar indefinidamente à espera (**starvation**);
+* Pode ser resolvido de várias formas, por exemplo, adotando uma disciplina FIFO (First In First Out) no acceso aos items.
+
+---
+
+#### 2PL - PostgreSQL
+
+* Todas as escritas são de duas fazes e colocam um lock;
+* Como é usado uma variante do protocolo de controlo de concorrência multiversões, designada **Snapshot** (veremos adiante), nunca há dirty reads e, por omissão, as leituras não colocam locks, mas podem ser usadas cláusulas na instrução SELECT que conduzem à utilização de locks de duas fases.
+
+[**Row-Level Lock Modes**](https://www.postgresql.org/docs/current/explicit-locking.html):
+
+* **Exclusive locks**:
+  * `FOR UPDATE` (mais semelhante ao exclusive lock visto anteriormente): _Causes the rows retrieved by the SELECT statement to be locked as though for update_;
+  * `FOR NO KEY UPDATE`: _Behaves similarly to FOR UPDATE, except that the lock acquired is weaker_ (ver tabela seguinte);
+* **Shared locks**:
+  * `FOR SHARE` (mais semelhante ai shared lock visto anteriormente): _Behaves similarly to FOR NO KEY UPDATE, except that it acquires a shared lock_;
+  * `FOR KEY SHARE`: _Behaves similarly to FOR SHARE, except that the lock is weaker_ (ver tabela seguinte);
+
+Matriz de conflito:
+
+<a>
+    <img src="./docs/row_level_locks_matrix.png" alt="Matriz de conflito row-level locks" width="80%" align="center"/>
+</a>
+
+---
+---
+
+## Controlo de concorrência
+
+O controlo de concorrência pode ser baseado em **timestamps** ou **versões** (protocolo **Snapshot**).
+
+### Controlo baseado em timestamps
+
+* A cada transação `T` é associado um timestramp dependendo do tempo em que foi criada: `ts(T)`;
+* Cada item `X` tem associados os timestamps das últimas transações que o acederam para leitura e escrita: `tw(X)` e `tr(X)`.
+
+Todos os escalonamentos são serializáveis do ponto de vista do conflito, mas podem ser não _cascadeless_ ou não recuperáveis, devido a leitura de dados instáveis.
+
+Na **leitura**:
+
+```
+READ(T, X)
+if tw(X) <= ts(T) then          // ler se o item X foi modificado por uma transação antes de T
+    read(T, X)
+    tr(X) = max(tr(X), ts(T))   // atualiza timestamp de leitura
+else 
+    abort(T)
+```
+
+Na **escrita**:
+
+```
+WRITE(T, X)
+if tw(X) <= ts(T) and tr(X) <= ts(T) then       // modificar se o item X foi modificado/lido por uma transação antes de T
+    write(T, X)
+    tw(X) = ts(T)                               // atualiza timestamp de escrita
+else
+    abort(T)
+```
+
+---
+
+### Controlo baseado em versões
+
+* São mantidas várias versões dos items à medida que estes vão sendo modificados.
+* Por cada item `X` existe um conjunto de versões `X1, X2, ..., Xn`;
+* Cada versão tem associada as timestamps `tw(Xi)` e `tr(Xi)`.
+
+Problemas:
+
+* Memória ocupada com versões;
+* Escalonamentos não _cascadeless_ e não recuperáveis, devido a leituras de dados não validados;
+* Escalonamentos não estritos, devido a conflitos na validação de várias escritas.
+
+Na **leitura**:
+
+```
+READ(T, X)
+i = índice da versão mais recente do item X
+while tw(Xi) > ts(T) do                         // obter versão mais antiga com escrita estável
+    i = índice da versão anterior
+read(T, Xi)
+tr(Xi) = max(tr(Xi), ts(T))
+```
+
+Na **escrita**:
+
+```
+WRITE(T, X)
+i = índice da versão mais recente do item X
+while tw(Xi) > ts(T) or tr(Xi) > ts(T) do       // obter versão mais antiga com escrita estável
+    i = índice da versão anterior
+if tr(Xi) > ts(T) then                          // abortar para evitar non-repeatable reads
+    abort(T)
+else
+    if tw(Xi) == ts(T) then
+        write(T, Xi)                            // sobrepor versão
+    else
+        write(T, Xi)                            // realizar a escrita e criar nova versão
+        inserir nova versão k após versão i
+        tw(Xk) = tr(Xk) = ts(T)
+```
+
+---
+
+### Protocolo Snapshot
+
+Variante do protocolo multiversões só para leitura.
+
+* Por cada item `X` existe um conjunto de versões `X1, X2, ..., Xn`;
+* A cada versão é associada o timestamp da sua criação: `tw(Xi)`;
+* Não é necessário `tr(Xi)`, porque o protocolo é apenas para leitura;
+* Escalonamentos são sempre recuperáveis, visto que as versões estão validadas.
+
+Quando uma alteração é validada, é criada uma nova versão que tem acesso às anteriores.
+
+Existem duas variantes deste protocolo correspondentes a duas formas de lidar com os conflitos de escrita:
+
+* **First commiter wins**:
+  * Escritas são feitas numa cópia local da transação;
+  * Durante o commit, é realizada a validação de conflitos;
+  * A primeira transação que verificar que o seu timestamp é maior que o timestamp da versão atual, escreve a nova versão;
+  * As outras abortam;
+
+* **First updater wins**:
+  * Escritas são realizadas com lock exclusivo;
+  * A transação que detém o lock escreve e faz commit;
+  * A primeira transação que verificar que o seu timestamp é maior que o timestamp da versão atual e adquirir o lock, tentará criar uma nova versão;
+  * As outras abortam;
+
+Exemplo com versão first updater wins:
+
+Na **leitura**:
+
+```
+READ(T, X)
+i = índice da versão mais recente do item X
+while tw(Xi) > ts(T) do                         // obter versão mais antiga com escrita estável
+    i = índice da versão anterior
+read(T, Xi)
+```
+
+Na **escrita**:
+
+```
+WRITE(T, X)
+LockExl(X)
+if tw(X) > ts(T) then      // abortar se já existem versões mais recentes
+    abort(T)
+else
+    write(T, X)
+```
+
+No **commit**:
+
+```
+COMMIT(T)
+for each log [write_item, T, X, oldV, newV] do      // para cada item modificado
+    inserir nova versão k de X
+    tw(Xk) = ts(commit de T)
+```
