@@ -66,7 +66,7 @@ características) num nível de abstração, ações atómicas num nível de abs
 ### Estados
 
 <p align="center">
-    <img src="./docs/transaction_states.png" alt="Transaction States" width="80%" align="center"/>
+    <img src="./docs/transaction_states.png" alt="Transaction States" width="60%" align="center"/>
 </p>
 
 * **Active**: estado após o início da transação, onde ocorrem escritas e leituras;
@@ -95,7 +95,7 @@ Os escalonamentos podem ser mostrados como linhas de tempo, nas quais as ações
 às posições que ocupam no escalonamento:
 
 <p align="center">
-    <img src="./docs/escalonamento.png" alt="Escalonamentos" width="80%" align="center"/>
+    <img src="./docs/escalonamento.png" alt="Escalonamentos" width="60%" align="center"/>
 </p>
 
 Tipos de escalonamento:
@@ -215,7 +215,7 @@ transação termine com sucesso antes do término da que lê.
 Definem como uma transação é isolada de outras transações.
 
 <p align="center">
-    <img src="./docs/isolation_levels.png" alt="Níveis de isolamento" width="80%" align="center"/>
+    <img src="./docs/isolation_levels.png" alt="Níveis de isolamento" width="60%" align="center"/>
 </p>
 
 É consensual que _lost updates_ (dirty writes) não devem ocorrer com a norma ISO SQL.
@@ -230,7 +230,7 @@ blocks other transactions to access the same data simultaneously._
 Cada transação protege-se das outras tanto quanto necessário, escolhendo o nível de isolamento adequado.
 
 <p align="center">
-    <img src="./docs/2pl_matrix.png" alt="Matriz de compatibilidade" width="80%" align="center"/>
+    <img src="./docs/2pl_matrix.png" alt="Matriz de compatibilidade" width="60%" align="center"/>
 </p>
 
 * **Leituras** utilizam locks partilhados (**shared**);
@@ -297,7 +297,7 @@ Cada transação protege-se das outras tanto quanto necessário, escolhendo o n�
 Matriz de conflito:
 
 <p align="center">
-    <img src="./docs/row_level_locks_matrix.png" alt="Matriz de conflito row-level locks" width="80%" align="center"/>
+    <img src="./docs/row_level_locks_matrix.png" alt="Matriz de conflito row-level locks" width="60%" align="center"/>
 </p>
 
 ---
@@ -460,3 +460,28 @@ Tem de ser ter em conta o seguinte:
 * As escritas com nível de isolamento inferior a REPEATABLE READ podem causar _lost updates_;
 * O resultado das instruções `SELECT FOR …` também depende do nível de isolamento.
 Existe um único lock por registo, isto é, o lock não é colocado numa versão específica. 
+
+Definição de transações:
+
+```
+BEGIN [ {TRANSACTION | WORK } ] [ ISOLATION LEVEL <<level>> ]];
+  statements
+[SAVEPOINT <<label>>];
+  statements;
+ROLLBACK [TO <<label>>];
+COMMIT;
+```
+
+`SET TRANSACTION`: set the characteristics of the current transaction.
+
+```
+SET TRANSACTION transaction_mode [, ...]
+SET TRANSACTION SNAPSHOT snapshot_id
+SET SESSION CHARACTERISTICS AS TRANSACTION transaction_mode [, ...]
+
+where transaction_mode is one of:
+
+    ISOLATION LEVEL { SERIALIZABLE | REPEATABLE READ | READ COMMITTED | READ UNCOMMITTED }
+    READ WRITE | READ ONLY
+    [ NOT ] DEFERRABLE
+```
