@@ -110,7 +110,7 @@ _The next iteration of the loop is begun._
 
 #### WHILE
 
-_The `WHILE` statement repeats a sequence of statements so long as the boolean-expression evaluates to true. _
+_The `WHILE` statement repeats a sequence of statements so long as the boolean-expression evaluates to true._
 
 ```
 [ <<label>> ]
@@ -213,7 +213,7 @@ Por omissão é `NOTICE`.
 
 ## Procedimentos armazenados
 
-_ A stored procedure is a prepared SQL code that you can save, so the code can be reused over and over again._
+_A stored procedure is a prepared SQL code that you can save, so the code can be reused over and over again._
 
 Em geral, a sua utilização é restringida as aspetos relacionados com a natureza intrínseca dos dados, como por exemplo, validação de regras de
 negócio associados a restrições de integridade dos dados, não suportadas
