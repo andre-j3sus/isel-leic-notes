@@ -145,6 +145,8 @@ Algumas anotações relevantes:
 
 * _The **@Column** annotation is used to specify the mapped column for a persistent property or field._
 
+* _The **@GeneratedValue** annotation tells the ORM how to figure out the value of that field._ Exemplo `@GeneratedValue(strategy=GenerationType.IDENTITY)` indica um elemento do tipo `SERIAL`.
+
 **Exemplo**
 
 SQL: 
@@ -170,6 +172,41 @@ public class Student {
     private String name;
 
     // Getters and setters...
+}
+```
+
+Para entidades com atributos compostos como chaves primárias, é necessário definir um tipo para a chave primária, utilizando a anotação **@Embeddable**.
+Na propriedade onde essa chave existe, é necessário definir a anotação **@EmbeddedId**. Exemplo:
+
+SQL:
+```	
+CREATE TABLE hobbies (
+    numS NUMERIC(6) REFERENCES students,
+    numH INTEGER,
+    desc VARCHAR(80),
+    PRIMARY KEY (numS, numH)
+);
+```
+
+Java with JPA:
+```
+@Entity
+@Table(name = "hobbies")
+public class Hobby {
+
+    @EmbeddedId
+    private HobbyPK id;
+
+    ...
+}
+
+@Embeddable
+public class HobbyPK {
+
+    private long numS;
+    private int numH;
+
+    ...
 }
 ```
 
@@ -229,16 +266,53 @@ public class Student {
 
 ### Query Language
 
-TODO
+JPA também permite interrogações ao nível das entidades e não do modelo físico na BD.
+
+* `EntityManager.createQuery(String qlString, Class<T> resultClass)`: Cria uma query; retorna um objeto de tipo `Query`; o tipo de retorno é `T` e pode ser omitido.
+* `Query.getSingleResult()`: _Execute a SELECT query that returns a single untyped result;_ retorna um objeto de tipo `Object`, que pode ser qualquer tipo de objeto;
+* `Query.getResultList()`: _Execute a SELECT query and return the query results as an untyped List;_ retorna uma lista de objetos de tipo `Object`;
 
 ---
 
 ### Procedimentos armazenados e funções
 
-TODO
+* `EntityManager.createNamedStoredProcedureQuery(String name)`: _Create an instance of StoredProcedureQuery for executing a stored procedure in the database;_ retorna um objeto de tipo `StoredProcedureQuery`;
+
+Com uma instância de `StoredProcedureQuery`, é possível definir os parâmetros da procedure (`setParameter()`) e executá-la (`execute()`).
+
+É possível chamar um procedimento armazenado já existente na base de dados através da função `EntityManager.createNamedQuery(String name, Class<T> resultClass)`, e escrever o comando `CALL` de chamada ao procedimento no parâmetro.
 
 ---
 
 ### Transações
 
-TODO
+* `EntityManager.getTransaction()`: _Return the resource-level `EntityTransaction` object._
+
+Através do tipo `EntityTransaction`, é possível executar os seguintes métodos, entre outros:
+
+* `EntityTransaction.begin()`: _Start a resource transaction;_
+* `EntityTransaction.commit()`: _Commit the current resource transaction, writing any unflushed changes to the database;_
+* `EntityTransaction.rollback()`: _Roll back the current resource transaction;_
+
+#### Locking
+
+Também é possível controlar a utilização de locks com o tipo [`LockModeType`](https://docs.oracle.com/javaee/7/api/javax/persistence/LockModeType.html).
+Várias funções recebem como um parâmetro deste tipo que indica o tipo de lock a utilizar.
+
+É um enumerado com as seguintes opções:
+
+* `NONE`: _No lock is acquired;_
+* `OPTIMISTIC`: _Optimistic lock;_ sinónimo do tipo `READ`;
+* `OPTIMISTIC_FORCE_INCREMENT`: _Optimistic lock, with version update;_ sinónimo do tipo `WRITE`;
+* `PESSIMISTIC_FORCE_INCREMENT`: _Pessimistic write lock, with version update;_
+* `PESSIMISTIC_READ`: _Pessimistic read lock;_
+* `PESSIMISTIC_WRITE` _Pessimistic write lock._
+
+_**Optimistic locking**, where a record is locked only when changes are committed to the database. **Pessimistic locking**, where a record is locked while it is edited._
+
+Pode ser usado nos seguintes casos:
+
+* `EntityManager.find(Class<T> entityClass, Object primaryKey, LockModeType lockMode)`: _Find an entity by its primary key and lock it;_
+* `EntityManager.refresh(Object entity, LockModeType lockMode)`: _Refresh the state of the instance from the database, overwriting changes made to the entity, if any, and lock it with respect to given lock mode type;_
+* `EntityManager.lock(Object entity, LockModeType lockMode)` : _Lock an entity instance that is contained in the persistence context with the specified lock mode type;_
+* `Query.setLockMode(LockModeType lockMode)`: _Set the lock mode of the query._

@@ -252,6 +252,8 @@ END;
 $$;
 ```
 
+Para chamar um procedimento armazenado, usa-se o comando `CALL name ( [ argument ] [, ...] )`.
+
 ---
 ---
 
@@ -298,6 +300,9 @@ BEGIN
 END;
 $$;
 ```
+
+Para chamar um procedimento armazenado, usa-se o comando `PERFORM query`.
+Também é possível usar o comando `SELECT query`.
 
 ---
 ---
