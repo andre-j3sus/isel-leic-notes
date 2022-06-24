@@ -1,7 +1,7 @@
 # [Reflection](https://kotlinlang.org/docs/reflection.html)
 
 * Object oriented API for metadata;
-* Conjunto de features que permitem examinar a estrutura de código em runtime;
+* Conjunto de features que permitem examinar a estrutura de código em runtime.
 
 | Kotlin         | Java              |
 | -------------- | ----------------- |
@@ -15,17 +15,19 @@
     <img src="./docs/reflection.png" alt="Kotlin Reflection" align="center"/>
 </p>
 
-## KClass
+---
 
-Representa uma class e fornece habilidade de introspeção.
+## [KClass](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-class/)
 
-`val c = MyClass::class`
+_Represents a class and provides introspection capabilities._
+
+`val c: KClass<MyClass> = MyClass::class`
 
 ou
 
 ```
 val instance = MyClass()
-val c = instance::class
+val c: KClass<MyClass> = instance::class
 ```
 
 Propriedades e métodos relevantes:
@@ -53,13 +55,15 @@ Propriedades e métodos relevantes:
 * `isSubclassOf`;
 * `isSuperclassOf`;
 
-## KCallable
+---
+
+## [KCallable](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-callable/)
 
 _Represents a callable entity, such as a function or a property._
 
 Propriedades e métodos relevantes:
 
-* `KCallable<out R>.call(args):R`: chama o método ou a propriedade e retorna o resultado;
+* `KCallable<out R>.call(args):R`;
 * `name`;
 * `parameters`;
 * `returnType`;
@@ -72,7 +76,7 @@ Propriedades e métodos relevantes:
 * `findAnnotation`;
 * `hasAnnotation`;
 
-### KProperty
+### [KProperty](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-property/)
 
 _Represents a property, such as a named val or var declaration._
 
@@ -96,7 +100,7 @@ Propriedades e métodos relevantes:
 
 É superclasse de KMutableProperty, que tem a propriedade `setter`.
 
-### KFunction
+### [KFunction](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-function/)
 
 _Represents a function with introspection capabilities._
 
@@ -110,7 +114,7 @@ Propriedades e métodos relevantes:
 * `isOperator`;
 * `isSuspend`;
 
-#### KParameter
+#### [KParameter](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-parameter/)
 
 _Represents a parameter passed to a function or a property getter/setter, including this and extension receiver parameters._
 
@@ -126,7 +130,7 @@ Propriedades e métodos relevantes:
 
 ---
 
-## Annotations
+## [Annotations](https://kotlinlang.org/docs/annotations.html)
 
 Permitem adicionar metadata ao código.
 
@@ -154,7 +158,11 @@ Podemos anotar anotações com outras anotações:
 * `FILE`;
 * `TYPEALIAS`.
 
-`@Retention`: especifica se a anotação é guardada em metadada e se é visível por reflection;
+`@Retention`: especifica se a anotação é guardada em metadada e se é visível por reflection; os parâmetros possíveis são `AnnotationRetention.`:
+
+* `SOURCE`: anotação apenas no source code, não é guardada em metadada;
+* `RUNTIME`: anotação é guardada em metadada e é visível por reflection;
+* `BINARY`: anotação é guardada em metadada, mas não é visível por reflection.
 
 `@Repeatable`: allows using the same annotation on a single element multiple times;
 
@@ -172,12 +180,13 @@ Na Reflection API, existe o tipo `KAnnotatedElement` que é superclasse de todos
 Este tipo possui as funções:
 
 * `hasAnnotation<T: Annotation>(): Boolean`;
-* `findAnnotation<T: Annotation>(): T?`;
+* `findAnnotation<T: Annotation>(): T?`.
 
 
 ---
+---
 
-## NOTA: Logger
+### Logger
 
 * Usado para fazer log (registar) de mensagens num determinado output (consola, file, ...);
 * É configurável, com diferentes níveis de log, e com diferentes outputs;

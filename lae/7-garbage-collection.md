@@ -1,16 +1,18 @@
-# Garbage Collection
+# [Garbage Collection](https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html#t2)
 
-Process of looking ate heap memory, identifying unused objects (unreferenced objects), and freeing them.
+_Process of looking ate heap memory, identifying unused objects (unreferenced objects), and freeing them._
 
-Referenced object (in use):
+**Referenced object** (in use):
 
 * Some part of your program still maintains a pointer to that object;
 * Referenciado por uma root.
 
-Root Reference:
+**Root Reference**:
 
 * Local variables: stored in the stack of the thread;
 * Static variables: stored in the class type.
+
+---
 
 ## Etapas
 
@@ -19,13 +21,15 @@ Root Reference:
    * Approach 1:
      * Lista com espaços livres;
      * Problemas:
-       * fragmentação;
+       * **fragmentação**;
        * alocação de memória é lenta;
    * Approach 2:
      * **Compactação**, logo não existe fragmentação;
      * Alocação de memória é rápida;
      * Problemas:
        * processo mais longo.
+
+---
 
 ## Generational Garbage Collection
 
@@ -38,7 +42,7 @@ Root Reference:
 * **Old**: long survived objects;
 * **Permanent**: metadata, classes e métodos.
 
-Young Generation:
+#### Young Generation
 
 <p align="center">
     <img src="./docs/young-generation.png" alt="Young Generation" align="center"/>
@@ -50,13 +54,14 @@ Young Generation:
 
 ### Stop the World Events
 
-* Minor GC: atua sobre a Young Generation;
-* Major GC: atua sobre a Old Generation;
-* Full GC: atua sobre toda a memória.
+* **Minor GC**: atua sobre a Young Generation;
+* **Major GC**: atua sobre a Old Generation;
+* **Full GC**: atua sobre toda a memória.
 
 ---
+---
 
-# Finalization
+# [Finalization](https://www.oracle.com/technical-resources/articles/javase/finalization.html)
 
 * Gestão dos recursos nativos associados com um objeto;
 * Limpeza de objetos que o GC considerou inalcançáveis;
@@ -67,7 +72,7 @@ Young Generation:
   * Finalized;
   * GC deleted.
 
-Problemas:
+**Problemas**:
 
 * Delays the GC;
 * Retenção de memória;
@@ -77,10 +82,12 @@ Problemas:
 
 **AVISO**: não usar as seguintes funções:
 
-* System.gc(): executa o GC;
-* System.runFinalization(): executa os métodos de finalização;
+* `System.gc()`: executa o GC;
+* `System.runFinalization()`: executa os métodos de finalização;
 
-## try-with-resources
+---
+
+## [try-with-resources statement](https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html)
 
 * try statement que declara um ou mais recursos;
 * Um recurso é um objeto que deve ser closed após a sua utilização.
@@ -95,17 +102,18 @@ Os recursos podem ser:
 * Método `.use(block: (T) -> R): T`;
   * Apenas em Kotlin.
 
-**NOTA**: Closeable e AutoCloseable são interfaces equivalentes; o AutoCloseable foi introduzido com o try-with-resources statement em Java, logo em Kotlin são equivalentes.
+**NOTA**: **Closeable** e **AutoCloseable** são interfaces equivalentes; o AutoCloseable foi introduzido com o try-with-resources statement em Java, logo em Kotlin são equivalentes.
 
 Uma classes com um campo Closeable/AutoCloseable, também deve implementar essa interface.
 
 ---
+---
 
-# Cleaner
+# [Cleaner](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/ref/Cleaner.html)
 
 * Manages a set of object references and corresponding cleaning actions;
-* Invocação explícita do método clean() quando o objeto é closed ou não é necessário;
-* Interface Cleanable representa um objeto e uma cleaning action registados num Cleaner;
-  * Contém um único método clean(), que executa a cleaning action e remove o registo do objeto.
+* Invocação explícita do método `clean()` quando o objeto é closed ou não é necessário;
+* Interface `Cleanable` representa um objeto e uma cleaning action registados num Cleaner;
+  * Contém um único método `clean()`, que executa a cleaning action e remove o registo do objeto.
 
 `Cleanable register(Object obj, Runnable action)`: regista um objeto e uma cleaning action num Cleaner.

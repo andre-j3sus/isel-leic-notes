@@ -32,7 +32,7 @@
 * Dados com informação sobre outros dados;
 * Equivalente ao header file.
 
-Em Kotlin, cada class tem um ficheiro .class associado, contendo bytecodes e metadata:
+Em Kotlin, cada class tem um ficheiro .class associado, contendo bytecode e metadata:
 
 <p align="center">
     <img src="./docs/kt-compile.drawio.png" alt="Kotlin Compilation" align="center"/>
@@ -55,9 +55,9 @@ O conceito de propriedade não existe na JVM.
 
 Uma propriedade em Kotlin pode gerar:
 
-* Field: slot em memória onde o valor da propriedade é armazenado;
-* Getter: método que retorna o valor da propriedade;
-* Setter: método que define o valor da propriedade.
+* **Field**: slot em memória onde o valor da propriedade é armazenado;
+* **Getter**: método que retorna o valor da propriedade;
+* **Setter**: método que define o valor da propriedade.
 
 O tipo base da hierarquia de tipos Kotlin é `Any`, enquanto que em Java é `Object`.
 
@@ -80,8 +80,8 @@ O software desenvolvido por componentes promove a reutilização de código e re
 **Compilar**:
 
 * Traduzir/converter de uma linguagem para outra;
-  * Dinâmica: em tempo de execução;
-  * Estática: em build time;
+  * **Dinâmica**: em tempo de execução;
+  * **Estática**: em build time;
 
 **Transpilação**: compilação de uma linguagem de alto nível para outra.
 
@@ -106,7 +106,7 @@ O software desenvolvido por componentes promove a reutilização de código e re
 ### Unmanaged Runtime
 
 * Componente não é unidade, mas sim `header + object` files:
-  * hearder <=> metadata;
+  * header <=> metadata;
   * object <=> IR;
 * Ligação estática;
 * Modificação estrutural: compilação + link;

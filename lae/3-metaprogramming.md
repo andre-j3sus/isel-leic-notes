@@ -14,9 +14,10 @@ _`JavaPoet` is a Java API for generating `.java` source files._
     <img src="./docs/javapoet.png" alt="JavaPoet" align="center"/>
 </p>
 
-### JavaFile
+### [JavaFile](https://square.github.io/javapoet/1.x/javapoet/com/squareup/javapoet/JavaFile.html)
 
-Represents a Java file containing a single top level class.
+_Represents a Java file containing a single top level class._
+
 Example:
 
 ```
@@ -25,9 +26,10 @@ val file = JavaFile
     .build()
 ```
 
-### TypeSpec
+### [TypeSpec](https://square.github.io/javapoet/1.x/javapoet/com/squareup/javapoet/TypeSpec.html)
 
-Represents a generated class, interface, or enum declaration.
+_Represents a generated class, interface, or enum declaration._
+
 Example:
 
 ```
@@ -38,9 +40,10 @@ val typeSpec = TypeSpec
     .build()
 ```
 
-### FieldSpec
+### [FieldSpec](https://square.github.io/javapoet/1.x/javapoet/com/squareup/javapoet/FieldSpec.html)
 
-Represents a generated field declaration.
+_Represents a generated field declaration._
+
 Example:
 
 ```
@@ -50,9 +53,11 @@ val fieldSpec = FieldSpec
     .build()
 ```
 
-### MethodSpec
+### [MethodSpec](https://square.github.io/javapoet/1.x/javapoet/com/squareup/javapoet/MethodSpec.html)
 
-Represents a generated constructor or method declaration.
+_Represents a generated constructor or method declaration._
+
+Example:
 
 ```
 val methodSpec = MethodSpec
@@ -66,7 +71,8 @@ val methodSpec = MethodSpec
 
 Para definir um constructor, utiliza-se o método `constructorBuilder`, em vez de `methodBuilder`.
 
-#### ParameterSpec
+#### [ParameterSpec](https://square.github.io/javapoet/1.x/javapoet/com/squareup/javapoet/ParameterSpec.html)
 
-Represents a generated parameter declaration.
+_Represents a generated parameter declaration._
+
 Não é muito utilizado, sendo que os parâmetros são definidos diretamente no método `addParameter`.

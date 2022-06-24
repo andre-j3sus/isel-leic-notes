@@ -1,4 +1,4 @@
-# Collection Pipeline
+# [Collection Pipeline](https://martinfowler.com/articles/collection-pipeline/)
 
 * Encadeamento de operações sobre dados que formam uma _query_;
 * Uma collection é output de uma operação e input de outra.
@@ -33,7 +33,7 @@ val result = count(
 
 ---
 
-# Generics
+# [Generics](https://kotlinlang.org/docs/generics.html)
 
 Com a utilização de genéricos, obtém-se:
 
@@ -41,13 +41,9 @@ Com a utilização de genéricos, obtém-se:
 * Expressividade;
 * Casts implícitos.
 
-Genéricos em classes:
+Genéricos em classes: `class Fancy <T, ...> (...) {...}`
 
-`class Fancy <T, ...> (...) {...}`
-
-Genéricos em funções:
-
-`fun <T, ...> foo (...) {...}`
+Genéricos em funções: `fun <T, ...> foo (...) {...}`
 
 
 `out` keyword:
@@ -67,12 +63,12 @@ Genéricos em funções:
 
 A solução é o uso de `reified type parameters` e `inline functions`.
 
-**Reified type**:
+[**Reified type**](https://kotlinlang.org/docs/inline-functions.html#reified-type-parameters):
 
 * Permite o acesso à informação do tipo genérico;
 * Declarados apenas em inline functions.
 
-**Inline function**:
+[**Inline function**](https://kotlinlang.org/docs/inline-functions.html):
 
 * O compilador copia a função para onde esta é chamada, logo em bytecode não existe a instrução `invoke`.
 
@@ -83,7 +79,7 @@ A solução é o uso de `reified type parameters` e `inline functions`.
 * Semelhante a `Iterable`;
 * **Lazy** (os elementos só são processados quando necessários).
 
-NOTA: Iterable é **eager**, ou seja, carregamento dos elementos assim que o código é executado.
+**NOTA**: Iterable é **eager**, ou seja, carregamento dos elementos assim que o código é executado.
 
 Funções úteis:
 
@@ -91,7 +87,7 @@ Funções úteis:
 
 `sequence { SequenceScope -> ... }` -> cria uma `Sequence` a partir de um bloco de código.
 
-Generators:
+## Generators:
 
 * Rotinas que retornam sequences;
 * A instrução `yield` é semelhante a um `return`, só que retorna um elemento da sequência, criando um **ponto de suspensão**. 

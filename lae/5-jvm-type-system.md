@@ -1,6 +1,6 @@
 # JVM Type System
 
-Os tipos na JVM estão divididos em tipos primitivos e tipos de referência:
+Os tipos na JVM estão divididos em **tipos primitivos** e **tipos de referência**:
 
 | Tipos Primitivos           | Tipos de Referência    |
 | -------------------------- | ---------------------- |
@@ -33,9 +33,8 @@ fun bar() {
 }
 ```
 
-As variáveis v e b são locais a `bar`.
-
-A cópia de v é feita por valor; b fica com uma cópia do valor de v:
+* As variáveis v e b são locais a `bar`;
+* A cópia de v é feita por valor; b fica com uma cópia do valor de v:
 
 <p align="center">
     <img src="./docs/primitive-types.png" alt="Primitive Types" align="center"/>
@@ -43,7 +42,7 @@ A cópia de v é feita por valor; b fica com uma cópia do valor de v:
 
 ---
 
-## Tipos de referência (TR)
+## Tipos de referência (TR ou Wrapper)
 
 | Java    | Kotlin  |
 | ------- | ------- |
@@ -64,9 +63,8 @@ fun bar() {
 }
 ```
 
-As variáveis v e b são locais a `bar`.
-
-A cópia de v é feita por referência; b fica a apontar para o mesmo objeto:
+* As variáveis v e b são locais a `bar`;
+* A cópia de v é feita por referência; b fica a apontar para o mesmo objeto:
 
 <p align="center">
     <img src="./docs/reference-types.png" alt="Reference Types" align="center"/>
