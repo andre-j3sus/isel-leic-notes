@@ -1,1 +1,0 @@
-# Collection Pipeline and Generics
