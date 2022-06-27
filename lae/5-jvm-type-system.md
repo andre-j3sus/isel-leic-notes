@@ -14,14 +14,18 @@ Os tipos na JVM estão divididos em **tipos primitivos** e **tipos de referênci
 
 ---
 
-## Tipos primitivos (TP)
+## Tipos primitivos (TP ou Tipos Valor)
 
-| Java   | Kotlin |
-| ------ | ------ |
-| int    | Int    |
-| long   | Long   |
-| float  | Float  |
-| double | Double |
+| Java    | Kotlin  |
+| ------- | ------- |
+| int     | Int     |
+| long    | Long    |
+| float   | Float   |
+| double  | Double  |
+| char    | Char    |
+| boolean | Boolean |
+| byte    | Byte    |
+| short   | Short   |
 
 
 Exemplo:
@@ -44,12 +48,16 @@ fun bar() {
 
 ## Tipos de referência (TR ou Wrapper)
 
-| Java    | Kotlin  |
-| ------- | ------- |
-| Integer | Int?    |
-| Long    | Long?   |
-| Float   | Float?  |
-| Double  | Double? |
+| Java      | Kotlin   |
+| --------- | -------- |
+| Integer   | Int?     |
+| Long      | Long?    |
+| Float     | Float?   |
+| Double    | Double?  |
+| Character | Char?    |
+| Boolean   | Boolean? |
+| Byte      | Byte?    |
+| Short     | Short?   |
 
 
 Exemplo:
@@ -87,6 +95,8 @@ Definições:
   * `<Wrapper>.valueOf(<primitive>)`;
 * **Unboxing**: cópia do valor do heap para o valor primitivo;
   * `<Wrapper>.<primitive>Value()`.
+
+[**Autoboxing**](https://docs.oracle.com/javase/tutorial/java/data/autoboxing.html) is the automatic conversion that the Java compiler makes between the primitive types and their corresponding object wrapper classes.
 
 Existem dois tipos de casting:
 

@@ -6,7 +6,7 @@ Side-effects a evitar:
 
 * Garbage collection;
 * IO operations;
-* Extra tools, like IDE, gradle, etc.;
+* Extra tools, like IDE, gradle, etc -> run directly on VM.
 
 Para otimizar, incluir iterações de _warm-up_.
 

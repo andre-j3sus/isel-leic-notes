@@ -31,6 +31,9 @@ val result = count(
 )
 ```
 
+* **General-purpose language**: a programming language that is capable of creating all types of programs; e.g. Kotlin, Java, C#, C++, etc.
+* **Domain-specific language**:  a computer language specialized to a particular application domain; e.g. SQL, HTML, Latex, etc.
+
 ---
 
 # [Generics](https://kotlinlang.org/docs/generics.html)
@@ -60,6 +63,8 @@ Genéricos em funções: `fun <T, ...> foo (...) {...}`
 
 * Mecanismos que substitui todos os tipos genéricos por `Object`;
 * Tipos genéricos não são preservados em runtime.
+
+_Type erasure is the load-time process by which explicit type annotations are removed from a program, before it is executed at run-time._
 
 A solução é o uso de `reified type parameters` e `inline functions`.
 

@@ -1,6 +1,6 @@
 # Virtual Machines
 
-* Ambiente de execução (managed runtime);
+* Ambiente de execução (**managed runtime** or execution environment);
 * System virtual machines: full virtualization;
 * **Process virtual machines**: executa programas.
 
@@ -16,15 +16,15 @@
 
 ## Managed Runtime
 
-* **Portabilidade**: compila uma vez e executa em qualquer plataforma;
-* **Safety**: não existem acessos inválidos à memória;
+* **Portabilidade**: Compile once and run everywhere;
+* **Safety**: No invalid memory accesses;
 * **Garbage collection**;
-* **Jitter**: just in time compiler;
+* **Jitter**: Just-in-time compiler; compiles IR to native code (e.g. x86, amd64, ppc) at runtime;
 * **Classloader**: carregador de ficheiro lazy (apenas são carregados quando são necessários) e dinâmica (carregados em tempo de execução);
 * **Interoperability** entre as linguagens da mesma VM (ex.: Java <=> Kotlin);
-* **Sistema de tipos**.
+* **Sistema de tipos**: Set of rules and principles that specify how types are defined and behave.
 
-`Software = bytecodes + metadata`
+`Software compoments = bytecodes + metadata`
 
 ### Metadata
 
@@ -32,11 +32,14 @@
 * Dados com informação sobre outros dados;
 * Equivalente ao header file.
 
-Em Kotlin, cada class tem um ficheiro .class associado, contendo bytecode e metadata:
+Em Kotlin, cada class tem um ficheiro `.class` associado, contendo bytecode e metadata:
 
 <p align="center">
     <img src="./docs/kt-compile.drawio.png" alt="Kotlin Compilation" align="center"/>
 </p>
+
+É gerado um ficheiro `.class` para cada tipo (classe ou interface).
+Também são gerados ficheiros `.class` para funções globais, com `$$` no nome do ficheiro.
 
 ---
 
@@ -44,7 +47,7 @@ Em Kotlin, cada class tem um ficheiro .class associado, contendo bytecode e meta
 
 * Um sistema de tipos é um conjunto de princípios e regras que especificam a definição e comportamento dos tipos;
 * Tipos são definidos por classes ou interfaces;
-* Classes têm membros e métodos:
+* Classes têm membros:
 
 | JVM     | Kotlin     |
 | ------- | ---------- |
@@ -55,11 +58,17 @@ O conceito de propriedade não existe na JVM.
 
 Uma propriedade em Kotlin pode gerar:
 
-* **Field**: slot em memória onde o valor da propriedade é armazenado;
+* **Field**: slot em memória onde o valor da propriedade é armazenado; acedido através da instrução `getfield` em bytecode;
 * **Getter**: método que retorna o valor da propriedade;
 * **Setter**: método que define o valor da propriedade.
 
-O tipo base da hierarquia de tipos Kotlin é `Any`, enquanto que em Java é `Object`.
+O tipo base da hierarquia de tipos Kotlin é `Any`, enquanto que em Java é `Object`:
+
+| Kotlin          | Java            |
+| --------------- | --------------- |
+| `Any`           | `Object`        |
+| `val`           | `final`         |
+| `new` implícito | `new` explícito |
 
 ---
 
@@ -92,8 +101,8 @@ O software desenvolvido por componentes promove a reutilização de código e re
 **Abstração**: separar o essencial do acessório, para focar a atenção em detalhes mais importantes.
 
 **AVISO**: nunca dar mais permissões que as necessárias:
-* Imutabilidade (val > var);
-* Privacidade (private > protected > public).
+* Imutabilidade (`val` > `var`);
+* Privacidade (`private` > `protected` > `public`).
 
 ---
 

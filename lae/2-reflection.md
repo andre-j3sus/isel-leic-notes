@@ -11,6 +11,9 @@
 | KFunction      | Method            |
 | KProperty      | Field             |
 
+* `KClass.java -> Class`;
+* `Class.kotlin -> KClass`.
+
 <p align="center">
     <img src="./docs/reflection.png" alt="Kotlin Reflection" align="center"/>
 </p>
@@ -41,19 +44,41 @@ Propriedades e métodos relevantes:
 * `objectInstance`;
 * `qualifiedName`;
 * `simpleName`;
-* `visibility`;
+* `visibility`: retorno do tipo [`KVisibility`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-visibility/), que pode ser `PUBLIC`, `PROTECTED`, `INTERNAL` ou `PRIVATE`;
 * `annotations`;
-* `declaredMemberFunctions`;
+* `memberProperties`;
+* `memberExtensionProperties`;
 * `declaredMemberProperties`;
+* `declaredMemberExtensionProperties`;
+* `memberFunctions`;
+* `memberExtensionFunctions`;
+* `declaredMemberFunctions`;
+* `declaredMemberExtensionFunctions`;
 * `declaredMembers`;
 * `java`
 * `primaryConstructor`;
 * `createInstance`
-* `createType`;
+* `createType`: retorno do tipo [`KType](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-type/)`;
 * `findAnnotation`;
 * `hasAnnotation`;
 * `isSubclassOf`;
 * `isSuperclassOf`;
+
+| Methods                          | Extension | Non-Extension | Declared only in this class | Declared in this class and superclasses |
+| -------------------------------- | --------- | ------------- | --------------------------- | --------------------------------------- |
+| memberProperties                 |           | X             |                             | X                                       |
+| memberExtensionProperties        | X         |               |                             | X                                       |
+| declaredMemberProperties         |           | X             | X                           |                                         |
+| declaredMemberExtensionFunctions | X         |               | X                           |                                         |
+| static                           |           | X             | X                           |                                         |
+
+
+| Methods                          | Type       |
+| -------------------------------- | ---------- |
+| memberProperties                 | KProperty1 |
+| declaredMemberProperties         | KProperty1 |
+| memberExtensionProperties        | KProperty2 |
+| declaredMemberExtensionFunctions | KProperty2 |
 
 ---
 
@@ -66,7 +91,7 @@ Propriedades e métodos relevantes:
 * `KCallable<out R>.call(args):R`;
 * `name`;
 * `parameters`;
-* `returnType`;
+* `returnType`: retorno do tipo [`KType](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-type/)`;
 * `typeParameters`;
 * `visibility`;
 * `annotations`;
@@ -98,7 +123,7 @@ Propriedades e métodos relevantes:
 * `isLateinit`;
 * `getter`;
 
-É superclasse de KMutableProperty, que tem a propriedade `setter`.
+É superclasse de KMutableProperty, que tem a propriedade `setter` e o método `set(instance, value)`, equivalente a `setter.call(instance, value)`.
 
 ### [KFunction](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-function/)
 
@@ -128,6 +153,18 @@ Propriedades e métodos relevantes:
 * `findAnnotation`;
 * `hasAnnotation`;
 
+---
+
+## [KType](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-type/)
+
+_Represents a type. Type is usually either a class with optional type arguments, or a type parameter of some declaration, plus nullability._
+
+Para obter a KClass associada a um KType existem duas formas:
+
+* `KType.classifier as KClass<*>`;
+* `KType.jvmErasure`;
+
+---
 ---
 
 ## [Annotations](https://kotlinlang.org/docs/annotations.html)

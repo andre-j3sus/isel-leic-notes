@@ -58,6 +58,18 @@ _Process of looking ate heap memory, identifying unused objects (unreferenced ob
 * **Major GC**: atua sobre a Old Generation;
 * **Full GC**: atua sobre toda a memória.
 
+## Propriedades do GC
+
+_G1 is a generational, incremental, parallel, mostly concurrent, stop-the-world, and evacuating garbage
+collector_ ~ from [here](https://docs.oracle.com/javase/9/gctuning/garbage-first-garbage-collector.htm#JSGCT-GUID-CE6F94B6-71AF-45D5-829E-DEADD9BA929D)
+
+* **Generational**: Objetos são separados em gerações, baseadas no seu tempo de vida;
+* **Incremental**: _An incremental garbage collector is any garbage-collector that can run incrementally (meaning that it can do a little work, then some more work, then some more work), instead of having to run the whole collection without interruption;_
+* **Parallel**: _Multiple threads are used to speed up garbage collection;_
+* **Mostly Concurrent**: _Managed threads can continue to run most of the time while the concurrent garbage collection thread is running;_
+* **Stop-the-World**: _The execution of the program is suspended for GC till all objects in the heap are processed;_
+* **Evacuating**: _Live objects found within selected memory areas to collect are copied into new memory areas, compacting them in the process. After an evacuation has been completed, the space previously occupied by live objects is reused for allocation by the application._
+
 ---
 ---
 
