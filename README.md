@@ -9,4 +9,5 @@ Some notes are written in Portuguese, and some in English.
 So far, there are notes for the following subjects:
 
 * [SI - Information Systems / Sistemas de Informação](./si);
-* [LAE - Languages and Managed Runtimes / Linguagens e Ambientes de Execução](./lae).
+* [LAE - Languages and Managed Runtimes / Linguagens e Ambientes de Execução](./lae);
+* [PC - Concurrent Programming / Programação Concorrente](./pc).
