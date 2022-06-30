@@ -88,7 +88,7 @@ Uma thread que ainda não tenha terminado está num destes 3 estados:
 
 ---
 
-## [Threads na JVM](https://docs.oracle.com/javase/7/docs/api/java/lang/Thread.html)
+## [Threads na JVM](https://docs.oracle.com/javase/8/docs/api/java/lang/Thread.html)
 
 * Representadas pela classe `Thread`;
 * Tem um estado do tipo `Thread.State`:

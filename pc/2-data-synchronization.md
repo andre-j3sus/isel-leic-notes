@@ -42,7 +42,7 @@
 * Realizado por **sincronizadores**;
 * Um **monitor** é um construtor de outros sincronizadores.
 
-## [Condition](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/locks/Condition.html)
+## [Condition](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/Condition.html)
 
 * Permite à thead suspender a sua execução até que uma condição seja true;
 * Obter uma condição: `Lock.newCondition(): Condition`;
@@ -89,7 +89,7 @@ Métodos relevantes:
 
 ---
 
-## [Locks na JVM](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/locks/Lock.html)
+## [Locks na JVM](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/Lock.html)
 
 * Existem duas formas de obter locks:
   * A interface `Lock` e as classes que a implementam (e.g. `ReentrantLock`);
@@ -121,4 +121,27 @@ Para utilizar a condição do objeto:
 
 # Alguns Sincronizadores
 
-TODO...
+### [Semaphore](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Semaphore.html)
+
+* Usado para restringir o acesso da thread a algum recurso;
+* Tem um contador inicializado com um número de unidades;
+* Métodos:
+  * `acquire`: espera até que uma unidade esteja disponível e decrementa o contador;
+  * `release`: incrementa o contador;
+* Pode ser fair ou unfair, sendo que fair implementa a topologia FIFO.
+
+---
+
+### [Exchanger](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Exchanger.html) 
+
+* Ponto de sincronização onde threads emparelham e trocam valores;
+* Único método `exchange(T value)`, que espera até que outra thread queira trocar um valor, ou troca se alguma já estiver à espera.
+
+---
+
+### [Thread Pool](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ExecutorService.html)
+
+* Coleção de worker threads que executam computações assíncronas;
+* Usada para reduzir o número de threads da aplicação;
+* Em Java, a classe `Executors` é uma factory para Thread Pools;
+* A interface `Executor` tem um único método para submeter instâncias Runnable para execução: `execute(Runnable runnable)`. 

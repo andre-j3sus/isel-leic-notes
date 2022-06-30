@@ -108,7 +108,7 @@
 
 ---
 
-### Job
+### [Job](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-job/)
 
 * Representa algo com um ciclo de vida, que pode ser cancelado ou concluído;
 * Representa uma coroutine;
