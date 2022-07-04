@@ -32,7 +32,7 @@
 * Ter atenção nas operações realizadas na posse da exclusão mútua, incorrendo no risco de usar o lock demasiado tempo:
   * I/O operations;
   * Aquisição de outros locks (pode levar a **deadlocks**);
-* A thead pode ficar num estado non-ready com a posse do lock, o que é negativo para o desempenho.
+* A thread pode ficar num estado non-ready com a posse do lock, o que é negativo para o desempenho.
 
 ---
 
