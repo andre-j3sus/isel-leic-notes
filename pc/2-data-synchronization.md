@@ -44,13 +44,13 @@
 
 ## [Condition](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/Condition.html)
 
-* Permite à thead suspender a sua execução até que uma condição seja true;
+* Permite à thread suspender a sua execução até que uma condição seja true;
 * Obter uma condição: `Lock.newCondition(): Condition`;
   
 Métodos relevantes:
 
 * `Condition.await()`: espera passiva, sem a posse do lock, até que a condição seja sinalizada ou que a thread seja interrompida;
-* `Condition.signal()`: sinaliza uma thead à espera da condição;
+* `Condition.signal()`: sinaliza uma thread à espera da condição;
 * `Condition.signalAll()`: sinaliza todas as threads que estavam à espera;
 
 **NOTAS**:
