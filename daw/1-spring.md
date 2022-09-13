@@ -4,41 +4,42 @@
 
 ## Spring Context
 
-* **Contentor** de **inversão de controlo** e **injeção de dependências**;
-* Sistema que permite fazer a **composição de objetos dinamicamente**;
+* **Container of inversion of control and dependency injection**
+* System that allow us to **manage the composition and life cycle of objects and their dependencies, dynamically**;
 * *The context is the Spring component responsible for instantiating and managing instances, such as controller instances.*
 
-### Composição
+### Object creation and dependency injection
 
-* Criação do grafo da aplicação;
-* Criar as instâncias dos objetos e passar as dependências umas às outras;
+* Creation of the application graph of objects;
+* Instantiation of the objects and their dependencies, passing the dependencies to the objects.
 
-### Inversão de controlo (Inversion of Control - IoC)
+### Inversion of Control - IoC
 
-* O dependente **recebe e usa a dependência**, mas **não a cria**:
+**The dependent object receives and uses the dependencies, but it does not create them.**
 
 <p align="center">
-    <img src="./docs/dependencies.png" alt="Dependencies" align="center"/>
+    <img src="./docs/dependencies.png" alt="Inversion of Control" align="center"/>
 </p>
 
-* **Constructor injection**: injeção de dependências através do construtor;
-* **Wiring**: estabelecer a ligação/dependência entre os objetos;
+* **Constructor injection**: dependency injection through the constructor;
+* **Wiring**: establish the dependencies between objects;
 
-### Utilização (exemplos)
+---
 
-1. Criação do contexto;
-2. Adicionar as definições ao contexto;
-3. Fazer refresh do contexto, para ter em consideração as novas definições;
-4. Utilizar o contexto, para obter os **beans**.
+### Examples
 
-#### Bean 
+Steps:
 
-* Instância de uma classe gerida pelo Spring Context;
-* *A bean is an object that is created and managed by the context.*
+1. Creation of the context;
+2. Add the bean definitions to the context;
+3. Refresh the context, to take in consideration the new bean definitions;
+4. Use the context to get the beans.
 
-**Exemplo 1:**
+**Bean**: *A bean is an object that is created and managed by the context.*
 
-Considerando, que existem as classes Component[A-C], e as seguintes dependências (**dependente -> dependência**):
+#### 1st Example
+
+Considering the following classes and dependencies (*dependent -> dependency*):
 
 ComponentC -> ComponentB ->  ComponentA
 
@@ -60,12 +61,12 @@ context.refresh()
 val componentB = context.getBean<ComponentB>()
 ```
 
-* Se não fosse passado o componente ComponentA, o Spring Context iria lançar uma exceção, pois não consegue resolver a dependência.
-* Também seria lançado uma exceção, se não fosse passado o componente ComponentB, visto que não podemos pedir um componente que o Spring Context não consegue resolver.
+* If the ComponentA was not registered, the context would not be able to create the ComponentB, throwing an exception;
+* If the ComponentB was not registered, the context would not be able to create it, throwing an exception.
 
-**Exemplo 2:**
+#### 2nd Example
 
-Também é possível adicionar as definições passando um package ao contexto, utilizando o método `scan`. Neste caso, o Spring Context irá procurar por classes anotadas com `@Component`
+You can also add the bean definitions given a package, using the `scan` method. In this case, the context will search for the classes annotated with `@Component` and register them:
 
 ```kotlin
 // Create the context
@@ -75,21 +76,14 @@ val context = AnnotationConfigApplicationContext()
 context.scan("package.name")
 ```
 
----
+**Note**: You can also use the context with components initialized with **lists of dependencies**. This can be useful, for example, when creating a router, where you can have a list of controllers and inject them into the router.
 
-### Nota
 
-Também é possível usar o contexto com listas. Se um dos componentes depende de uma lista de outros componentes, o Spring Context irá resolver a dependência, criando uma lista com os componentes necessários, anotados com `@Component`.
+#### 3rd Example
 
-Isto pode ser útil, por exemplo, na criação de um Router, que depende de uma lista de Handlers.
+If a componente registered in the context is not initialized by a constructor, but with a static method, you can use the `@Bean` annotation to register it.
 
----
-
-**Exemplo 3:**
-
-Se um componente passado ao contexto não for inicializado por um construtor, mas sim um método estático por exemplo, é necessário adicionar a anotação `@Bean` ao método estático, ou a outro método criado por nós que retorne o componente.
-
-No exemplo seguinte, um HttpClient é inicializado através de um método estático `newBuilder`, logo criamos a função que chama esse método e anotamos a mesma com `@Bean`.
+For example, a HttpClient is initialized with the `newBuilder` method, so we create a function that returns a HttpClient and annotate it with `@Bean`:
 
 ```kotlin
 class BeanConfig {
