@@ -13,3 +13,4 @@ So far, there are notes for the following subjects:
 * [PC -  Programação Concorrente / Concurrent Programming](./pc);
 * [DAW - Desenvolvimento de Aplicações Web / Web Application Development](./daw);
 * [TVS - Técnicas de Virtualização de Sistemas / Systems Virtualization Techniques](./tvs).
+* [SegInf - Segurança Informática / Computer Security](./seginf).
