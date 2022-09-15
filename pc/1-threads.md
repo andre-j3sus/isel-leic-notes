@@ -1,58 +1,58 @@
 # Threads
 
-* **Computação sequencial**;
-* Mecanismo fornecido pelos OS para possibilitar a existência de múltiplas computações sequenciais a executar simultaneamente no mesmo processo;
-* Na JVM, uma thread é criada chamando o construtor **Thread**, passando-lhe um **Runnable** (objeto com método run, que define uma computação sequencial) como argumento;
-* Os OS permitem a implementação de múltiplas threads através de multiplexagem temporal de um conjunto de M Threads por N CPUs; isto é realizado por um componente chamado **scheduler**.
+* **Sequential computation**;
+* Mechanism provided by the OS to allow the existence of multiple sequencial computations executing simultaneously in the same process;
+* In the JVM, a thread is created by calling the constructor **Thread**, passing a **Runnable** (object with the method run, that defines a sequential computation) to it as an argument;
+* The OSs allow the implementation of multiple threads through time multiplexing of a set of M Threads through N CPUs; this is done by a component named **scheduler**.
 
-## Motivação
+## Motivation
 
-* **Performance**: tirar vantagem da existência de múltiplos CPUs;
-* **Organização do código**: por vezes é mais simples organizar o código em múltiplas computações sequenciais.
+* **Performance**: take advantage of the existence of multiple CPUs;
+* **Code organization**: sometimes it is simpler to organize the code in multiple sequential computations.
 
-### NOTA: Memória Virtual
+### NOTE: Virtual memory
 
-* Existe um espaço de endereçamento físico e múltiplos virtuais;
-* Mapeamento de endereços virtuais em físicos;
-* Cada processo utiliza a sua memória virtual.
+* There exists a physical addressing space and multiple virtual ones;
+* Mapping of virtual addresses to physical ones;
+* Each process uses its virtual memory.
 
 ---
 
-## Relação entre Threads
+## Relationship between Threads
 
-* Threads do mesmo processo não estão isoladas, ou seja, **partilham o mesmo espaço de memória**, incluindo o código e os dados;
-* Contudo, existe **um stack por cada computação**, visto que o estado da computação é armazenado nesse stack.
+* Threads of the same process aren't isolated, therefore they **share the same memory space**, including the code and the data;
+* However, there exists **a stack for each computation**, given that the computation state is stored in that stack.
 
 <p align="center">
     <img src="./docs/memory.png" alt="Memory" align="center"/>
 </p>
 
-**NOTA**: isto não significa que existe um stack por CPU, mas sim por computação, visto que uma computação pode ser executada em múltiplas CPUs.
+**NOTE**: this doesn't mean that there's a stack per CPU, but per computation, because the computation can be executed in multiple CPUs.
 
 ### Stack
 
-* Pilha de stack frames;
+* Stack of stack frames;
 * LIFO: last in first out;
-* Armazena:
-  * invocações de funções;
-  * variáveis locais;
-  * argumentos;
-* No x86, o stack cresce para baixo.
+* Stores:
+  * function invocations;
+  * local variables;
+  * arguments;
+* In x86, the stack grows downwards.
 
-### Desvantagens
+### Disadvantages
 
-* Não existe uma proteção contra interferência de threads;
-* Isto é perigoso quando existe partilha de dados mutáveis -> **Concurrency Hazards**.
+* A protection against thread interference does not exist;
+* This is dangerous in the case of mutable data sharing -> **Concurrency Hazards**.
 
 ---
 
 ## Thread States
 
-Uma thread que ainda não tenha terminado está num destes 3 estados:
+A thread that still isn't done is in one of these 3 states:
 
-* **Running**: atribuída a um CPU;
-* **Ready**: não atribuída a um CPU, porque não há CPUs disponíveis;
-* **Non-Ready**: não atribuída a um CPU, porque apenas pode executar após uma condição ser verdadeira.
+* **Running**: atributed to a CPU;
+* **Ready**: not atributed to a CPU, because there aren't available CPUs;
+* **Non-Ready**: not atributed to a CPU, because it can only execute after a condition is fulfilled.
 
 <p align="center">
     <img src="./docs/thread-states.png" alt="Thread States" align="center"/>
@@ -60,56 +60,56 @@ Uma thread que ainda não tenha terminado está num destes 3 estados:
 
 ### Running -> Ready (Context-Switch)
 
-* Pode acontecer em duas situações:
-  * **Cooperativa**: a própria thread solicita ao OS para desistir do CPU (yield);
-  * **Promotiva**: 
-    * o scheduler decide que a running thread tem de ser substituída; 
-    * isto pode acontecer porque está a usar o CPU à muito tempo;
-    * ocorre via sistema de interrupção, entre instruções assembly.
-* Chama-se **context-switch** porque o **contexto da thread** que estava running é guardado em memória e o contexto da thread estava ready é carregado.
+* Can happen in two cases:
+  * **Cooperative**: the thread itself solicits the OS to give up on the CPU (yield);
+  * **Promotive**: 
+    * the scheduler decides that the running thread has to be replaced; 
+    * this can happen because it has been using the CPU for too much time;
+    * occurs through the interruption system, between assembly instructions.
+* Is called **context-switch** because the **context of the thread** that was running is stored in memory and the context of the thread that was ready is loaded.
 
 #### Thread Context
 
-* Informação que é necessária salvar em memória para a mesma thread ser retomada corretamente, quando é carregada essa informação no CPU;
+* Information that is required to be saved in memory for the same thread to be correctly resumed, when that information is loaded to the CPU;
 * Stack pointer, instruction pointer, etc.
 
 ### Ready -> Running
 
-* Quando o scheduler decide atribuir um CPU para uma ready thread;
-* Isto também implica context-switch.
+* When the scheduler decides to atribute a CPU to a read thread;
+* This also implies context-switch.
 
 ### Running -> Non-Ready
 
-* Quando uma thread executa uma operação que o resultado ainda não está disponível, logo não pode continuar a executar.
+* When a thread executes an operation whose result isn't available yet, so it can't continue to execute.
 
 ### Non-Ready -> Ready
 
-* Quando a condição necessária para a thread continuar a executar é verdadeira.
+* When the condition required for the thread to continue to execute is fulfilled.
 
 ---
 
-## [Threads na JVM](https://docs.oracle.com/javase/8/docs/api/java/lang/Thread.html)
+## [Threads in JVM](https://docs.oracle.com/javase/8/docs/api/java/lang/Thread.html)
 
-* Representadas pela classe `Thread`;
-* Tem um estado do tipo `Thread.State`:
-  * `NEW`: thread ainda não iniciada;
-  * `RUNNABLE`: thread a executar;
-  * `BLOCKED`: thread bloqueada, à espera de um lock;
-  * `WAITING`: thread à espera de uma condição, passivamente;
-  * `TIMED_WAITED`: em espera passiva com tempo de espera (`Thread.sleep()`);
-  * `TERMINATED`: terminada.
+* Represented by the class `Thread`;
+* Has a state of the type `Thread.State`:
+  * `NEW`: non-initialized thread;
+  * `RUNNABLE`: thread to execute;
+  * `BLOCKED`: blocked thread, waiting for a lock;
+  * `WAITING`: thread passively waiting for a condition;
+  * `TIMED_WAITED`: in passive waiting with wait time (`Thread.sleep()`);
+  * `TERMINATED`: terminated.
 
-Alguns métodos relevantes:
+Some relevant methods:
 
-* `start()`: inicia a thread;
-* `sleep(long millis)`: suspende a thread por um tempo;
-* `join()`: sincroniza-se com a terminação da thread;
-* `interrupt()`: interrompe a thread, ou seja, coloca o interrupt status a true;
-* `interrupted()`: verifica se o interrupt status é true.
+* `start()`: starts the thread;
+* `sleep(long millis)`: suspends the thread for a specified time;
+* `join()`: synchronizes itself with the thread termination;
+* `interrupt()`: interrupts the thread, therefore setting the interrupt status to true;
+* `interrupted()`: verifies if the interrupt status is true.
 
-### Interrupções
+### Interruptions
 
-* Mecanismo implementado para suportar cancelamento;
-* Uma `InterrupterException` pode ser lançada por métodos bloqueantes quando o interrupt status é true;
-* Uma thread tem uma flag chamada **interrupt status**;
-* Alguns métodos bloqueantes limpam o status e lançam a exceção.
+* Mechanism implemented to support cancelling;
+* An `InterruptException` can be thrown by blocking methods when the interrupt status is true;
+* The thread has a flag called **interrupt status**;
+* Some blocking methods clear the status and throw the exception.
