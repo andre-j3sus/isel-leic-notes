@@ -5,7 +5,7 @@
 ## Spring Context
 
 * **Container of inversion of control and dependency injection**
-* System that allow us to **manage the composition and life cycle of objects and their dependencies, dynamically**;
+* System that allows us to **manage the composition and life cycle of objects and their dependencies, dynamically**;
 * *The context is the Spring component responsible for instantiating and managing instances, such as controller instances.*
 
 ### Object creation and dependency injection
@@ -81,7 +81,7 @@ context.scan("package.name")
 
 #### 3rd Example
 
-If a componente registered in the context is not initialized by a constructor, but with a static method, you can use the `@Bean` annotation to register it.
+If a component registered in the context is not initialized by a constructor, but with a static method, you can use the `@Bean` annotation to register it.
 
 For example, a HttpClient is initialized with the `newBuilder` method, so we create a function that returns a HttpClient and annotate it with `@Bean`:
 
