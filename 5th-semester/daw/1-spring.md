@@ -100,3 +100,40 @@ val context = AnnotationConfigApplicationContext()
 // Add the bean definitions
 context.register(BeanConfig::class.java)
 ```
+
+---
+
+### Summary (in Portuguese)
+
+* Estereótipo: papel que instâncias de classes desempenham no sistema;
+  * Contentores de funcionalidade (e.g. handlers, controllers, routers, etc);
+  * Contentores de informação estruturada (e.g. classes);
+
+* Relação Dependente -> Dependência
+  * IoC: o dependente não cria as dependências;
+  * DI: o dependente recebe e usa as dependências;
+* Composição do grafo de instâncias:
+  * Manual;
+  * Contentor de Injeção de Dependências (IoC Container) -> Spring Context;
+* Código é independente da existência do contexto.
+
+<p align="center">
+    <img src="./docs/context.png" alt="Context" align="center"/>
+</p>
+
+---
+---
+
+## [Spring MVC](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/mvc.html)
+
+> Spring MVC is a library/framework for handling HTTP requests, providing higher level features on top of the [Java Servlet API](https://javaee.github.io/servlet-spec/).
+
+* Based on the [Model-View-Controller](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) (MVC) pattern;
+* Usage of an underlying servlet server, such as [Jetty](https://www.eclipse.org/jetty/), [Tomcat](https://tomcat.apache.org/), etc;
+* ...
+
+#### [Servlet](https://docs.oracle.com/javaee/6/tutorial/doc/bnafe.html)
+
+> A servlet is a Java programming language class that is used to extend the capabilities of servers that host applications accessed by means of a request-response programming model.
+
+TODO: Add more information about servlets and Spring MVC.
