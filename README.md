@@ -37,6 +37,7 @@
 * [DAW - Desenvolvimento de Aplicações Web / Web Application Development](./5th-semester/daw);
 * [SegInf - Segurança Informática / Computer Security](./5th-semester/seginf);
 * [TVS - Técnicas de Virtualização de Sistemas / Systems Virtualization Techniques](./5th-semester/tvs);
+* [Emp - Empreendedorismo / Entrepreneurship](./5th-semester/emp);
 * TODO...
 
 ### 6th Semester
