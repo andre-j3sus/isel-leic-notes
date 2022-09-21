@@ -166,3 +166,35 @@ criptogramas iguais;
   * Galois/Counter Mode (GCM);
   * Offset Codebook Mode (OCB);
   * Counter with CBC-MAC (CCM).
+
+---
+---
+
+## Hash Functions
+
+* **H: {0, 1}^* -> {0, 1}^n**;
+  * **n** is the hash length;
+* **Input** - binary sequence of finite length;
+* **Output** - binary sequence of fixed length (n);
+
+### Notes
+
+* Propriedades de segurança:
+  * É computacionalmente **fácil** obter H(x) dado x;
+  * É computacionalmente **difícil** obter **x'**, dado x, tal que **x' != x e H(x') = H(x)** -> **segunda pré-imagem**;
+  * É computacionalmente **difícil** obter **(x, x')**, com **x != x' e H(x) = H(x')** -> **colisão**;
+* O hash de x serve como representante de x;
+* Baseiam-se em operações booleanas e aritméticas sobre palavras de pequena dimensão (16, 32, 64 bits).
+
+### Exemplos de aplicação
+
+* Garantia de integridade de dados;
+* Derivação de chaves a partir de passwords;
+* Algoritmos de MAC;
+* Assinatura digital (esquema assimétrico);
+* Diversos protocolos criptográficos.
+
+### Funções de hash com chave
+
+* É usual designar-se um esquema de MAC, com algoritmo T determinístico, como função de hash com chave (Keyed-Hashing for Message Authentication, HMAC);
+* HMAC é um conjunto de algoritmos MAC para usar com diferentes funções de hash H.
