@@ -18,7 +18,7 @@
 **The dependent object receives and uses the dependencies, but it does not create them.**
 
 <p align="center">
-    <img src="./docs/dependencies.png" alt="Inversion of Control" align="center"/>
+    <img src="./docs/daw-diagrams-Inversion%20of%20Control.svg" alt="Inversion of Control" align="center"/>
 </p>
 
 * **Constructor injection**: dependency injection through the constructor;
@@ -118,7 +118,7 @@ context.register(BeanConfig::class.java)
 * Código é independente da existência do contexto.
 
 <p align="center">
-    <img src="./docs/context.png" alt="Context" align="center"/>
+    <img src="./docs/daw-diagrams-Context.svg" alt="Context" align="center"/>
 </p>
 
 ---
@@ -129,11 +129,49 @@ context.register(BeanConfig::class.java)
 > Spring MVC is a library/framework for handling HTTP requests, providing higher level features on top of the [Java Servlet API](https://javaee.github.io/servlet-spec/).
 
 * Based on the [Model-View-Controller](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) (MVC) pattern;
-* Usage of an underlying servlet server, such as [Jetty](https://www.eclipse.org/jetty/), [Tomcat](https://tomcat.apache.org/), etc;
-* ...
 
-#### [Servlet](https://docs.oracle.com/javaee/6/tutorial/doc/bnafe.html)
+---
+
+#### Note - [Servlet](https://docs.oracle.com/javaee/6/tutorial/doc/bnafe.html)
 
 > A servlet is a Java programming language class that is used to extend the capabilities of servers that host applications accessed by means of a request-response programming model.
 
-TODO: Add more information about servlets and Spring MVC.
+---
+
+### Design
+
+* Usage of an underlying **servlet server**, such as [Jetty](https://www.eclipse.org/jetty/), [Tomcat](https://tomcat.apache.org/), etc;
+* A **dispatch servlet** that is registered on top of that servlet server, for all paths below a base path;
+* **Request handlers** that are responsible for processing the requests for specific request mappings - one way to define handlers is via instance methods of a **controller class**;
+
+<p align="center">
+    <img src="./docs/daw-diagrams-Spring-MVC.svg" alt="Spring-MVC" align="center"/>
+</p>
+
+#### Argument binding
+
+* Mechanism by which Spring MVC **computes the arguments** to pass to the handlers;
+* An argument resolver is a component that is responsible for **resolving** a method parameter into an argument value from a given request;
+* A **controller** is a class annotated with `@Controller` or `@RestController`;
+* An **handler** method is an instance method inside a controller.
+
+#### Message conversion
+
+* Mechanism responsible for translating HTTP messages payloads into objects and vice-versa;
+* Spring MVC provides built-in support for **JSON** format, using the [Jackson](https://github.com/FasterXML/jackson) library;
+* It is possible to add support for other formats, using the `HttpMessageConverter` interface.
+
+#### Pipeline processing
+
+There are two distinct ways of adding code to be executed before and after the handler execution:
+
+* **Servlet filters**:
+  * Mechanism defined by the Java Servlet API;
+  * Allow for **code to be executed before and after** the request is processed by the servlet;
+  * They can also short-circuit the request processing, by ending the request-response cycle;
+  * They do not have access to Spring-specific information, such as the handler that is going to be executed;
+* **Handler interceptors**:
+  * Spring-specific mechanism to intercept the call to the request handler, i.e. to have **code executed before and after the handler** is executed;
+  * They can access handler-specific information;
+  * **Disadvantage**: They run later in the pipeline, after the dispatch servlet.
+
