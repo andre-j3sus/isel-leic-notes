@@ -17,14 +17,17 @@
 
 ### Pipeline
 
-* The pipeline is a way to connect the output of one command to the input of another command;
+* The pipeline is a way to **connect the output of one command to the input of another** command;
 * Commands are separated by the pipe character `|`;
-* The pipes are synchronous objects and have a buffer to receive data;
+* The pipes are synchronous objects and have a **buffer** to receive data;
+* The pipes **synchronize the producer/consumer rate**;
 * Example:
 
 ```bash
 $ cat abc.txt | grep hello | wc -l
 ```
+
+---
 
 In this example, the output of `cat abc.txt` is piped to the input of `grep "hello"`, and the output of `grep "hello"` is piped to the input of `wc -l`.
 
@@ -40,6 +43,7 @@ $ cat abc.txt > def.txt  # Redirects the output of cat abc.txt to def.txt
 $ cat < abc.txt          # Redirects the input of cat to abc.txt
 ```
 
+---
 ---
 
 ## File Descriptor Table
@@ -79,6 +83,8 @@ $ ./a.out 3>&1 # Redirects the file descriptor 3 to the file descriptor 1
 $ ./a.out 1> result.txt 2>&1 # Redirects the stdout and stderr to the file result.txt
 ```
 
+---
+
 ### Duplication
 
 * The `dup` function duplicates a file descriptor entry;
@@ -88,6 +94,8 @@ $ ./a.out 1> result.txt 2>&1 # Redirects the stdout and stderr to the file resul
 int fd = dup(1); // Duplicates the file descriptor 1 to the next available file descriptor
 int fd = dup2(1, 11); // Duplicates the file descriptor 1 to the file descriptor 11
 ```
+
+---
 
 ### Fork and Wait
 
@@ -110,9 +118,52 @@ int fd = dup2(1, 11); // Duplicates the file descriptor 1 to the file descriptor
   * The `wait` function waits for any child process to finish execution;
   * The `waitpid` function waits for a specific child process to finish execution;
 
+---
+
 ### Exec
 
 * The `exec` family of functions replaces the current process with a new process;
-* ...
+* Changes the **process image**;
+* The **address space and the virtual CPU are replaced**;
+* The **file descriptor table is not replaced**.
 
+#### File permissions
+
+* The file permissions are divided into three categories:
+  * **User** (owner) - The user that owns the file;
+  * **Group** - The group that owns the file;
+  * **Others** - All other users;
+* The permissions are represented by three characters:
+  * **Read** - `r`;
+  * **Write** - `w`;
+  * **Execute** - `x`;
+* The file permissions are represented by the following format: `rwxrwxrwx` (9 bits);
+* Before the file permissions, there is a character that represents the **file type**:
+  * `-` - Regular file;
+  * `d` - Directory;
+  * etc.
+* If the file type is a **directory**, the `x` permission is used to check if the user **can access the directory**.
+
+---
+
+### Open and Close
+
+* The `open` function opens a file and **returns a file descriptor**;
+* The `close` function closes a file descriptor;
+
+---
+
+### Pipe
+
+* To create a pipe, use the `pipe` function;
+* The pipe function receives an array of two integers, which are the file descriptors of the pipe: `int pipe(int pipefd[2])`;
+  * The first file descriptor is the **read end** of the pipe;
+  * The second file descriptor is the **write end** of the pipe;
+* When a **process ends**, the **file descriptors are closed**;
+* To **correctly use a pipe**, the following steps must be followed:
+  * Create a pipe;
+  * Create a child process;
+  * Close the file descriptors that will not be used;
+  * Redirect the file descriptors that will be used;
+  * Execute the program;
 
