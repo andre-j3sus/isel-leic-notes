@@ -31,29 +31,17 @@ $ cat abc.txt | grep hello | wc -l
 
 In this example, the output of `cat abc.txt` is piped to the input of `grep "hello"`, and the output of `grep "hello"` is piped to the input of `wc -l`.
 
-### Redirection
-
-* The redirection is a way to connect the output of one command to a file;
-* It is done using the `>` character;
-* It is possible to connect the input of a command to a file using the `<` character;
-* Examples:
-
-```bash
-$ cat abc.txt > def.txt  # Redirects the output of cat abc.txt to def.txt
-$ cat < abc.txt          # Redirects the input of cat to abc.txt
-```
-
 ---
 ---
 
-## File Descriptor Table
+## [File Descriptor Table](https://users.cs.jmu.edu/bernstdh/web/common/lectures/summary_unix_file-descriptors.php)
 
 * *The collection of integer array indices that are file descriptors in which elements are pointers to file table entries;*
-* In each process, there is a file descriptor table;
-* Each entry in the file descriptor table is a pointer to a file table entry:
+* **In each process, there is a file descriptor table**;
+* Each entry in the file descriptor table is a **pointer** to a file table entry:
 
 <p align="center">
-    <img src="./docs/tvs-diagrams-File%20Descriptor%20Table.svg" alt="File Descriptor Table" align="center"/>
+    <img src="./docs/tvs-diagrams-FileDescriptorTable.svg" alt="File Descriptor Table" align="center"/>
 </p>
 
 * The first three entries in the file descriptor table are the following:
@@ -70,9 +58,21 @@ In this example, the `write` function writes the string `"prog running\n"` to th
 
 * The `errno` variable is used to store the error code of the last system call;
 * The `perror` function prints the error message associated with the error code stored in the `errno` variable;
+
+---
+
+### Redirection
+
+* The redirection is a way to **connect the output of one command to a file**;
+* It is done using the `>` character;
+* It is possible to connect the input of a command to a file using the `<` character;
 * Examples:
 
 ```bash
+$ cat abc.txt > def.txt  # Redirects the output of cat abc.txt to def.txt
+...
+$ cat < abc.txt          # Redirects the input of cat to abc.txt
+...
 # Executes the program and redirects the stdout to the file out.txt
 $ ./a.out > out.txt # Its the same as ./a.out 1> out.txt
 ...
@@ -87,13 +87,17 @@ $ ./a.out 1> result.txt 2>&1 # Redirects the stdout and stderr to the file resul
 
 ### Duplication
 
-* The `dup` function duplicates a file descriptor entry;
-* The `dup2`function duplicates a file descriptor entry to a specific file descriptor (closing the previous one);
+* The `int dup(int oldfd)` function duplicates a file descriptor entry to the first available file descriptor entry;
+* The `int dup2(int oldfd, int newfd)`function duplicates a file descriptor entry to a specific file descriptor (closing the previous one);
 
 ```c
 int fd = dup(1); // Duplicates the file descriptor 1 to the next available file descriptor
 int fd = dup2(1, 11); // Duplicates the file descriptor 1 to the file descriptor 11
 ```
+
+<p align="center">
+    <img src="./docs/tvs-diagrams-Dup.svg" alt="Dup" align="center"/>
+</p>
 
 ---
 
@@ -149,7 +153,37 @@ int fd = dup2(1, 11); // Duplicates the file descriptor 1 to the file descriptor
 ### Open and Close
 
 * The `open` function opens a file and **returns a file descriptor**;
+  * Adds a **new entry** to the file descriptor table;
+  * `int open(const char *pathname, int flags, mode_t mode);`
+    * `pathname` - The path to the file;
+    * `flags` - The flags to open the file;
+      * `O_RDONLY` - Open the file for reading;
+      * `O_WRONLY` - Open the file for writing;
+      * `O_RDWR` - Open the file for reading and writing;
+      * `O_CREAT` - Create the file if it does not exist;
+      * `O_TRUNC` - Truncate the file to zero length;
+      * `O_APPEND` - Append to the file;
+    * `mode` - The file permissions;
 * The `close` function closes a file descriptor;
+  * Closes the file descriptor and **removes the entry** from the file descriptor table;
+
+### Read and Write
+
+* The `read` function reads from a file;
+  * `ssize_t read(int fd, void *buf, size_t count);`
+    * `fd` - The file descriptor;
+    * `buf` - The buffer to store the data;
+    * `count` - The number of bytes to read;
+  * Increments the file offset by the number of bytes read;
+* The `write` function writes to a file;
+  * `ssize_t write(int fd, const void *buf, size_t count);`
+    * `fd` - The file descriptor;
+    * `buf` - The buffer to write;
+    * `count` - The number of bytes to write;
+
+<p align="center">
+    <img src="./docs/tvs-diagrams-OpenClose.svg" alt="OpenClose" align="center"/>
+</p
 
 ---
 
