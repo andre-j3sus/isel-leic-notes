@@ -26,12 +26,15 @@ Os esquemas podem ser classificados em:
 
 * **Esquemas simétricos**:
   * Cifra e autenticidade;
-  * **Chave secreta e utilizada por ambas as partes**;
+  * **Chave secreta e utilizada por ambas as partes (cifra e decifra)**;
+  * Usada na geração e verificação da marca;
   * e.g. DES, AES, etc;
   * Mais rápido, mas não tão seguro;
 * **Esquemas assimétricos**:
   * Cifra e assinatura digital;
   * **Chave pública para cifrar e chave privada para decifrar**;
+  * Esquemas de **cifra** - "Todos podem cifrar, apenas o receptor pode decifrar";
+  * Esquemas de **autenticação** - "Todos podem verificar, apenas o emissor autorizado pode assinar"; 
   * Mais seguro, mas mais lento;
 
 |                   | Simétrico       | Assimétrico        |
@@ -40,6 +43,9 @@ Os esquemas podem ser classificados em:
 | Autenticidade     | MAC             | Assinatura Digital |
 
 ---
+---
+
+## Esquemas Simétricos
 
 ### Criptografia simétrica
 
@@ -59,8 +65,8 @@ Os esquemas podem ser classificados em:
 
 #### Propriedades
 
-* **Propriedade da correção**;
-* **Propriedade de seguranç**a: é computacionalmente infazível encontrar m (texto em claro) a partir de c (texto cifrado), sem o conhecimento da chave k;
+* **Propriedade da correção**: Keys: D(k)(E(k)(m)) = m;
+* **Propriedade de segurança**: é computacionalmente infazível encontrar m (texto em claro) a partir de c (texto cifrado), sem o conhecimento da chave k;
 * **Esquema simétrico**: utilização da mesma chave k nas funções E e D;
 * Mensagem m e criptograma c são sequências de bytes com **dimensão variável ({0,1}*)**;
 * **Não garante integridade dos dados**;
@@ -90,7 +96,7 @@ Os esquemas podem ser classificados em:
 
 ---
 
-## Primitivas de cifra simétrica
+### Primitivas de cifra simétrica
 
 * Primitiva de cifra em bloco:
 * **n** - dimensão do bloco;
@@ -198,3 +204,76 @@ criptogramas iguais;
 
 * É usual designar-se um esquema de MAC, com algoritmo T determinístico, como função de hash com chave (Keyed-Hashing for Message Authentication, HMAC);
 * HMAC é um conjunto de algoritmos MAC para usar com diferentes funções de hash H.
+
+---
+---
+
+## Esquemas Assimétricos
+
+Utilização:
+ * Transporte seguro de chaves simétricas;
+ * Assinatura digital.
+
+### Cifra assimétrica
+
+* Algoritmos (G, E, D):
+  * G - função **probabilística** de geração de pares de chaves;
+    * G :-> KeysPairs, onde KeyPairs = PublicKeys x PrivateKeys;
+  * E - função **probabilística** de cifra;
+    * E: PublicKeys -> PlainTexts -> CipherTexts;
+  * D - função **determinística** de decifra;
+    * D: PrivateKeys -> CipherTexts -> PlainTexts.
+
+#### Propriedades e Notas
+
+* **Propriedade da correção**: KeyPairs: D(kd)(E(ke)(m)) = m;
+* **Propriedade de segurança**: É computacionalmente infazível obter m a partir de c, sem o conhecimento de kd;
+* Utilização de chaves diferentes para algoritmos E e D;
+* **PlainTexts**: espaço de mensagens;
+* **CipherTexts**: espaço de criptogramas;
+* Não garante integridade;
+* Custo computacional significativamente maior do que os esquemas simétricos;
+* Limitações na dimensão da informação cifrada;
+* Utilização em esquemas híbridos:
+  * Esquema assimétrico usado para cifrar uma chave simétrica - transporte de chaves;
+  * Esquema simétrico usado para cifrar a informação.
+
+### Princípios da primitiva RSA
+
+* Sejam P e Q dois primos distintos e N = PQ:
+  * Dimensões típicas: 2^1023 <= N <= 2^4095;
+* Sejam E e D tal que ED mod (P-1)(Q-1) = 1;
+* Par de chaves:
+  * Chave pública: (E, N);
+  * Chave privada: (D, N);
+* Operação pública (utilizada na cifra): C = ME mod N;
+* Operação privada (utilizada na decifra): M = CD mod N;
+* A fatorizarão de números primos é o problema que suporta a primitiva RSA.
+
+---
+
+### Assinatura digital
+
+* Cada interveniente tem 1 par de chaves por cada identidade digital;
+* Processo de **assinatura** usa chave **privada**;
+* Processo de **verificação** usa chave **pública**;
+
+* Algoritmos (G,S,V):
+  * G – função (probabilística) de geração de pares de chaves;
+    * G: → KeyPairs , onde KeyPairs = PublicKeys × PrivateKeys;
+  * S – função (probabilística) de assinatura;
+    * S: PrivateKeys → {0,1}* → Signatures;
+  * V – função (determinística) de verificação;
+    * V: PublicKeys → (Signatures × {0,1}*) → {true,false}.
+
+#### Propriedades e Notas
+
+* **Propriedade da correção**: KeyPairs: V(kv)(S(ks)(m),m) = true;
+* **Propriedade de segurança**: Sem o conhecimento de ks é computacionalmente infazível:
+  * falsificação seletiva - dado m, encontrar s tal que V(kv)(s, m) = true;
+  * falsificação existencial - encontrar o par (m, s) tal que V(kv)(s,m) = true;
+* Assinatura **s** tem tipicamente dimensão fixa (ex: 160, 1024, 2048 bits);
+* Custo computacional significativamente maior do que os esquemas simétricos;
+* Utilização de chaves diferentes para algoritmos S e V;
+* Mensagem m é uma sequência de bytes de dimensão variável;
+* Assinar != Cifrar e Verificar != Decifrar;
