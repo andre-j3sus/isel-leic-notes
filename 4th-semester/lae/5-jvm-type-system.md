@@ -41,7 +41,7 @@ fun bar() {
 * A cópia de v é feita por valor; b fica com uma cópia do valor de v:
 
 <p align="center">
-    <img src="./docs/primitive-types.png" alt="Primitive Types" align="center"/>
+    <img src="./docs/lae-diagrams-PrimitiveTypes.svg" alt="Primitive Types" align="center"/>
 </p>
 
 ---
@@ -75,7 +75,7 @@ fun bar() {
 * A cópia de v é feita por referência; b fica a apontar para o mesmo objeto:
 
 <p align="center">
-    <img src="./docs/reference-types.png" alt="Reference Types" align="center"/>
+    <img src="./docs/lae-diagrams-ReferenceTypes.svg" alt="Reference Types" align="center"/>
 </p>
 
 ---

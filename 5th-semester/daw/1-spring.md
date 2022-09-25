@@ -18,7 +18,7 @@
 **The dependent object receives and uses the dependencies, but it does not create them.**
 
 <p align="center">
-    <img src="./docs/daw-diagrams-Inversion%20of%20Control.svg" alt="Inversion of Control" align="center"/>
+    <img src="./docs/daw-diagrams-InversionOfControl.svg" alt="Inversion of Control" align="center"/>
 </p>
 
 * **Constructor injection**: dependency injection through the constructor;

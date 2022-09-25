@@ -45,7 +45,7 @@ _Process of looking ate heap memory, identifying unused objects (unreferenced ob
 #### Young Generation
 
 <p align="center">
-    <img src="./docs/young-generation.png" alt="Young Generation" align="center"/>
+    <img src="./docs/lae-diagrams-GCYoungGeneration.svg" alt="Young Generation" align="center"/>
 </p>
 
 * Novos objetos são armazenados no Eden;

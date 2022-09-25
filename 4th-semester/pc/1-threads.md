@@ -24,7 +24,7 @@
 * However, there exists **a stack for each computation**, given that the computation state is stored in that stack.
 
 <p align="center">
-    <img src="./docs/memory.png" alt="Memory" align="center"/>
+    <img src="./docs/pc-diagrams-Memory.svg" alt="Memory" align="center"/>
 </p>
 
 **NOTE**: this doesn't mean that there's a stack per CPU, but per computation, because the computation can be executed in multiple CPUs.
@@ -55,7 +55,7 @@ A thread that still isn't done is in one of these 3 states:
 * **Non-Ready**: not atributed to a CPU, because it can only execute after a condition is fulfilled.
 
 <p align="center">
-    <img src="./docs/thread-states.png" alt="Thread States" align="center"/>
+    <img src="./docs/pc-diagrams-ThreadStates.svg" alt="Thread States" align="center"/>
 </p>
 
 ### Running -> Ready (Context-Switch)

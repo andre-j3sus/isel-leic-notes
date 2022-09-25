@@ -5,7 +5,7 @@
 * O término da função pode ocorrer antes do término da operação.
 
 <p align="center">
-    <img src="./docs/asynchronous-programming.png" alt="Asynchronous Programming" align="center"/>
+    <img src="./docs/pc-diagrams-AsynchronousProgramming.svg" alt="Asynchronous Programming" align="center"/>
 </p>
 
 ### Desvantagens
@@ -63,7 +63,7 @@
 * Tem um funcionamento similar às Promises do Javascript;
 
 <p align="center">
-    <img src="./docs/completable-future.png" alt="CompletableFuture" align="center"/>
+    <img src="./docs/pc-diagrams-CompletableFuture.svg" alt="CompletableFuture" align="center"/>
 </p>
 
 * Como é possível observar, o flatMap retorna um Future de C (`F<C>`) e não um Future de F<C> (`F<F<C>>`);
@@ -119,7 +119,7 @@
 * Estados:
 
 <p align="center">
-    <img src="./docs/job-states.png" alt="Job States" align="center"/>
+    <img src="./docs/pc-diagrams-JobStates.svg" alt="Job States" align="center"/>
 </p>
 
 ---

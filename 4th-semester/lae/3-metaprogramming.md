@@ -11,7 +11,7 @@ _`JavaPoet` is a Java API for generating `.java` source files._
 
 
 <p align="center">
-    <img src="./docs/javapoet.png" alt="JavaPoet" align="center"/>
+    <img src="./docs/lae-diagrams-JavaPoet.svg" alt="JavaPoet" align="center"/>
 </p>
 
 ### [JavaFile](https://square.github.io/javapoet/1.x/javapoet/com/squareup/javapoet/JavaFile.html)

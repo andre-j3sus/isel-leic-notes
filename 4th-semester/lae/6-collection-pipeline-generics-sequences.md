@@ -4,7 +4,7 @@
 * Uma collection é output de uma operação e input de outra.
 
 <p align="center">
-    <img src="./docs/collection-pipeline.png" alt="Collection Pipeline" align="center"/>
+    <img src="./docs/lae-diagrams-CollectionPipeline.svg" alt="Collection Pipeline" align="center"/>
 </p>
 
 **Method Chaining:**

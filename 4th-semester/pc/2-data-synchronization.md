@@ -14,7 +14,7 @@
   * unlock/release: liberta a posse do lock.
 
 <p align="center">
-    <img src="./docs/locks.png" alt="Locks" align="center"/>
+    <img src="./docs/pc-diagrams-Locks.svg" alt="Locks" align="center"/>
 </p>
 
 * Um lock unlocked e acquired pela thread T1, passa para o estado locked;

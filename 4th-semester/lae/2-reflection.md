@@ -15,7 +15,7 @@
 * `Class.kotlin -> KClass`.
 
 <p align="center">
-    <img src="./docs/reflection.png" alt="Kotlin Reflection" align="center"/>
+    <img src="./docs/lae-diagrams-KotlinReflection.svg" alt="Kotlin Reflection" align="center"/>
 </p>
 
 ---

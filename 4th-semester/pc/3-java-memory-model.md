@@ -3,7 +3,7 @@
 Define o comportamento permito em programas multithreaded.
 
 <p align="center">
-    <img src="./docs/jmm.png" alt="Memory" align="center"/>
+    <img src="./docs/pc-diagrams-JMM.svg" alt="Memory" align="center"/>
 </p>
 
 * A aplicação não pode assumir mais que a especificação especifica;
@@ -40,5 +40,5 @@ As escritas/leituras voláteis são realizadas sobre uma variável marcada com a
 Um **data race** é quando duas ou mais threads acedem ao mesmo recurso concorrentemente, e pelo menos uma é de escrita e nenhuma usa locks:
 
 <p align="center">
-    <img src="./docs/data-race.png" alt="Data race" align="center"/>
+    <img src="./docs/pc-diagrams-DataRace.svg" alt="Data race" align="center"/>
 </p>

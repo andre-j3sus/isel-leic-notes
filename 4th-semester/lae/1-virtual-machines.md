@@ -35,7 +35,7 @@
 Em Kotlin, cada class tem um ficheiro `.class` associado, contendo bytecode e metadata:
 
 <p align="center">
-    <img src="./docs/kt-compile.drawio.png" alt="Kotlin Compilation" align="center"/>
+    <img src="./docs/lae-diagrams-KotlinCompilation.svg" alt="Kotlin Compilation" align="center"/>
 </p>
 
 É gerado um ficheiro `.class` para cada tipo (classe ou interface).
@@ -109,7 +109,7 @@ O software desenvolvido por componentes promove a reutilização de código e re
 ## Unmanaged Runtime vs. Managed Runtime
 
 <p align="center">
-    <img src="./docs/managed-vs-unmanaged.png" alt="Unmanaged Runtime vs. Managed Runtime" align="center"/>
+    <img src="./docs/lae-diagrams-ManageVsUnmanagedRuntimes.svg" alt="Unmanaged Runtime vs. Managed Runtime" align="center"/>
 </p>
 
 ### Unmanaged Runtime
@@ -122,7 +122,7 @@ O software desenvolvido por componentes promove a reutilização de código e re
 * Modificação comportamental: link.
 
 <p align="center">
-    <img src="./docs/unmanaged.png" alt="Unmanaged Runtime" align="center"/>
+    <img src="./docs/lae-diagrams-UnmanagedRuntime.svg" alt="Unmanaged Runtime" align="center"/>
 </p>
 
 Como a ligação é estática, os object files podem ser apagados e a.out executa na mesma.
@@ -135,5 +135,5 @@ Como a ligação é estática, os object files podem ser apagados e a.out execut
 * Lazy loading;
 
 <p align="center">
-    <img src="./docs/managed.png" alt="Managed Runtime" align="center"/>
+    <img src="./docs/lae-diagrams-ManagedRuntime.svg" alt="Managed Runtime" align="center"/>
 </p>
