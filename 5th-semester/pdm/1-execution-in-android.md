@@ -1,4 +1,4 @@
-# Execution in Android
+# [Execution in Android](https://developer.android.com/reference)
 
 ## [Activity](https://developer.android.com/guide/components/activities/intro-activities)
 
@@ -20,3 +20,36 @@
     * `onStop()` - called when the activity is **no longer visible to the user**;
     * `onDestroy()` - called before the activity is destroyed;
     * `onRestart()`.
+
+---
+
+## [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
+
+
+* Class designed to store and **manage UI-related data** in a lifecycle conscious way;
+* Allows data to **survive configuration changes** such as screen rotations;
+* Alternative execution host;
+* To implement a ViewModel, create a class that extends [`ViewModel`](https://developer.android.com/reference/androidx/lifecycle/ViewModel) and add an instance of it in the activity;
+* ...
+
+---
+
+## [Android Application Class](https://developer.android.com/reference/android/app/Application)
+
+* The Application class is the **base class** for maintaining **global application state**;
+* It provides **application-level** resources such as the `Context` object;
+* ...
+
+---
+
+## [Automated Testing in Android](https://developer.android.com/training/testing)
+
+* **Local tests** are **faster** and **more reliable** than instrumented tests;
+* [**Instrumented tests**](https://developer.android.com/training/testing/instrumented-tests) are **more realistic** and **more comprehensive** than local tests;
+* ...
+
+---
+
+## Navigation
+
+...
