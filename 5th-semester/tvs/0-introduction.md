@@ -56,6 +56,7 @@ The **CPU** (Central Processing Unit) follows the **instruction cycle** to execu
 * The "virtual memory" is called **address space** and contains:
   * executable file information, line .text, .data, .rodata, .bss, etc;
   * the stack for each thread;
+* The I/O is represented by **file descriptors** in the **file descriptor table**;
 * The **signals** module is used to communicate between processes; interruption mechanism;
 
 ### OS operations that interact with the address space

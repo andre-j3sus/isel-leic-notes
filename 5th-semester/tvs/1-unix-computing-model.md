@@ -5,7 +5,7 @@
 * *It is the core that provides basic services for all other parts of the OS;*
 * Has privileged access to the hardware;
 
-## Shell pipeline and redirection
+## Shell Pipeline and Redirection
 
 * The most famous shell is [**BASH**](https://en.wikipedia.org/wiki/Bash_(Unix_shell)) - The Bourne Again SHell;
 * The [`/etc/passwd`](https://www.cyberciti.biz/faq/understanding-etcpasswd-file-format/) file keeps track of every registered user that has access to the system;
@@ -201,3 +201,50 @@ int fd = dup2(1, 11); // Duplicates the file descriptor 1 to the file descriptor
   * Redirect the file descriptors that will be used;
   * Execute the program;
 
+---
+---
+
+## Signals
+
+* A **signal** is an **asynchronous event** that **interrupts the execution of a process**;
+* To see more information about the signals, use the `man 7 signal` command;
+* The `pause` function suspends the execution of the process until a signal is received;
+* There are 31 available signals;
+* Some of the signals are:
+  * `SIGINT` - interrupt (CTRL + C);
+  * `SIGKILL` - termination request;
+  * `SIGTERM` - controlled termination request;
+  * `SIGSTOP` - stop request (CTRL + Z);
+  * `SIGCHLD` - child process terminated, stopped, or continued;
+  * `SIGILL` - illegal instruction;
+  * `SIGSEGV` - segmentation violation;
+  * `SIGFPE` - floating point exception;
+  * `SIGALRM` - timer signal from `alarm`; the `alarm` function sets a timer that sends a `SIGALRM` signal after a specified number of seconds;
+  * `SIGUSR1` - user-defined signal 1;
+  * `SIGUSR2` - user-defined signal 2.
+
+* The exit status of a process is an integer value that is the sum of the exit code and the signal number;
+  * The exit code is the **least significant 8 bits**;
+  * The signal number is the **most significant 8 bits**;
+* To get the exit code of the last process executed, use `echo $?`;
+
+* To kill a process, use the `kill` command;
+  * `kill -l` - List all signals;
+  * `kill -s <signal> <pid>` - Send a signal to a process;
+
+### Signal disposition
+
+* The **signal disposition** is a pre-processing action that is performed before the signal handler is called;
+* The signal disposition can be:
+  * **Default** - The **default** action for the signal - `SIG_DFL`;
+  * **Ignore** - The signal is **ignored** - `SIG_IGN`;
+  * **Handler** - The signal is **handled** by a function - `signal_handler`.
+* To change the signal disposition, use the `signal` and `sigaction` functions;
+  * `void (*signal(int signum, void (*handler)(int)))(int);`
+    * `signum` - The signal number;
+    * `handler` - The signal handler;
+  * `int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact);`
+    * `signum` - The signal number;
+    * `act` - The new signal disposition;
+    * `oldact` - The old signal disposition;
+  * The `SIGKILL` and `SIGSTOP` signals cannot be ignored or handled;
