@@ -23,6 +23,7 @@
 
 ### 3rd Semester
 
+* [IPW - Introdução à Programação na Web / Introduction to Internet Programming](./3rd-semester/ipw));
 * TODO...
 
 ### 4th Semester
