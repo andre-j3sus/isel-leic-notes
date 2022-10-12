@@ -60,3 +60,61 @@
 * x86 CPUs startup with the **privilege level 0** and transition to **level 3** when a process is executed;
 * In each interruption, its indicated the **privilege level** that the interruption was executed and the **interruption handler**;
 * To transition from a **higher privilege level** to a **lower privilege level**, the CPU needs to **switch the privilege level**, using the **interrupt system**.
+
+---
+---
+
+## Virtual Memory Translation
+
+* The **virtual memory** is translated to the **physical memory** using the **memory map**;
+* The maximum size of the **virtual memory** for each process is **4GB**;
+* Each process has its own address space (virtual memory), but the **physical memory** is shared between all processes;
+
+<p align="center">
+    <img src="./docs/tvs-diagrams-Translation.svg" alt="Translation" align="center"/>
+</p>
+
+---
+
+### 80386 (IA-32)
+
+* 32 bits for virtual addresses: 20 bits for the **page number** and 12 bits for the **offset**;
+* 32 bits for physical addresses: 20 bits for the **page frame number** and 12 bits for the **offset**;
+* The virtual memory is divided in **pages** of **4KB**;
+* The physical memory is divided in **page frames** of **4KB**;
+
+<p align="center">
+    <img src="./docs/tvs-diagrams-Translation80386.svg" alt="Translation80386" align="center"/>
+</p>
+
+---
+
+### x86-64 (AMD64/Intel64)
+
+* 64 bits for virtual addresses: 48 bits for the translation (36 for the **page number** and 12 for the **offset**) and other 16 that are not used;
+* 64 bits for physical addresses: 48 bits for the translation and other 16 that are not used;
+* Page size is **4KB**;
+* 4 levels of **page tables**;
+* Translation lookaside buffer (**TLB**): a cache that stores the **page table entries** (PTEs) of the last **page table** used;
+
+<p align="center">
+    <img src="./docs/tvs-diagrams-Translationx86-64.svg" alt="Translationx86-64" align="center"/>
+</p>
+
+---
+
+### Protection Bits
+
+* `P`: **present** bit, indicates if the page is in the physical memory;
+* `R/W`: **read/write** bit, indicates if the page is read-only or read-write;
+* `U/S`: **user/supervisor** bit, indicates if the page is in **kernel space** or **user space**;
+* `NX`: **no execute** bit, indicates if the page is executable or non-executable - only in x86-64;
+
+#### Segmentation Fault Causes
+
+* **Page not present**:
+  * The page is not in the physical memory;
+  * The page is in the physical memory, but the `P` bit is not set;
+* Trying to access a **read-only** page with a **write operation**;
+* Trying to access a **non-executable** page with an **execute operation**;
+* Trying to access a **kernel space** page with a **user space** process.
