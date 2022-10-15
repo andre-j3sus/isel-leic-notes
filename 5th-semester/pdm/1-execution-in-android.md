@@ -28,9 +28,8 @@
 
 * Class designed to store and **manage UI-related data** in a lifecycle conscious way;
 * Allows data to **survive configuration changes** such as screen rotations;
-* Alternative execution host;
-* To implement a ViewModel, create a class that extends [`ViewModel`](https://developer.android.com/reference/androidx/lifecycle/ViewModel) and add an instance of it in the activity;
-* ...
+* **Alternative execution host**;
+* To **implement** a ViewModel, create a class that extends [`ViewModel`](https://developer.android.com/reference/androidx/lifecycle/ViewModel) and add an instance of it in the activity.
 
 ---
 
@@ -38,18 +37,36 @@
 
 * The Application class is the **base class** for maintaining **global application state**;
 * It provides **application-level** resources such as the `Context` object;
-* ...
+* Described in the **manifest file**, as the `android:name` attribute of the `<application>` element.
 
 ---
 
 ## [Automated Testing in Android](https://developer.android.com/training/testing)
 
 * **Local tests** are **faster** and **more reliable** than instrumented tests;
-* [**Instrumented tests**](https://developer.android.com/training/testing/instrumented-tests) are **more realistic** and **more comprehensive** than local tests;
-* ...
+* [**Instrumented tests**](https://developer.android.com/training/testing/instrumented-tests) are **more realistic** and **more comprehensive** than local tests.
 
 ---
 
-## Navigation
+## [Intents](https://developer.android.com/guide/components/intents-filters)
 
-...
+* An Intent is a **messaging object** you can use to **request an action** from another [app component](https://developer.android.com/guide/components/fundamentals#Components);
+  * An app component can be an **activity**, a **service**, a **broadcast receiver**, or a **content provider**;
+* There are three fundamental use-cases for intents:
+  * **Starting an activity**:
+    * You can start an activity by calling `startActivity()` and passing an `Intent`, which describes the activity to start;
+    * To [send data to the activity](https://developer.android.com/guide/components/activities/parcelables-and-bundles#sdba), you can add **extras** to the `Intent` object, using the `putExtra()` method;
+  * **Starting a service**;
+  * **Delivering a broadcast**.
+
+---
+
+## [Parcelable](https://developer.android.com/reference/android/os/Parcelable)
+
+* Interface for classes whose instances can be **written to and restored** from a [`Parcel`](https://developer.android.com/reference/android/os/Parcel);
+* A `Parcel` is a **container** for a **message** (data and object references) that can be **sent through an IBinder**;
+* The [`@Parcelize`](https://developer.android.com/kotlin/parcelize) annotation is used to **automatically generate** the `Parcelable` implementation for a class, for the supported types:
+  * Primitive types;
+  * Objects and enums;
+  * `String`, `CharSequence`, `IBinder`, `Exception`, ...
+  * All `Serializable` and `Parcelable` types.
