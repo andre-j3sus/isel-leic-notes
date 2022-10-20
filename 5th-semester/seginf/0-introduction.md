@@ -29,7 +29,7 @@
 
 ### Confidentially
 
-* Prevent the divulgation of non-authorized information:
+* **Prevent the divulgation of non-authorized information**:
   * Hide content from non authorized users;
   * Information cannot be seen neither analyzed;
 * Privacy:
@@ -37,7 +37,7 @@
 
 ### Integrity
 
-* Ensure that the information/data received is exactly as the data sent from an authorized entity;
+* Ensure that the information/data received is **exactly** as the data sent from an authorized entity;
   * The content cannot be modified, corrupted or lost by others;
 * Ensures authenticity:
   * Ensures that the involved entity is, in fact, the one she claims to be;
@@ -46,7 +46,7 @@
 
 ### Availability
 
-* Information is accessible and usable on demand by an authorized entity;
+* Information is **accessible and usable on demand** by an authorized entity;
 * Prevent the denial of service (DoS).
 
 ---
@@ -101,11 +101,11 @@
 * k can be any integer between 0 and 25;
 * Can be easily broken by frequency analysis and brute force.
 
-G = k = 3
+`G = k = 3`
 
-E(k)(mi) = (mi + k) mod 26 = ci
+`E(k)(mi) = (mi + k) mod 26 = ci`
 
-D(k)(ci) = (ci - k) mod 26
+`D(k)(ci) = (ci - k) mod 26`
 
 Instead of shifting the alphabet, we can shuffle it: **monoalphabetic substitution cypher**.
 
@@ -118,8 +118,8 @@ Instead of shifting the alphabet, we can shuffle it: **monoalphabetic substituti
 * Key is a alphabet sequence;
 * Aligns the key with the plaintext and uses the corresponding cyphertext letter;
 
-G = k
+`G = k`
 
-E(k)(mi) = (mi + k(i mod x)) mod 26 = ci
+`E(k)(mi) = (mi + k(i mod x)) mod 26 = ci`
 
-D(k)(ci) = (ci - k(i mod x)) mod 26
+`D(k)(ci) = (ci - k(i mod x)) mod 26`

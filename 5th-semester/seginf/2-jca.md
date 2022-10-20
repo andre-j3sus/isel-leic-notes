@@ -2,113 +2,119 @@
 
 > *The JCA is a major piece of the platform, and contains a "provider" architecture and a set of APIs for digital signatures, message digests (hashes), certificates and certificate validation, encryption (symmetric/asymmetric block/stream ciphers), key generation and management, and secure random number generation, to name a few.*
 
----
+## Architecture
 
-## Arquitetura
-
-Arquitetura baseada em:
-
-* **CSP (Cryptographic Service Provider)** - package ou conjunto de packages que implementam um ou mais mecanismos criptográficos;
+* **Cryptographic Service Provider (CSP)** - package or set of packages that implement one or more cryptographic mechanisms;
 * **Engine Classes**
-  * Definição abstrata dum mecanismo criptográfico;
-  * Criação dos objetos realizada através de métodos estáticos `getInstance`;
-* **Specification Classes** - representações normalizadas e transparentes de objetos criptográficos, tais como chaves e parâmetros de algoritmos;
+  * Abstract definition of a cryptographic mechanism;
+  * Object creation is done through static `getInstance` methods;
+* **Specification Classes** - normalized and transparent representations of cryptographic objects, such as keys and algorithm parameters.
 
 ### Providers
 
-* Fornecem a implementação para as engines classes;
-* Class `Provider` é base para todos os providers;
-* Instalação:
-  * Colocar package na classpath ou na diretoria de extensões;
-  * Registar no ficheiro java.security;
-  * Usar a classe Security, em alternativa.
-* Classe `Security`:
-  * Registo dinâmico de providers;
-  * Listagem de providers e algoritmos.
+* Provides the implementation for the engine classes;
+* `Provider` class is the base for all providers;
+* Installation:
+  * Put package in *classpath* or in extensions directory;
+  * Register in `java.security` file;
+  * Use `Security` class, alternatively;
+* `Security` class:
+  * Dynamic registration of providers;
+  * Listing of providers and algorithms.
 
 ---
 
 ### Engine Classes
 
-* Os algoritmos concretos e as implementações concretas (providers) são
-identificados por strings;
+* Concrete algorithms and concrete implementations (providers) are identified by strings;
 * **Delayed Provider Selection**
-  * A seleção do provider adequado é adiada até à iniciação com a chave;
-  * Permite a seleção do provider com base no tipo concreto da chave.
+  * Provider selection is delayed until key initialization;
+  * Allows provider selection based on the concrete type of the key;
+* Classes:
+  * `Cipher`;
+  * `Mac`;
+  * `Signature`;
+  * `MessageDigest`;
+  * `KeyGenerator`;
+  * ...
+* Factory methods:
+  * `getInstance(String algorithm)` - default provider;
+  * `getInstance(String algorithm, String provider)` - specific provider;
+  * `getInstance(String algorithm, Provider provider)` - specific provider;
 
 #### Cipher Class
 
-* Parâmetros de inicialização:
-  * Modo de operação (cifra, decifra, wrap ou unwrap);
-  * Chave;
-  * Parâmetros específicos do algoritmo;
-  * Gerador aleatório;
-* Métodos de cifra:
-  * `update` - continua a operação de cifra incremental;
-  * `doFinal` - termina a operação de cifra incremental;
-  * `wrap` - cifra uma chave;
-  * `unwrap` - decifra uma chave.
+* Constructor arguments:
+  * Operation mode (encrypt, decrypt, wrap or unwrap);
+  * Key;
+  * Algorithm-specific parameters;
+  * Random generator;
+* Methods:
+  * `update` - continues incremental cipher operation;
+  * `doFinal` - finishes incremental cipher operation;
+  * `wrap` - encrypts a key;
+  * `unwrap` - decrypts a key.
   
 #### Streams
 
-* `CipherInputStream` - processa (cifra ou decifra) os bytes lidos;
-* `CipherOutputStream` - processa (cifra ou decifra) os bytes escritos.
-* `DigestInputStream` - processa (hash) os bytes lidos;
-* `DigestOutputStream` - processa (hash) os bytes escritos.
+* `CipherInputStream` - processes (encrypts or decrypts) the read bytes;
+* `CipherOutputStream` - processes (encrypts or decrypts) the written bytes.
+* `DigestInputStream` - processes (hashes) the read bytes;
+* `DigestOutputStream` - processes (hashes) the written bytes.
 
 #### Parameters
 
-* `AlgorithmParameters` - parâmetros de inicialização de um algoritmo;
-* Exemplo: `IvParameterSpec` - parâmetros de inicialização de um algoritmo de cifra simétrica.
-* Geração através de `AlgorithmParameterGenerator`.
+* `AlgorithmParameters` - algorithm configuration parameters;
+* Example: `IvParameterSpec` - initialization parameters for a symmetric cipher algorithm;
+* Generation through `AlgorithmParameterGenerator`.
 
 #### Keys
 
-* Interface `Key`;
+* `Key` interface:
   * `String getAlgorithm()`;
   * `String getFormat()`;
   * `byte[] getEncoded()`;
-* Interfaces que estendem `Key` (mas não acrescentam métodos):
-  * `SecretKey` - chave simétrica;
-  * `PrivateKey` - chave privada;
-  * `PublicKey` - chave pública;
-* Classe `KeyPair` - par de chaves **PublicKey** e **PrivateKey**;
-* Geração através das classes `KeyGenerator` e `KeyPairGenerator`.
-* Chaves **opacas** - representações de chaves sem acesso aos seus constituintes;
-* Chaves **transparentes** - representações de chaves com acesso aos seus constituintes.
-* Class `KeyFactory` - **conversão** entre chaves opacas e transparentes.
+* Interfaces that extend `Key` (but do not add methods):
+  * `SecretKey` - symmetric key;
+  * `PrivateKey` - private key;
+  * `PublicKey` - public key;
+* `KeyPair` class - pair of keys **PublicKey** and **PrivateKey**;
+* Classes `KeyGenerator` and `KeyPairGenerator` for key generation.
+* **Opaque** keys - representations of keys without access to their constituents;
+* **Transparent** keys - representations of keys with access to their constituents.
+* `KeyFactory` class - **conversion** between opaque and transparent keys.
 
 #### Mac Class
 
-* Parâmetros de inicialização:
-  * Chave;
-  * Parâmetros específicos do algoritmo
-* Métodos:
-  * `update` - continua a operação incremental;
-  * `doFinal` - termina a operação incremental e retorna o valor do MAC.
+* Constructor arguments:
+  * Key;
+  * Algorithm-specific parameters;
+* Methods:
+  * `update` - continues the incremental operations;
+  * `doFinal` - finishes the incremental operation and returns the MAC value.
 
 #### Signature Class
 
-* Parâmetros de inicialização:
-  * Método `initSign`: chave privada e gerador aleatório;
-  * Método `initVerify`: chave pública;
-* Métodos de geração/verificação de assinatura:
-  * `update` - continua a operação incremental;
-  * `sign` - termina a operação incremental e retorna a assinatura;
-  * `verify` - termina a operação incremental e verifica a assinatura.
+* Constructor arguments:
+  * `initSign` method: private key and random generator;
+  * `initVerify` method: public key;
+* Signature generation/verification methods:
+  * `update` - continues incremental operation;
+  * `sign` - finishes incremental operation and returns the signature;
+  * `verify` - finishes incremental operation and verifies the signature.
 
 #### KeyStore Class
 
-* Armazena chaves e certificados;
-* Representação através da classe `KeyStore`;
-* Três tipos de entrada:
-  * Chaves privadas e certificados;
-  * Chaves simétricas;
-  * Certificados de confiança (trust anchors);
-* Proteção baseada em passwords;
-  * Integridade do repositório - uma password por repositório;
-  * Confidencialidade das entradas - uma password por entrada;
-* Entradas estendem a interface `Entry`:
-  * `PrivateKeyEntry` - chave privada e certificado;
-  * `SecretKeyEntry` - chave simétrica;
-  * `TrustedCertificateEntry` - certificado de confiança.
+* Stores keys and certificates;
+* Representation through the `KeyStore` class;
+* Three types of entries:
+  * Private keys and certificates;
+  * Symmetric keys;
+  * Trust anchors (certificates);
+* Password-based protection;
+  * Repository integrity - one password per repository;
+  * Entry confidentiality - one password per entry;
+* Entries extend the `Entry` interface:
+  * `PrivateKeyEntry` - private key and certificate;
+  * `SecretKeyEntry` - symmetric key;
+  * `TrustedCertificateEntry` - trust anchor (certificate).
