@@ -10,7 +10,9 @@
   * **Integrity** - no one besides the endpoints **can change the content** of the data transmitted;
   * **Authentication** - **at least one** endpoint of the channel **needs to be authenticated** so that the other endpoint has guarantees about who it is connected to.
 
-<!-- Add Image -->
+<p align="center">
+    <img src="./docs/seginf-diagrams-TLS.svg" alt="TLS" align="center"/>
+</p>
 
 ---
 
@@ -21,13 +23,17 @@
 * The TLS **encrypts and authenticates** the data it **sends/receives** from the transport layer;
 * The TLS requires a **reliable transport layer**, such as **TCP**.
 
-<!-- Add Diagram -->
+<p align="center">
+    <img src="./docs/seginf-diagrams-Layers.svg" alt="Layers" align="center"/>
+</p>
 
 * The TLS is divided into two subprotocols:
   * **Handshake Protocol** - establishes the secure channel;
   * **Record Protocol** - transmits the encrypted data.
 
-<!-- Add Diagram -->
+<p align="center">
+    <img src="./docs/seginf-diagrams-SubProtocols.svg" alt="SubProtocols" align="center"/>
+</p>
 
 ---
 
@@ -69,7 +75,9 @@
   
 ### RSA Based
 
-<!--Add table-->
+<p align="center">
+    <img src="./docs/seginf-diagrams-RecordRSA.svg" alt="RecordRSA" align="center"/>
+</p>
 
 ---
 ---

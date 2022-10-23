@@ -9,7 +9,9 @@
 * **Attributes**: name, validity, extensions, ...
 * **Issuer's signature**: digital signature performed with the CA's private key.
 
-<!-- Add image -->
+<p align="center">
+    <img src="./docs/seginf-diagrams-CertificatesX.509.svg" alt="CertificatesX.509" align="center"/>
+</p>
 
 ---
 ---
@@ -20,7 +22,10 @@
 * **Recursion**: Get public key -> Validate Certificate -> Get public key -> Validate Certificate -> ...
 * Stopping condition: **trust anchor** - self-signed certificate.
 
-<!-- Add image -->
+<p align="center">
+    <img src="./docs/seginf-diagrams-CertificationPath.svg" alt="CertificationPath" align="center"/>
+</p>
+
 
 * Certificates **only store the public key**;
 * The **private key** is "associated" with the certificate in a **secure storage** (for example, in the citizen card).

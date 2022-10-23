@@ -15,32 +15,45 @@
 
 ### 1st Semester
 
-* TODO...
+* **CDI** - Cálculo Diferencial e Integral / Differential and Integral Calculus (coming soon);
+* **TMD** - Tópicos de Matemática Discreta / Topics in Discrete Mathematics (coming soon);
+* **LSD** - Lógica e Sistemas Digitais / Logic e Digital Systems (coming soon);
+* **Pg** - Programação / Programming (coming soon);
+* **El** - Eletrónica / Electronics (coming soon).
 
 ### 2nd Semester
 
-* TODO...
+* **ALGA** - Algebra Linear e Geometria Analítica / Linear Algebra and Analytic Geometry (coming soon);
+* **AED** - Algoritmos e Estruturas de Dados / Algorithms and Data Structures (coming soon);
+* **AC** - Arquitetura de Computadores / Computer Architecture (coming soon);
+* **LIC** - Laboratório de Informática e Computadores /Informatics and Computer Laboratory (coming soon);
+* **RCp** - Redes de Computadores / Computer Networks (coming soon).
 
 ### 3rd Semester
 
-* [IPW - Introdução à Programação na Web / Introduction to Internet Programming](./3rd-semester/ipw));
-* TODO...
+* **PE** - Probabilidade e Estatística / Probability and Statistics (coming soon);
+* [**IPW** - Introdução à Programação na Web / Introduction to Internet Programming](./3rd-semester/ipw));
+* **ISI** - Introdução aos Sistemas de Informação / Introduction to Information Systems (coming soon);
+* **PSC** - Programação de Sistemas Computacionais / Computer Systems Programming (coming soon);
+* **TDS** - Técnicas de Desenvolvimento de Software / Software Development Techniques (coming soon).
 
 ### 4th Semester
 
-* [LAE - Linguagens e Ambientes de Execução / Languages and Managed Runtimes](./4th-semester/lae));
-* [PC -  Programação Concorrente / Concurrent Programming](./4th-semester/pc);
-* [SI - Sistemas de Informação / Information Systems](./4th-semester/si);
-* TODO...
+* **CD** - Comunicação Digital / Digital Communication (coming soon);
+* **LS** - Laboratório de Software / Software Laboratory (coming soon);
+* [**LAE** - Linguagens e Ambientes de Execução / Languages and Managed Runtimes](./4th-semester/lae));
+* [**PC** -  Programação Concorrente / Concurrent Programming](./4th-semester/pc);
+* [**SI** - Sistemas de Informação / Information Systems](./4th-semester/si);
 
 ### 5th Semester
 
-* [DAW - Desenvolvimento de Aplicações Web / Web Application Development](./5th-semester/daw);
-* [SegInf - Segurança Informática / Computer Security](./5th-semester/seginf);
-* [TVS - Técnicas de Virtualização de Sistemas / Systems Virtualization Techniques](./5th-semester/tvs);
-* [Emp - Empreendedorismo / Entrepreneurship](./5th-semester/emp);
-* TODO...
+* [**DAW** - Desenvolvimento de Aplicações Web / Web Application Development](./5th-semester/daw);
+* [**PDM** - Programação em Dispositivos Móveis / Mobile Devices Programming](./5th-semester/pdm).
+* [**SegInf** - Segurança Informática / Computer Security](./5th-semester/seginf);
+* [**TVS** - Técnicas de Virtualização de Sistemas / Systems Virtualization Techniques](./5th-semester/tvs);
+* [**Emp** - Empreendedorismo / Entrepreneurship](./5th-semester/emp).
 
 ### 6th Semester
 
-* TODO...
+* Option B (coming soon);
+* Option C (coming soon).
