@@ -87,7 +87,7 @@
 
 ---
 
-### x86-64 (AMD64/Intel64)
+### [x86-64 (AMD64/Intel64)](https://www.cs.uaf.edu/2012/fall/cs301/lecture/11_05_mmap.html)
 
 * 64 bits for virtual addresses: 48 bits for the translation (36 for the **page number** and 12 for the **offset**) and other 16 that are not used;
 * 64 bits for physical addresses: 48 bits for the translation and other 16 that are not used;
@@ -120,9 +120,20 @@
 ---
 ---
 
-## System Calls
+## [System Calls](https://man7.org/linux/man-pages/man2/syscalls.2.html#:~:text=The%20system%20call%20is%20the,or%20perhaps%20some%20other%20library).)
 
-* TODO
+* The system calls are the **interface** between the **processes** and the **kernel**;
+* It is a way for the processes to **request services** from the kernel;
+* It is a **privileged operation**, only the **kernel** can execute system calls;
+* This involves transitioning from **unprivileged user mode** to **privileged kernel mode**, using the **interrupt system**;
+* System calls are divided in 5 categories:
+  * **Process control** - `fork`, `execv`, `exit`...
+  * **File management** - `open`, `read`, `write`...
+  * **Device management** - `ioctl`, `mount`, `umount`...
+  * **Information maintenance** - `time`, `getpid`, `getuid`...
+  * **Communication** - `pipe`, `socket`, `mmmap`...
+
+> The **Linux System Call Table** can be found [here](https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md).
 
 ---
 ---
@@ -139,6 +150,7 @@
   * `.bss` section: it contains uninitialized global variables; the size of this section is stored in a header field;
   * Etc...
 * The size of the sections is multiple of **4kB**, because the pages has this size;
+* The section is **contiguous** in the **virtual memory**, but not necessarily in the **physical memory**;
 * Each section has 4 flags:
   * `r`: **read**;
   * `w`: **write**;
@@ -195,6 +207,7 @@
   * 4 flags: `r`, `w`, `x`, `p`;
   * `Size`: the size of the section;
   * `Rss`: the **resident set size** of the section;
+    * Virtual memory pages that are **currently in the physical memory** - close to the `WS`("Working Set") concept (memory addresses necessary to be used in a range of time);
   * `Pss`: the **proportional set size** of the section;
   * `Shared_Clean`: the **shared clean pages** of the section;
   * `Shared_Dirty`: the **shared dirty pages** of the section;
@@ -218,3 +231,45 @@
 * Used to **share resources** between processes;
 * Initially, a page is **clean** and **shared**, and the `R/W` flag is set to 0;
 * When some process writes in such page, it is **copied** and converted to **dirty** and **private** in the current process.
+
+#### Saving Physical Memory
+
+* **Sharing of physical pages** between processes;
+* **Demand paging** (this increments the `Rss` value) - happens in a reaction to a **PAGE_FAULT**;
+  * A **PAGE_FAULT** happens when a process tries to access a **virtual address** that is not mapped to a **physical address**;
+* **Releasing of unused pages** (this decrements the `Rss` value):
+  * Discard pages;
+  * Save pages (in the **backing storage**) and then discard them;
+    * Save pages in **original file**;
+    * Save pages in **swap file/partition**;
+* **Shareable** sections:
+  * `.text` and `.rodata` sections, because they are **read-only**;
+  * Files mapped with `MAP_SHARED` flag;
+* **Temporary shared** sections:
+  * `.data` section, because it is **read-write**, it is shared while there are no writes, and it is converted to private by the **COW** mechanism.
+
+* **Swap File/Partition**
+  * To release anonymous allocated memory or private data, it is necessary to save the pages in the **disk** - **swap file/partition** (virtual memory);
+  * The virtual address space has a reference to the swap file/partition;
+  * **RAM is extended using the disk**;
+  * This is observed when the **backing storage** mechanism happens;
+  * Use of the disk to store released memory of the RAM.
+
+---
+
+### Physical Memory Management
+
+* Active/inactive pages - Kernel Linux;
+* Referenced pages - CPU / Kernel;
+* Dirty pages - CPU / Kernel;
+
+<!-- Add PTE diagram -->
+
+* `A` bit - accessed - CPU changes the bit to 1 when the page is accessed (read or write);
+* `D` bit - dirty - CPU changes the bit to 1 when the page is modified (write); this bit is checked by the kernel to decide if the page should be written to the **backing storage**;
+
+* The pages are divided in 2 groups:
+  * **Active** pages;
+  * **Inactive** pages;
+* The active pages are upper in the list, and the inactive pages are lower in the list;
+* When a page is accessed, it is moved to the top of the list, becoming active;

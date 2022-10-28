@@ -27,8 +27,6 @@
 $ cat abc.txt | grep hello | wc -l
 ```
 
----
-
 In this example, the output of `cat abc.txt` is piped to the input of `grep "hello"`, and the output of `grep "hello"` is piped to the input of `wc -l`.
 
 ---

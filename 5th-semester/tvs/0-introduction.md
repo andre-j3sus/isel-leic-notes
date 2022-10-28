@@ -4,7 +4,7 @@
 
 0. Review concepts from **Computer Architecture** and **Computer Systems Programming**;
 1. Unix computing model;
-2. Kernel and processes isolation; communication between processes;
+2. Kernel and processes isolation - communication between processes;
 3. System shared environment;
 4. Hypervisors;
 5. Containers.
