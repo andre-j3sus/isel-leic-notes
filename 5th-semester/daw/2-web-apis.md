@@ -13,7 +13,7 @@
 * Provides data for clients to use on **their own ways**.
 
 <p align="center">
-    <img src="./docS/daw-diagrams-SingleClient.svg" alt="SingleClient" align="center"/>
+    <img src="./docs/daw-diagrams-SingleClient.svg" alt="SingleClient" align="center"/>
 </p>
 
 ### Multiple Clients - Different Organization Boundaries
@@ -25,7 +25,7 @@
 * **Hypermedia** is a way to reduce coupling between clients and a specific HTTP API implementation.
 
 <p align="center">
-    <img src="./docS/daw-diagrams-MultipleClients.svg" alt="MultipleClients" align="center"/>
+    <img src="./docs/daw-diagrams-MultipleClients.svg" alt="MultipleClients" align="center"/>
 </p>
 
 ---
@@ -40,7 +40,7 @@
   * Responsible for the **user interaction**;
   * **Client-side**.
 
-> The interection between the **frontend** and the **backend** is done through an **HTTP API**, provided by the **backend service**:
+> The interaction between the **frontend** and the **backend** is done through an **HTTP API**, provided by the **backend service**:
 
 * The **communication initiative** is always on the API's **client**;
 * The backend service **only communicates information** to the frontend service in the context of an **HTTP response**;
