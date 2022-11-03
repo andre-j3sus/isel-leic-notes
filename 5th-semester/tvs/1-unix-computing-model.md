@@ -4,6 +4,7 @@
 
 * *It is the core that provides basic services for all other parts of the OS;*
 * Has privileged access to the hardware;
+* Software piece that executes over the hardware e controls the machine;
 
 ## Shell Pipeline and Redirection
 
@@ -46,7 +47,7 @@ In this example, the output of `cat abc.txt` is piped to the input of `grep "hel
   * 0 - stdin;
   * 1 - stdout;
   * 2 - stderr;
-* To write to a file, its used the function `write(fd, buffer, size)`, C;
+* To write to a file, its used the function `write(fd, buffer, size)`:
 
 ```c
 int res = write(1, "prog running\n", 14); // write(int fd, const void *buf, size_t count);
@@ -272,15 +273,15 @@ File systems:
 
 ## File Types
 
-| File Type        | Location | Denoted by |
-| ---------------- | -------- | ---------- |
-| Regular File     | Anywhere | `-`        |
-| Directory        | Anywhere | `d`        |
-| Symbolic Link    | /dev     | `l`        |
-| Block Device     | /dev     | `b`        |
-| Character Device | /dev     | `c`        |
-| Socket           | /dev     | `s`        |
-| Named Pipe       | /dev     | `p`        |
+| File Type        | Denoted by |
+| ---------------- | ---------- |
+| Regular File     | `-`        |
+| Directory        | `d`        |
+| Symbolic Link    | `l`        |
+| Block Device     | `b`        |
+| Character Device | `c`        |
+| Socket           | `s`        |
+| Named Pipe       | `p`        |
 
 
 ---
@@ -290,7 +291,7 @@ File systems:
 * `/bin` - user binaries; programs that are used by **all users**;
 * `/sbin` - system binaries; programs that are used by the **superuser**;
 * `/boot` - boot files; contains the **kernel** and the **boot loader**;
-* `dev` - device files; 
+* `/dev` - device files; 
 * `/etc` - configuration files;
 * `/home` - home directories; private directories **for each user**;
 * `/lib` - libraries; libraries used by the system;

@@ -14,7 +14,7 @@
 * **Memory Access**:
   * Validate the memory access of a process, to assure that it is not accessing memory that it is not allowed to access;
   * **Validate all memory access operations**, like `fetch`, `load`, `store`, etc;
-* **I/O Operations (if they exist)**: e.g. in x86, the instructions `in` and `out` are used to access I/O devices
+* **I/O Operations (if they exist)**: e.g. in x86, the instructions `in` and `out` are used to access I/O devices;
 * **Configuration mechanisms** of the previous resources.
 
 ---
@@ -120,7 +120,7 @@
 ---
 ---
 
-## [System Calls](https://man7.org/linux/man-pages/man2/syscalls.2.html#:~:text=The%20system%20call%20is%20the,or%20perhaps%20some%20other%20library).)
+## [System Calls](https://man7.org/linux/man-pages/man2/syscalls.2.html#:~:text=The%20system%20call%20is%20the,or%20perhaps%20some%20other%20library)
 
 * The system calls are the **interface** between the **processes** and the **kernel**;
 * It is a way for the processes to **request services** from the kernel;
@@ -155,7 +155,7 @@
   * `r`: **read**;
   * `w`: **write**;
   * `x`: **execute**;
-  * `p`: **private**.s
+  * `p`: **private**.
 * **Demand Paging**:
   * Load one page at a time, without any optimization;
   * Keep in the physical memory (RAM) only the current used pages;

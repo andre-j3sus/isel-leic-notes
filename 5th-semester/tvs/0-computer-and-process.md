@@ -1,17 +1,4 @@
-# Introduction
-
-## Syllabus
-
-0. Review concepts from **Computer Architecture** and **Computer Systems Programming**;
-1. Unix computing model;
-2. Kernel and processes isolation - communication between processes;
-3. System shared environment;
-4. Hypervisors;
-5. Containers.
-
----
-
-## Computer Architecture and Systems
+# Computer Architecture and Systems
 
 <p align="center">
     <img src="./docs/tvs-diagrams-ComputerArchitecture.svg" alt="Computer Architecture" align="center"/>
