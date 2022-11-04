@@ -109,7 +109,7 @@ int fd = dup2(1, 11); // Duplicates the file descriptor 1 to the file descriptor
     * The return value of the parent process is the PID of the child process;
   * The execution point is the same in both processes;
 
-#### Parent and child process
+#### Parent and Child Process
 
 * Each process has a **parent process**, except for the first process, which is the root process;
 * Each process has a **unique process ID (PID)**;
@@ -130,7 +130,7 @@ int fd = dup2(1, 11); // Duplicates the file descriptor 1 to the file descriptor
 * The **address space and the virtual CPU are replaced**;
 * The **file descriptor table is not replaced**.
 
-#### File permissions
+#### File Permissions
 
 * The file permissions are divided into three categories:
   * **User** (owner) - The user that owns the file;
@@ -231,7 +231,7 @@ int fd = dup2(1, 11); // Duplicates the file descriptor 1 to the file descriptor
   * `kill -l` - List all signals;
   * `kill -s <signal> <pid>` - Send a signal to a process;
 
-### Signal disposition
+### Signal Disposition
 
 * The **signal disposition** is a pre-processing action that is performed before the signal handler is called;
 * The signal disposition can be:

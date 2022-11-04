@@ -1,4 +1,4 @@
-# Computer Architecture and Systems
+# Computer Architecture
 
 <p align="center">
     <img src="./docs/tvs-diagrams-ComputerArchitecture.svg" alt="Computer Architecture" align="center"/>
@@ -20,7 +20,7 @@ The **CPU** (Central Processing Unit) follows the **instruction cycle** to execu
 
 ---
 
-### Process
+## Process
 
 * A process is a program in execution;
 * Each process is associated with a program, and a program can have multiple processes;
