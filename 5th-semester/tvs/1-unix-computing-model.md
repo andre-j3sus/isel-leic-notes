@@ -128,7 +128,32 @@ int fd = dup2(1, 11); // Duplicates the file descriptor 1 to the file descriptor
 * The `exec` family of functions replaces the current process with a new process;
 * Changes the **process image**;
 * The **address space and the virtual CPU are replaced**;
-* The **file descriptor table is not replaced**.
+* The **file descriptor table is not replaced**;
+
+| Fork                                                 | Exec                                               |
+| ---------------------------------------------------- | -------------------------------------------------- |
+| Creates a new process                                | Replaces the current process                       |
+| There are two processes                              | There is only one process                          |
+| The address space and the virtual CPU are duplicated | The address space and the virtual CPU are replaced |
+
+* Functions:
+  * `int execl(const char *path, const char *arg, ...)`;
+  * `int execlp(const char *file, const char *arg, ...)`;
+  * `int execle(const char *path, const char *arg, ..., char * const envp[])`;
+  * `int execv(const char *path, char *const argv[])`;
+  * `int execvp(const char *file, char *const argv[])`;
+  * `int execvpe(const char *file, char *const argv[], char *const envp[])`.
+
+| Function  | Pathname | Filename | Argument List | Argument Array | Original ENV | Provided ENV |
+| --------- | -------- | -------- | ------------- | -------------- | ------------ | ------------ |
+| `execl`   | Yes      | No       | Yes           | No             | No           | No           |
+| `execlp`  | No       | Yes      | Yes           | No             | No           | No           |
+| `execle`  | Yes      | No       | Yes           | No             | No           | Yes          |
+| `execv`   | Yes      | No       | No            | Yes            | No           | No           |
+| `execvp`  | No       | Yes      | No            | Yes            | No           | No           |
+| `execvpe` | No       | Yes      | No            | Yes            | No           | Yes          |
+
+**Note:** Normally, use the `execlp` or `execvp` functions.
 
 #### File Permissions
 
@@ -165,6 +190,15 @@ int fd = dup2(1, 11); // Duplicates the file descriptor 1 to the file descriptor
     * `mode` - The file permissions;
 * The `close` function closes a file descriptor;
   * Closes the file descriptor and **removes the entry** from the file descriptor table;
+* Example:
+
+```c
+int fd1 = open("abc.txt", O_RDONLY | O_CREAT, 0644); // Opens the file abc.txt for reading and creates it if it does not exist
+int res1 = close(fd1); // Closes the file descriptor
+
+int fd2 = open("abc.txt", O_RDONLY | O_WRONLY | O_CREAT, 0644); // Opens the file abc.txt for reading and writing and creates it if it does not exist
+int res2 = close(fd2); // Closes the file descriptor
+```
 
 ### Read and Write
 

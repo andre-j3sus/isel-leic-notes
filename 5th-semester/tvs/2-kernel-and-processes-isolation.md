@@ -95,8 +95,10 @@
 * 4 levels of **page tables**;
 * Translation lookaside buffer (**TLB**): a cache that stores the **page table entries** (PTEs) of the last **page table** used;
 
+#### Page Fault Handler
+
 <p align="center">
-    <img src="./docs/tvs-diagrams-Translationx86-64.svg" alt="Translationx86-64" align="center"/>
+    <img src="./docs/tvs-diagrams-PageFault.svg" alt="PageFault align="center"/>
 </p>
 
 ---
@@ -104,9 +106,13 @@
 ### Protection Bits
 
 * `P`: **present** bit, indicates if the page is in the physical memory;
+  * When has the value `0`, the page is not in the physical memory;
 * `R/W`: **read/write** bit, indicates if the page is read-only or read-write;
+  * When has the value `0`, the page is read-only;
 * `U/S`: **user/supervisor** bit, indicates if the page is in **kernel space** or **user space**;
+  * When has the value `0`, the page is in **kernel space**;
 * `NX`: **no execute** bit, indicates if the page is executable or non-executable - only in x86-64;
+  * When has the value `1`, the page is non-executable;
 
 #### Segmentation Fault Causes
 
@@ -217,7 +223,7 @@
 
 
 <p align="center">
-    <img src="./docs/tvs-less-smaps-block-example.png" alt="smaps example" align="center"/>
+    <img src="./docs/tvs-diagrams-smaps-example.svg" alt="smaps example" align="center"/>
 </p>
 
 * If the sections is `clean`, it means that the pages are not modified, the same as the original file;
@@ -238,10 +244,10 @@
 * **Demand paging** (this increments the `Rss` value) - happens in a reaction to a **PAGE_FAULT**;
   * A **PAGE_FAULT** happens when a process tries to access a **virtual address** that is not mapped to a **physical address**;
 * **Releasing of unused pages** (this decrements the `Rss` value):
-  * Discard pages;
+  * Discard pages, if the page is **clean** and **shared**;
   * Save pages (in the **backing storage**) and then discard them;
-    * Save pages in **original file**;
-    * Save pages in **swap file/partition**;
+    * Save pages in **original file**, if the page is **dirty** and **shared**;
+    * Save pages in **swap file/partition**, if the page is **dirty** and **private** or **anonymous**;
 * **Shareable** sections:
   * `.text` and `.rodata` sections, because they are **read-only**;
   * Files mapped with `MAP_SHARED` flag;
@@ -263,13 +269,20 @@
 * Referenced pages - CPU / Kernel;
 * Dirty pages - CPU / Kernel;
 
-<!-- Add PTE diagram -->
+<p align="center">
+    <img src="./docs/tvs-diagrams-PTE.svg" alt="PTE" align="center"/>
+</p>
 
 * `A` bit - accessed - CPU changes the bit to 1 when the page is accessed (read or write);
 * `D` bit - dirty - CPU changes the bit to 1 when the page is modified (write); this bit is checked by the kernel to decide if the page should be written to the **backing storage**;
 
-* The pages are divided in 2 groups:
+* The pages are divided in 2 lists:
   * **Active** pages;
   * **Inactive** pages;
 * The active pages are upper in the list, and the inactive pages are lower in the list;
-* When a page is accessed, it is moved to the top of the list, becoming active;
+* When a page is accessed, it is moved to the top of the list, becoming active, and the pages that were active are moved down, until become inactive;
+* The inactive pages are the ones that are candidates to be released - moved to the **backing storage**;
+
+<p align="center">
+    <img src="./docs/tvs-diagrams-ActiveInactiveLists.svg" alt="ActiveInactiveLists" align="center"/>
+</p>
