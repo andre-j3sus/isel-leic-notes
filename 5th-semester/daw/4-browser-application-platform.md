@@ -2,7 +2,9 @@
 
 > The browser is a platform to execute applications - **host environment**.
 
-<!-- Add diagram -->
+<p align="center">
+    <img src="./docs/daw-diagrams-Browser.svg" alt="Browser" align="center"/>
+</p>
 
 * When running on the browser, the JS code executes in a different host environment than the one in which it executes when running on Node.js;
 
