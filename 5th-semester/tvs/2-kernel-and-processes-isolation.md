@@ -165,10 +165,12 @@
 * **Demand Paging**:
   * Load one page at a time, without any optimization;
   * Keep in the physical memory (RAM) only the current used pages;
-* Usefull commands:
+* Useful commands:
   * `objdump` displays information from object files and executables, like the size of the sections;
   * `less /proc/{pid}/maps` to show the **memory mapped pages** for the process with the given **pid**;
   * `less /proc/{pid}/smaps` to show the **memory mapped pages** for the process with the given **pid**, with more information;
+
+> Note: the **zero page** is a **page** that is **always mapped** to the **virtual address** `0x0`, and it is **never mapped** to the **physical memory**. It is used to **trap null pointer dereferences** and its at the **beginning of the virtual address space**.
 
 <p align="center">
     <img src="./docs/tvs-diagrams-EFSections.svg" alt="EFSections" align="center"/>
@@ -260,6 +262,11 @@
   * **RAM is extended using the disk**;
   * This is observed when the **backing storage** mechanism happens;
   * Use of the disk to store released memory of the RAM.
+
+Pages that go to the swap:
+* **Anonymous pages** - pages that are not mapped to a file;
+* **Private pages that are dirty**;
+* **Shared pages that are dirty** - if the file is not writable.
 
 ---
 
