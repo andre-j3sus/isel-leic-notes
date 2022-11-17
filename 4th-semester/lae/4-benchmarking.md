@@ -1,14 +1,14 @@
 # Benchmarking
 
-A benchmark is simply a test that is used to compare similar products. A computer benchmarking program works by running a series of well-defined tests on the PC to **measure its performance**.
+> A benchmark is simply a test that is used to compare similar products. A computer benchmarking program works by running a series of well-defined tests on the PC to **measure its performance**.
 
-Side-effects a evitar:
+**Side-effects to avoid**:
 
 * Garbage collection;
 * IO operations;
 * Extra tools, like IDE, gradle, etc -> run directly on VM.
 
-Para otimizar, incluir iterações de _warm-up_.
+To **optimize**, include _warm-up_ iterations.
 
 ---
 
@@ -16,15 +16,15 @@ Para otimizar, incluir iterações de _warm-up_.
 
 _JMH is a Java harness for building, running, and analysing nano/micro/milli/macro benchmarks written in Java and other languages targeting the JVM._
 
-Funções de teste de benchmark são anotados com a anotação `@Benchmark`.
+**Benchmark methods** are annotated with the `@Benchmark` annotation.
 
-Opções para executar a benchmark:
+Benchmark options:
 
-* Forks (-f);
-* Warmup Iterations (-wi);
-* Iterations (-i);
-* Warmup Iteration Duration (-w);
-* Iteration Duration (-r);
-* Time Unit (-u).
+* Forks (`-f`);
+* Warmup Iterations (`-wi`);
+* Iterations (`-i`);
+* Warmup Iteration Duration (`-w`);
+* Iteration Duration (`-r`);
+* Time Unit (`-u`).
 
-Existe um plugin para o Gradle para executar benchmarks: [jmh-gradle-plugin](https://github.com/melix/jmh-gradle-plugin).
+There is also a plugin for Gradle to run benchmarks: [jmh-gradle-plugin](https://github.com/melix/jmh-gradle-plugin).

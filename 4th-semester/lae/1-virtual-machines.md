@@ -1,10 +1,10 @@
 # Virtual Machines
 
-* Ambiente de execução (**managed runtime** or execution environment);
+* **Managed runtime** or execution environment;
 * System virtual machines: full virtualization;
-* **Process virtual machines**: executa programas.
+* **Process virtual machines**: executes programs.
 
-| Virtual Machine | IR           | Linguagem           |
+| Virtual Machine | IR           | Language            |
 | --------------- | ------------ | ------------------- |
 | JVM             | **bytecode** | Java, Kotlin, Scala |
 | .NET            | IL           | C#, F#, VB          |
@@ -16,93 +16,91 @@
 
 ## Managed Runtime
 
-* **Portabilidade**: Compile once and run everywhere;
+* **Portability**: Compile once and run everywhere;
 * **Safety**: No invalid memory accesses;
 * **Garbage collection**;
 * **Jitter**: Just-in-time compiler; compiles IR to native code (e.g. x86, amd64, ppc) at runtime;
-* **Classloader**: carregador de ficheiro lazy (apenas são carregados quando são necessários) e dinâmica (carregados em tempo de execução);
-* **Interoperability** entre as linguagens da mesma VM (ex.: Java <=> Kotlin);
-* **Sistema de tipos**: Set of rules and principles that specify how types are defined and behave.
+* **Classloader**: lazy file loader (only loaded when needed) and dynamic (loaded at runtime);
+* **Interoperability** between the languages of the same VM (ex.: Java <=> Kotlin);
+* **Type system**: Set of rules and principles that specify how types are defined and behave.
 
-`Software compoments = bytecodes + metadata`
+`Software components = bytecodes + metadata`
 
 ### Metadata
 
-* Descreve o software;
-* Dados com informação sobre outros dados;
-* Equivalente ao header file.
+* Describes the software;
+* Data with information about other data;
+* Equivalent to the **header file**.
 
-Em Kotlin, cada class tem um ficheiro `.class` associado, contendo bytecode e metadata:
+In Kotlin, each class has an associated `.class` file, containing bytecode and metadata:
 
 <p align="center">
     <img src="./docs/lae-diagrams-KotlinCompilation.svg" alt="Kotlin Compilation" align="center"/>
 </p>
 
-É gerado um ficheiro `.class` para cada tipo (classe ou interface).
-Também são gerados ficheiros `.class` para funções globais, com `$$` no nome do ficheiro.
+A `.class` file is generated for each type (class or interface).
+Files `.class` are also generated for global functions, with `$$` in the file name.
 
 ---
 
 ## Kotlin/Java Type System
 
-* Um sistema de tipos é um conjunto de princípios e regras que especificam a definição e comportamento dos tipos;
-* Tipos são definidos por classes ou interfaces;
-* Classes têm membros:
+* A type system is a **set of principles and rules** that specify how types are defined and behave;
+* Types are defined by classes or interfaces;
+* Classes have **members**:
 
 | JVM     | Kotlin     |
 | ------- | ---------- |
 | Fields  | Properties |
 | Methods | Functions  |
 
-O conceito de propriedade não existe na JVM.
+The concept of **property** does not exist in JVM.
 
-Uma propriedade em Kotlin pode gerar:
+A property in Kotlin can generate:
 
-* **Field**: slot em memória onde o valor da propriedade é armazenado; acedido através da instrução `getfield` em bytecode;
-* **Getter**: método que retorna o valor da propriedade;
-* **Setter**: método que define o valor da propriedade.
+* **Field**: slot in memory where the property value is stored; accessed through the `getfield` instruction in bytecode;
+* **Getter**: method that returns the property value;
+* **Setter**: method that defines the property value.
 
-O tipo base da hierarquia de tipos Kotlin é `Any`, enquanto que em Java é `Object`:
+The base type of the Kotlin type hierarchy is `Any`, while in Java it is `Object`:
 
-| Kotlin          | Java            |
-| --------------- | --------------- |
-| `Any`           | `Object`        |
-| `val`           | `final`         |
-| `new` implícito | `new` explícito |
-
----
-
-## Componente
-
-* Unidade de software reutilizável;
-* Tem IR e metadata;
-* Ready to use: não precisa de compilação estática;
-* Indivisível;
-* Fornecido pelo provider e utilizado pelo cliente;
-
-O software desenvolvido por componentes promove a reutilização de código e reduz a complexidade do desenvolvimento.
+| Kotlin         | Java           |
+| -------------- | -------------- |
+| `Any`          | `Object`       |
+| `val`          | `final`        |
+| `new` implicit | `new` explicit |
 
 ---
 
-## Notas
+## Software Component
 
-**Compilar**:
+* **Reusable** software unit;
+* Contains **IR** and **metadata**;
+* **Ready to use**: no need for static compilation;
+* **Indivisible**;
+* Provided by the provider and used by the client;
 
-* Traduzir/converter de uma linguagem para outra;
-  * **Dinâmica**: em tempo de execução;
-  * **Estática**: em build time;
+The software developed by components promotes the reuse of code and reduces the complexity of development.
 
-**Transpilação**: compilação de uma linguagem de alto nível para outra.
+---
 
-**Verbose**: algo exprimido por mais palavras que as necessárias (Java).
+## Notes
 
-**Implícito**: algo que não está expresso formalmente (no source code) mas é gerado pelo compilador.
+**Compile**: Translate/convert from one language to another;
+  * **Dynamic**: at runtime;
+  * **Static**: at build time;
 
-**Abstração**: separar o essencial do acessório, para focar a atenção em detalhes mais importantes.
+**Transpile**: compilation from a high-level language to another.
 
-**AVISO**: nunca dar mais permissões que as necessárias:
-* Imutabilidade (`val` > `var`);
-* Privacidade (`private` > `protected` > `public`).
+**Verbose**: something expressed by more words than necessary (Java).
+
+**Implicit**: something that is not formally expressed (in the source code) but is generated by the compiler.
+
+**Abstraction**: separate the essential from the accessory, to focus attention on more important details.
+
+**WARNING**: never give more permissions than necessary:
+* Immutability (`val` > `var`);
+* Privacy (`private` > `protected` > `public`).
 
 ---
 
@@ -114,25 +112,25 @@ O software desenvolvido por componentes promove a reutilização de código e re
 
 ### Unmanaged Runtime
 
-* Componente não é unidade, mas sim `header + object` files:
-  * header <=> metadata;
-  * object <=> IR;
-* Ligação estática;
-* Modificação estrutural: compilação + link;
-* Modificação comportamental: link.
+* Component is not a unit, but `header + object` files:
+  * **header** <=> metadata;
+  * **object** <=> IR;
+* **Static linking**;
+* Structural modification: compilation + link;
+* Behavioral modification: link.
 
 <p align="center">
     <img src="./docs/lae-diagrams-UnmanagedRuntime.svg" alt="Unmanaged Runtime" align="center"/>
 </p>
 
-Como a ligação é estática, os object files podem ser apagados e a.out executa na mesma.
-  
+When the link is static, the object files can be deleted and a.out runs the same.
+
 ### Managed Runtime
 
-* Componente é unidade: .class file;
-* Ligação dinâmica;
+* Component is a unit: `.class` file;
+* **Dynamic linking**;
 * Jitter;
-* Lazy loading;
+* Lazy loading.
 
 <p align="center">
     <img src="./docs/lae-diagrams-ManagedRuntime.svg" alt="Managed Runtime" align="center"/>

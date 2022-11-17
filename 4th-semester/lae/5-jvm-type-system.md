@@ -1,20 +1,20 @@
 # JVM Type System
 
-Os tipos na JVM estão divididos em **tipos primitivos** e **tipos de referência**:
+The types in the JVM are divided into **primitive types** and **reference types**:
 
-| Tipos Primitivos           | Tipos de Referência    |
-| -------------------------- | ---------------------- |
-| "valor"                    | "objeto"               |
-| instâncias locais no stack | instâncias no heap     |
-| cópia é por valor          | cópia é por referência |
-| não pode ser null          | pode ser null          |
+| **Primitive Types**      | **Reference Types**  |
+| ------------------------ | -------------------- |
+| "value"                  | "object"             |
+| local instances on stack | instances on heap    |
+| copy is by value         | copy is by reference |
+| cannot be null           | can be null          |
 
-* O tempo de vida das variáveis locais (no stack) é igual ao tempo de execução da função a que pertencem;
-* O tempo de vida dos objetos no heap é maior que o da execução da função, e é alvo do GC quando os objetos estão _unreachable_, ou seja, não existe nenhuma referência para os mesmos.
+* The **lifetime of local variables** (on the stack) is equal to the execution time of the function to which they belong;
+* The **lifetime of objects on the heap** is longer than the execution time of the function, and is the target of GC when the objects are _unreachable_, that is, there is no reference to them.
 
 ---
 
-## Tipos primitivos (TP ou Tipos Valor)
+## Primitive Types (Value Types)
 
 | Java    | Kotlin  |
 | ------- | ------- |
@@ -28,17 +28,17 @@ Os tipos na JVM estão divididos em **tipos primitivos** e **tipos de referênci
 | short   | Short   |
 
 
-Exemplo:
+Example:
 
-```
+```kotlin
 fun bar() {
     val v: Int = 731
     val b = v
 }
 ```
 
-* As variáveis v e b são locais a `bar`;
-* A cópia de v é feita por valor; b fica com uma cópia do valor de v:
+* The variables v and b are local to `bar`;
+* The copy of v is made by value; b gets a copy of the value of v:
 
 <p align="center">
     <img src="./docs/lae-diagrams-PrimitiveTypes.svg" alt="Primitive Types" align="center"/>
@@ -46,7 +46,7 @@ fun bar() {
 
 ---
 
-## Tipos de referência (TR ou Wrapper)
+## Reference Types (Object Types or Wrapper Types)
 
 | Java      | Kotlin   |
 | --------- | -------- |
@@ -60,9 +60,9 @@ fun bar() {
 | Short     | Short?   |
 
 
-Exemplo:
+Example:
 
-```
+```kotlin
 class Foo {};
 
 fun bar() {
@@ -71,8 +71,8 @@ fun bar() {
 }
 ```
 
-* As variáveis v e b são locais a `bar`;
-* A cópia de v é feita por referência; b fica a apontar para o mesmo objeto:
+* The variables v and b are local to `bar`;
+* The copy of v is made by reference; b points to the same object:
 
 <p align="center">
     <img src="./docs/lae-diagrams-ReferenceTypes.svg" alt="Reference Types" align="center"/>
@@ -80,33 +80,29 @@ fun bar() {
 
 ---
 
-## Conversões de tipos
+## Type Conversion
 
 * TR -> TR: casting;
 * TP -> TP: coercion;
 * TP -> TR: boxing;
 * TR -> TP: unboxing.
 
-Definições:
-
-* **Casting**: mantém a instância e só muda a referência;
-* **Coercion**: transformação do valor;
-* **Boxing**: cópia do valor primitivo para o heap;
-  * `<Wrapper>.valueOf(<primitive>)`;
-* **Unboxing**: cópia do valor do heap para o valor primitivo;
-  * `<Wrapper>.<primitive>Value()`.
+* `RT -> RT`: **Casting**: maintains the instance and changes the reference;
+* `PT -> PT`: **Coercion**: changes the value of the instance;
+* `PT -> RT`: **Boxing**: copy of the primitive value to the heap - `<Wrapper>.valueOf(<primitive>)`;
+* `RT -> PT`: **Unboxing**: copy of the heap value to the primitive value - `<Wrapper>.<primitive>Value()`.
 
 [**Autoboxing**](https://docs.oracle.com/javase/tutorial/java/data/autoboxing.html) is the automatic conversion that the Java compiler makes between the primitive types and their corresponding object wrapper classes.
 
-Existem dois tipos de casting:
+Two types of casting:
 
-* **Upcasting**: generalização; "Filho -> Pai";
-* **Downcasting**: especificação; "Pai -> Filho".
+* **Upcasting**: generalization; "Child -> Parent";
+* **Downcasting**: specificationF; "Child -> Child".
 
-### Instrução `checkcast`
+### `checkcast` Instruction
 
-* Verifica se a referência no topo do stack é compatível com o tipo de referência especificado;
-* Ser compatível é ser do mesmo tipo ou de um tipo derivado;
-* Utilizada apenas em **downcasting**.
+* Checks if the reference at the top of the stack is compatible with the specified reference type;
+* Compatibility means being of the same type or of a derived type;
+* Used only in **downcasting**.
 
-Se a verificação tiver sucesso, o cast é realizado, caso contrário é lançada a exceção `ClassCastException`.
+If the check is successful, the cast is performed, otherwise the `ClassCastException` exception is thrown.

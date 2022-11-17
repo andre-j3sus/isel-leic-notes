@@ -1,7 +1,9 @@
 # [Collection Pipeline](https://martinfowler.com/articles/collection-pipeline/)
 
-* Encadeamento de operações sobre dados que formam uma _query_;
-* Uma collection é output de uma operação e input de outra.
+> A collection pipeline is a sequence of operations on a collection. The operations are chained together, and the result of each operation is passed to the next operation. The result of the pipeline is the result of the last operation.
+
+* Operation chaining on data that form a _query_;
+* A collection is the output of an operation and the input of another.
 
 <p align="center">
     <img src="./docs/lae-diagrams-CollectionPipeline.svg" alt="Collection Pipeline" align="center"/>
@@ -9,7 +11,7 @@
 
 **Method Chaining:**
 
-```
+```kotlin
 val result = listOf(1, 2, 3)
         .map { it * 2 }
         .filter { it > 5 }
@@ -19,7 +21,7 @@ val result = listOf(1, 2, 3)
 
 **Nested Methods:**
 
-```
+```kotlin
 val result = count(
     distinct(
         filter(
@@ -35,64 +37,87 @@ val result = count(
 * **Domain-specific language**:  a computer language specialized to a particular application domain; e.g. SQL, HTML, Latex, etc.
 
 ---
+---
 
 # [Generics](https://kotlinlang.org/docs/generics.html)
 
-Com a utilização de genéricos, obtém-se:
+> Generics are a way to make your code more flexible and reusable. They allow you to define classes and methods that work with a variety of types, while providing compile-time type safety.
+
+With generics, you get:
 
 * Type safety;
-* Expressividade;
-* Casts implícitos.
+* Expressiveness;
+* Implicit casting.
 
-Genéricos em classes: `class Fancy <T, ...> (...) {...}`
+Generics in classes: `class Fancy <T, ...> (...) {...}`
 
-Genéricos em funções: `fun <T, ...> foo (...) {...}`
+Generics in functions: `fun <T, ...> foo (...) {...}`
 
 
 `out` keyword:
 
 * e.g. `<out T>`;
-* significa que podemos atribuir a esse parâmetro de tipo **superclasses de T**.
+* means that we can assign to that type parameter **superclasses of T**.
 
 `in` keyword:
 
 * e.g. `<in T>`;
-* significa que podemos atribuir a esse parâmetro de tipo **subclasses de T**.
+* means that we can assign to that type parameter **subclasses of T**.
+
+---
 
 ## Type Erasure
 
-* Mecanismos que substitui todos os tipos genéricos por `Object`;
-* Tipos genéricos não são preservados em runtime.
+> _Type erasure is the load-time process by which explicit type annotations are removed from a program, before it is executed at run-time._
 
-_Type erasure is the load-time process by which explicit type annotations are removed from a program, before it is executed at run-time._
+* Mechanism that replaces all generic types by `Object`;
+* Generic types are **not preserved at runtime**.
 
-A solução é o uso de `reified type parameters` e `inline functions`.
+The solution is the use of `reified type parameters` and `inline functions`.
 
 [**Reified type**](https://kotlinlang.org/docs/inline-functions.html#reified-type-parameters):
 
-* Permite o acesso à informação do tipo genérico;
-* Declarados apenas em inline functions.
+* Allows access to the information of the generic type;
+* Declared only in inline functions.
 
 [**Inline function**](https://kotlinlang.org/docs/inline-functions.html):
 
-* O compilador copia a função para onde esta é chamada, logo em bytecode não existe a instrução `invoke`.
+* The compiler copies the function to where it is called, so in bytecode there is no `invoke` instruction.
 
+---
 ---
 
 # [Sequences](https://kotlinlang.org/docs/sequences.html)
 
-* Semelhante a `Iterable`;
-* **Lazy** (os elementos só são processados quando necessários).
+> A sequence is a lazily evaluated collection of elements. It is a sequence of elements that can be iterated over. It is a sequence of elements that can be iterated over. It is a sequence of elements that can be iterated over.
 
-**NOTA**: Iterable é **eager**, ou seja, carregamento dos elementos assim que o código é executado.
+* Similar to `Iterable`;
+* **Lazy** (elements are only processed when necessary).
 
-Funções úteis:
+> **Note:** Iterable is **eager**, i.e., elements are loaded as soon as the code is executed.
 
-`Iterable<T>.asSequence(): Sequence<T>` -> converte um `Iterable` em `Sequence`;
+Useful functions:
 
-`sequence { SequenceScope -> ... }` -> cria uma `Sequence` a partir de um bloco de código.
+* `Iterable<T>.asSequence(): Sequence<T>` - converts an `Iterable` to a `Sequence`.
+* `sequence { SequenceScope -> ... }` - creates a `Sequence` from a lambda.
 
-## Generators:
+Example:
 
-* Rotinas que retornam sequences;
-* A instrução `yield` é semelhante a um `return`, só que retorna um elemento da sequência, criando um **ponto de suspensão**. 
+```kotlin
+val result = listOf(1, 2, 3)
+        .asSequence()
+        .map { it * 2 }
+        .filter { it > 5 }
+        .distinct()
+        .count()
+
+val result = sequence {
+    yield(1)
+    yieldAll(listOf(2, 3))
+    yieldAll(listOf(4, 5))
+}
+```
+
+* A generator function is a function that returns a sequence;
+* The `yield` instruction is similar to a `return`, but it returns an element of the sequence, creating a **suspension point**;
+* The `yieldAll` instruction is similar to a `yield`, but it returns a sequence of elements, creating a **suspension point**.

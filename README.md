@@ -11,49 +11,49 @@
 
 ---
 
-## Courses
+## Courses 📚
 
-### 1st Semester
+### 📆 1st Semester 
 
-* **CDI** - Cálculo Diferencial e Integral / Differential and Integral Calculus (coming soon);
-* **TMD** - Tópicos de Matemática Discreta / Topics in Discrete Mathematics (coming soon);
-* **LSD** - Lógica e Sistemas Digitais / Logic e Digital Systems (coming soon);
-* **Pg** - Programação / Programming (coming soon);
-* **El** - Eletrónica / Electronics (coming soon).
+* **CDI** - Cálculo Diferencial e Integral / Differential and Integral Calculus _(coming soon)_;
+* **TMD** - Tópicos de Matemática Discreta / Topics in Discrete Mathematics _(coming soon)_;
+* **LSD** - Lógica e Sistemas Digitais / Logic e Digital Systems _(coming soon)_;
+* **Pg** - Programação / Programming _(coming soon)_;
+* **El** - Eletrónica / Electronics _(coming soon)_.
 
-### 2nd Semester
+### 📆 2nd Semester 
 
-* **ALGA** - Algebra Linear e Geometria Analítica / Linear Algebra and Analytic Geometry (coming soon);
-* **AED** - Algoritmos e Estruturas de Dados / Algorithms and Data Structures (coming soon);
-* **AC** - Arquitetura de Computadores / Computer Architecture (coming soon);
-* **LIC** - Laboratório de Informática e Computadores /Informatics and Computer Laboratory (coming soon);
-* **RCp** - Redes de Computadores / Computer Networks (coming soon).
+* **ALGA** - Algebra Linear e Geometria Analítica / Linear Algebra and Analytic Geometry _(coming soon)_;
+* **AED** - Algoritmos e Estruturas de Dados / Algorithms and Data Structures _(coming soon)_;
+* **AC** - Arquitetura de Computadores / Computer Architecture _(coming soon)_;
+* **LIC** - Laboratório de Informática e Computadores /Informatics and Computer Laboratory _(coming soon)_;
+* **RCp** - Redes de Computadores / Computer Networks _(coming soon)_.
 
-### 3rd Semester
+### 📆 3rd Semester 
 
-* **PE** - Probabilidade e Estatística / Probability and Statistics (coming soon);
+* **PE** - Probabilidade e Estatística / Probability and Statistics _(coming soon)_;
 * [**IPW** - Introdução à Programação na Web / Introduction to Internet Programming](./3rd-semester/ipw));
-* **ISI** - Introdução aos Sistemas de Informação / Introduction to Information Systems (coming soon);
-* **PSC** - Programação de Sistemas Computacionais / Computer Systems Programming (coming soon);
-* **TDS** - Técnicas de Desenvolvimento de Software / Software Development Techniques (coming soon).
+* **ISI** - Introdução aos Sistemas de Informação / Introduction to Information Systems _(coming soon)_;
+* **PSC** - Programação de Sistemas Computacionais / Computer Systems Programming _(coming soon)_;
+* **TDS** - Técnicas de Desenvolvimento de Software / Software Development Techniques _(coming soon)_.
 
-### 4th Semester
+### 📆 4th Semester
 
-* **CD** - Comunicação Digital / Digital Communication (coming soon);
-* **LS** - Laboratório de Software / Software Laboratory (coming soon);
+* **CD** - Comunicação Digital / Digital Communication _(coming soon)_;
+* **LS** - Laboratório de Software / Software Laboratory _(coming soon)_;
 * [**LAE** - Linguagens e Ambientes de Execução / Languages and Managed Runtimes](./4th-semester/lae));
 * [**PC** -  Programação Concorrente / Concurrent Programming](./4th-semester/pc);
 * [**SI** - Sistemas de Informação / Information Systems](./4th-semester/si);
 
-### 5th Semester
+### 📆 5th Semester
 
 * [**DAW** - Desenvolvimento de Aplicações Web / Web Application Development](./5th-semester/daw);
 * [**PDM** - Programação em Dispositivos Móveis / Mobile Devices Programming](./5th-semester/pdm).
 * [**SegInf** - Segurança Informática / Computer Security](./5th-semester/seginf);
 * [**TVS** - Técnicas de Virtualização de Sistemas / Systems Virtualization Techniques](./5th-semester/tvs);
-* [**Emp** - Empreendedorismo / Entrepreneurship](./5th-semester/emp).
+* _Option A_ - [**Emp** - Empreendedorismo / Entrepreneurship](./5th-semester/emp).
 
-### 6th Semester
+### 📆 6th Semester
 
-* Option B (coming soon);
-* Option C (coming soon).
+* Option B _(coming soon)_;
+* Option C _(coming soon)_.

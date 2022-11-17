@@ -1,11 +1,11 @@
 # [Garbage Collection](https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/index.html#t2)
 
-_Process of looking ate heap memory, identifying unused objects (unreferenced objects), and freeing them._
+> _Process of looking ate heap memory, identifying unused objects (unreferenced objects), and freeing them._
 
 **Referenced object** (in use):
 
 * Some part of your program still maintains a pointer to that object;
-* Referenciado por uma root.
+* Referenced by a root.
 
 **Root Reference**:
 
@@ -14,33 +14,33 @@ _Process of looking ate heap memory, identifying unused objects (unreferenced ob
 
 ---
 
-## Etapas
+## Garbage Collection Phases
 
-1. **Mark**: marcar objetos referenciados, através de uma flag no cabeçalho;
-2. **Delete**: apagar objetos não marcados, ou seja, objetos não referenciados.
+1. **Mark**: identify the referenced objects, and mark them using a **flag at the object header**;
+2. **Delete**: delete the unreferenced objects;
    * Approach 1:
-     * Lista com espaços livres;
-     * Problemas:
-       * **fragmentação**;
-       * alocação de memória é lenta;
+     * List of free blocks;
+     * Problems:
+       * **fragmentation**;
+       * memory allocation is slow;
    * Approach 2:
-     * **Compactação**, logo não existe fragmentação;
-     * Alocação de memória é rápida;
-     * Problemas:
-       * processo mais longo.
+     * **Compacting**, so there is no fragmentation;
+     * Memory allocation is fast;
+     * Problems:
+       * Longer processing time.
 
 ---
 
 ## Generational Garbage Collection
 
-* Melhor performance;
-* Normalmente, novos objetos têm menor tempo de vida, logo o GC é mais eficiente nas gerações mais novas.
+* Higher performance;
+* Usually, **new objects have a shorter life time**, so the GC is more efficient in the younger generations.
 
 ### JVM Generations
 
-* **Young**: onde os novos objetos estão alocados e envelhecem;
+* **Young**: new objects;
 * **Old**: long survived objects;
-* **Permanent**: metadata, classes e métodos.
+* **Permanent**: metadata, class definitions, method definitions, etc.
 
 #### Young Generation
 
@@ -48,22 +48,24 @@ _Process of looking ate heap memory, identifying unused objects (unreferenced ob
     <img src="./docs/lae-diagrams-GCYoungGeneration.svg" alt="Young Generation" align="center"/>
 </p>
 
-* Novos objetos são armazenados no Eden;
-* Após o GC atuar, o Eden e um dos survivors fica vazio;
-* Objetos sobreviventes alternam entre os survivors, até passarem para a Old Generation - promotion.
+* New objects are stored in **Eden**;
+* After the GC, Eden and one of the survivors are **empty**;
+* Surviving objects alternate between the survivors, until they are **promoted** to the Old Generation.
 
 ### Stop the World Events
 
-* **Minor GC**: atua sobre a Young Generation;
-* **Major GC**: atua sobre a Old Generation;
-* **Full GC**: atua sobre toda a memória.
+* **Minor GC**: acts on the Young Generation;
+* **Major GC**: acts on the Old Generation;
+* **Full GC**: acts on the Young and Old Generations.
 
-## Propriedades do GC
+---
 
-_G1 is a generational, incremental, parallel, mostly concurrent, stop-the-world, and evacuating garbage
+## GC Properties
+
+> _G1 is a generational, incremental, parallel, mostly concurrent, stop-the-world, and evacuating garbage
 collector_ ~ from [here](https://docs.oracle.com/javase/9/gctuning/garbage-first-garbage-collector.htm#JSGCT-GUID-CE6F94B6-71AF-45D5-829E-DEADD9BA929D)
 
-* **Generational**: Objetos são separados em gerações, baseadas no seu tempo de vida;
+* **Generational**: Objects are separated into generations, based on their lifetime;
 * **Incremental**: _An incremental garbage collector is any garbage-collector that can run incrementally (meaning that it can do a little work, then some more work, then some more work), instead of having to run the whole collection without interruption;_
 * **Parallel**: _Multiple threads are used to speed up garbage collection;_
 * **Mostly Concurrent**: _Managed threads can continue to run most of the time while the concurrent garbage collection thread is running;_
@@ -75,48 +77,48 @@ collector_ ~ from [here](https://docs.oracle.com/javase/9/gctuning/garbage-first
 
 # [Finalization](https://www.oracle.com/technical-resources/articles/javase/finalization.html)
 
-* Gestão dos recursos nativos associados com um objeto;
-* Limpeza de objetos que o GC considerou inalcançáveis;
-* Ciclo de vida de um objeto:
+> _Finalization is a process that occurs when the garbage collector determines that there are no more references to an object. The garbage collector calls the finalize method of the object, which is a method defined in the Object class. The finalize method is called only once by the garbage collector on an object._
+
+* Management of native resources associated with an object;
+* Cleaning of objects that the GC considered unreachable;
+* Object life cycle:
   * Created;
   * Unreachable;
   * Added to the finalization queue;
   * Finalized;
   * GC deleted.
 
-**Problemas**:
+**Problems**:
 
 * Delays the GC;
-* Retenção de memória;
-* Tempo de vida de objetor maior;
-* Não existe garantia que a finalização será executada;
-* Objeto pode ser ressuscitado.
+* Memory retention;
+* Object life time is longer;
+* There is no guarantee that the finalization will be executed;
+* Object can be resurrected.
 
-**AVISO**: não usar as seguintes funções:
+> **Warning:** Do not use the following methods:
 
-* `System.gc()`: executa o GC;
-* `System.runFinalization()`: executa os métodos de finalização;
+* `System.gc()`: executes the GC, but there is no guarantee that the finalization will be executed;
+* `System.runFinalization()`: executes the finalization, but there is no guarantee that the GC will be executed.
 
 ---
 
 ## [try-with-resources statement](https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html)
 
-* try statement que declara um ou mais recursos;
-* Um recurso é um objeto que deve ser closed após a sua utilização.
+* Declares one or more resources;
+* A resource is an object that must be closed after the program is finished with it.
 
-Os recursos podem ser:
+Resource can be:
 
-* Declarados no bloco try, e são fechados automaticamente após o seu scope;
-  * Apenas em Java;
-  * Exemplo: `try (FileWriter fw = new FileWriter("file.txt")) {...}`;
-* Declarados antes do bloco try, e são fechados manualmente no block finally;
-  * Exemplo: `try { FileWriter fw = new FileWriter("file.txt") } finally { fw.close() }`;
-* Método `.use(block: (T) -> R): T`;
-  * Apenas em Kotlin.
+* Declared in the try block, and are closed automatically after its scope;
+  * Only in Java;
+  * Example: `try (FileWriter fw = new FileWriter("file.txt")) {...}`;
+* Declared before the try block, and are closed manually in the finally block;
+  * Example: `try { FileWriter fw = new FileWriter("file.txt") } finally { fw.close() }`;
+* Method `.use(block: (T) -> R): T`;
+  * Only in Kotlin.
 
-**NOTA**: **Closeable** e **AutoCloseable** são interfaces equivalentes; o AutoCloseable foi introduzido com o try-with-resources statement em Java, logo em Kotlin são equivalentes.
-
-Uma classes com um campo Closeable/AutoCloseable, também deve implementar essa interface.
+> **Note:** `Closeable` and `AutoCloseable` are equivalent interfaces; `AutoCloseable` was introduced with the try-with-resources statement in Java, so in Kotlin they are equivalent. A class with a Closeable/AutoCloseable field, must also implement this interface.
 
 ---
 ---
@@ -124,8 +126,7 @@ Uma classes com um campo Closeable/AutoCloseable, também deve implementar essa 
 # [Cleaner](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/ref/Cleaner.html)
 
 * Manages a set of object references and corresponding cleaning actions;
-* Invocação explícita do método `clean()` quando o objeto é closed ou não é necessário;
-* Interface `Cleanable` representa um objeto e uma cleaning action registados num Cleaner;
-  * Contém um único método `clean()`, que executa a cleaning action e remove o registo do objeto.
-
-`Cleanable register(Object obj, Runnable action)`: regista um objeto e uma cleaning action num Cleaner.
+* Explicit invocation of the `clean()` method when the object is closed or is no longer needed;
+* `Cleanable` interface represents an object and a cleaning action registered in a Cleaner;
+  * Contains a single `clean()` method, which executes the cleaning action and removes the object's registration.
+* `Cleanable register(Object obj, Runnable action)`: registers an object and a cleaning action with this cleaner.

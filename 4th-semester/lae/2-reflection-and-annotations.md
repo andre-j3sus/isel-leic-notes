@@ -1,7 +1,9 @@
 # [Reflection](https://kotlinlang.org/docs/reflection.html)
 
+> Reflection is the ability of a program to examine its own structure and behavior at runtime. Reflection is a powerful tool, but it should be used with care. It is easy to write programs that use reflection to do things that would be much better done in a more straightforward way. Reflection is also a source of considerable complexity, and it is easy to write programs that are hard to understand because they use reflection in complex ways.
+
 * Object oriented API for metadata;
-* Conjunto de features que permitem examinar a estrutura de código em runtime.
+* Set of features that allow to examine the code structure at runtime.
 
 | Kotlin         | Java              |
 | -------------- | ----------------- |
@@ -24,16 +26,14 @@
 
 _Represents a class and provides introspection capabilities._
 
-`val c: KClass<MyClass> = MyClass::class`
-
-ou
-
-```
+```kotlin
+val c: KClass<MyClass> = MyClass::class
+// or
 val instance = MyClass()
 val c: KClass<MyClass> = instance::class
 ```
 
-Propriedades e métodos relevantes:
+Relevant properties and methods:
 
 * `constructors`;
 * `isAbstract`;
@@ -44,7 +44,7 @@ Propriedades e métodos relevantes:
 * `objectInstance`;
 * `qualifiedName`;
 * `simpleName`;
-* `visibility`: retorno do tipo [`KVisibility`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-visibility/), que pode ser `PUBLIC`, `PROTECTED`, `INTERNAL` ou `PRIVATE`;
+* `visibility`: returns [`KVisibility`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-visibility/), which can be `PUBLIC`, `PROTECTED`, `INTERNAL` ou `PRIVATE`;
 * `annotations`;
 * `memberProperties`;
 * `memberExtensionProperties`;
@@ -58,7 +58,7 @@ Propriedades e métodos relevantes:
 * `java`
 * `primaryConstructor`;
 * `createInstance`
-* `createType`: retorno do tipo [`KType](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-type/)`;
+* `createType`: returns [`KType](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-type/)`;
 * `findAnnotation`;
 * `hasAnnotation`;
 * `isSubclassOf`;
@@ -86,12 +86,12 @@ Propriedades e métodos relevantes:
 
 _Represents a callable entity, such as a function or a property._
 
-Propriedades e métodos relevantes:
+Relevant properties and methods:
 
 * `KCallable<out R>.call(args):R`;
 * `name`;
 * `parameters`;
-* `returnType`: retorno do tipo [`KType](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-type/)`;
+* `returnType`: returns [`KType](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-type/)`;
 * `typeParameters`;
 * `visibility`;
 * `annotations`;
@@ -105,9 +105,9 @@ Propriedades e métodos relevantes:
 
 _Represents a property, such as a named val or var declaration._
 
-To access properties as first-class objects in Kotlin, use the :: operator:
+To access properties as first-class objects in Kotlin, use the `::` operator:
 
-```
+```kotlin
 var x = 1
 
 ::x.get()
@@ -117,13 +117,13 @@ var x = 1
 
 The expression `::x` evaluates to a `KProperty<Int>` type property object.
 
-Propriedades e métodos relevantes:
+Relevant properties and methods:
 
 * `isConst`;
 * `isLateinit`;
 * `getter`;
 
-É superclasse de KMutableProperty, que tem a propriedade `setter` e o método `set(instance, value)`, equivalente a `setter.call(instance, value)`.
+Is **superclass** of `KMutableProperty`, which has the `setter` property and the `set(instance, value)` method, equivalent to `setter.call(instance, value)`.
 
 ### [KFunction](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-function/)
 
@@ -131,9 +131,9 @@ _Represents a function with introspection capabilities._
 
 You can use the function as a function type value, that is, pass it to another function. To do so, use the `::` operator:
 
-`fun isOdd(x: Int) = x % 2 != 0` é referenciada por `::isOdd` -> here `::isOdd` is a value of function type `(Int) -> Boolean`.
+`fun isOdd(x: Int) = x % 2 != 0` is referenced by `::isOdd` -> here `::isOdd` is a value of function type `(Int) -> Boolean`.
 
-Propriedades e métodos relevantes:
+Relevant properties and methods:
 
 * `isInline`;
 * `isOperator`;
@@ -143,7 +143,7 @@ Propriedades e métodos relevantes:
 
 _Represents a parameter passed to a function or a property getter/setter, including this and extension receiver parameters._
 
-Propriedades e métodos relevantes:
+Relevant properties and methods:
 
 * `isOptional`;
 * `isVararg`;
@@ -155,11 +155,11 @@ Propriedades e métodos relevantes:
 
 ---
 
-## [KType](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-type/)
+### [KType](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.reflect/-k-type/)
 
 _Represents a type. Type is usually either a class with optional type arguments, or a type parameter of some declaration, plus nullability._
 
-Para obter a KClass associada a um KType existem duas formas:
+To get the `KClass` associated with a `KType` there are two ways:
 
 * `KType.classifier as KClass<*>`;
 * `KType.jvmErasure`;
@@ -167,17 +167,25 @@ Para obter a KClass associada a um KType existem duas formas:
 ---
 ---
 
-## [Annotations](https://kotlinlang.org/docs/annotations.html)
+# [Annotations](https://kotlinlang.org/docs/annotations.html)
 
-Permitem adicionar metadata ao código.
+> Annotations are metadata that you can add to your code to convey information to the compiler and other tools.
 
-São criadas da seguinte forma: 
+* Allow us to add metadata to our code.
+* Are created by using the `annotation` keyword: 
 
-`annotation class Fancy`
+```kotlin
+annotation class Fancy
+```
 
-Podemos anotar anotações com outras anotações:
+We can annotate annotations with other annotations:
 
-`@Target`: specifies the possible kinds of elements which can be annotated with the annotation (such as classes, functions, properties, and expressions); os parâmetros possíveis são `AnnotationTarget.`:
+```kotlin
+@Target(AnnotationTarget.CLASS)
+annotation class Fancy
+```
+
+`@Target`: specifies the **possible kinds of elements which can be annotated** with the annotation (such as classes, functions, properties, and expressions); receives a list of `AnnotationTarget` values:
 
 * `CLASS`;
 * `ANNOTATION_CLASS`;
@@ -195,15 +203,15 @@ Podemos anotar anotações com outras anotações:
 * `FILE`;
 * `TYPEALIAS`.
 
-`@Retention`: especifica se a anotação é guardada em metadada e se é visível por reflection; os parâmetros possíveis são `AnnotationRetention.`:
+`@Retention`: specifies the **retention policy of the annotation** (whether the annotation is stored in the compiled class file, is available in the reflection information, or is ignored by the compiler); receives a `AnnotationRetention` value:
 
-* `SOURCE`: anotação apenas no source code, não é guardada em metadada;
-* `RUNTIME`: anotação é guardada em metadada e é visível por reflection;
-* `BINARY`: anotação é guardada em metadada, mas não é visível por reflection.
+* `SOURCE`: the annotation is **not stored in the compiled** class file, **only in the source code**;
+* `RUNTIME`: the annotation is **stored in the compiled class file** and is **available in the reflection** information;
+* `BINARY`: the annotation is **stored in the compiled class file**, but is **not available in the reflection** information.
 
 `@Repeatable`: allows using the same annotation on a single element multiple times;
 
-Os parâmetros permitidos em construtores de anotações são:
+The allowed parameters in annotation constructors are:
 
 * Primitive types;
 * String;
@@ -212,19 +220,10 @@ Os parâmetros permitidos em construtores de anotações são:
 * Annotations;
 * Arrays.
 
-Na Reflection API, existe o tipo `KAnnotatedElement` que é superclasse de todos os tipos de elementos anotados, como KClass, KCallable, KParameter, etc.
+In the Reflection API, the `KAnnotatedElement` type is the superclass of all annotated element types, such as `KClass`, `KCallable`, `KParameter`, etc.
 
-Este tipo possui as funções:
+This type has the `annotations` property, which returns a list of `Annotation` objects.
+Also contains the following methods:
 
 * `hasAnnotation<T: Annotation>(): Boolean`;
 * `findAnnotation<T: Annotation>(): T?`.
-
-
----
----
-
-### Logger
-
-* Usado para fazer log (registar) de mensagens num determinado output (consola, file, ...);
-* É configurável, com diferentes níveis de log, e com diferentes outputs;
-* Pode ser ligado ou desligado.
