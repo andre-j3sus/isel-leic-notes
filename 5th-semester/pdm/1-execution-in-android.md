@@ -70,3 +70,16 @@
   * Objects and enums;
   * `String`, `CharSequence`, `IBinder`, `Exception`, ...
   * All `Serializable` and `Parcelable` types.
+
+---
+
+## [StateFlow and SharedFlow](https://developer.android.com/kotlin/flow/stateflow-and-sharedflow)
+
+> *`StateFlow` and `SharedFlow` are two new types of flow that are designed to make it easier to work with state in your app.*
+
+* A **[flow](https://developer.android.com/kotlin/flow)** is a **stream** of **asynchronous** events that you can **observe**;
+* Can be used to **represent** a **stream of events** that occur over time;
+* The `StateFlow` class is a **state-holder** flow that emits the **current and new state updates** to its collectors;
+* The `SharedFlow` class is a **hot** flow that **shares** emitted values among all its collectors; it's a highly-configurable generalization of the `StateFlow`.
+
+The [`collectAsState()`](https://developer.android.com/reference/kotlin/androidx/compose/runtime/package-summary#(kotlinx.coroutines.flow.StateFlow).collectAsState(kotlin.coroutines.CoroutineContext)) extension function is used to **collect** the **latest** value of a flow as a `StateFlow` instance.
