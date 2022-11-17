@@ -106,3 +106,66 @@ Here are some of the most common commands:
 * `systemctl enable <unit>` - enables a unit;
 * `systemctl disable <unit>` - disables a unit;
 * `systemctl list-dependencies <unit>` - lists the dependencies of a unit.
+
+---
+
+### [Service Templates](https://www.freedesktop.org/software/systemd/man/systemd.service.html#Service%20Templates)
+
+> A service template is a unit that is used to create multiple instances of a service. It is a template that is instantiated for each instance of the service. The template is used to define the common properties of the service, and the instances are used to define the properties that are specific to each instance.
+
+* It is possible to create a service template by adding the `@` character to the end of the service unit file name: `service@.service`;
+* To create a service instance, you need to start the service template with the `@` character and the argument that will be passed to the template: `sudo systemctl start service@argument`;
+
+---
+
+### [Installing a Service](https://linuxhandbook.com/create-systemd-services/)
+
+* To install a service, you need to create a service unit file in the `/etc/systemd/system` directory;
+* The service unit file must have the `.service` extension;
+* The service unit file must have the following structure:
+
+```ini
+[Unit]
+Description=Description of the service
+After=network.target
+Before=nextcloud-web.service
+
+[Service] 
+Type=simple
+ExecStart=/path/to/executable 
+# Other options
+
+[Install]
+WantedBy=multi-user.target # The target that will be used to start the service
+RequiredBy=network.target # The target that will be used to start the service
+```
+
+The `[Unit]` section contains the options that are **common to all types of units**:
+
+* `Description` - contains the description of the service;
+* `After` - contains the units that the service will be started after;
+* `Before` - contains the units that the service will be started before;
+
+The `[Service]` section contains the options that are **specific to services**:
+
+* `ExecStart` - contains the command that will be executed when the service is started;
+* `Type` - contains the type of the service;
+  * `simple` - the service will be started in the foreground;
+  * `forking` - the service will be started in the background;
+  * `oneshot` - the service will be started only once;
+  * `dbus` - the service will be started as a D-Bus service;
+  * `notify` - the service will be started as a notification service;
+  * `idle` - the service will be started as an idle service;
+* `Restart` - contains the restart policy of the service;
+  * `no` - the service will not be restarted;
+  * `on-failure` - the service will be restarted if it fails;
+  * `on-abnormal` - the service will be restarted if it fails or is terminated abnormally;
+  * `on-watchdog` - the service will be restarted if it fails or is terminated by a watchdog timeout;
+  * `on-abort` - the service will be restarted if it fails or is terminated by an abort signal;
+  * `always` - the service will be restarted always.
+* etc.
+
+The `[Install]` section contains the options that are **common to all types of units** (this is the section that is used to enable the service):
+
+* `WantedBy` - contains the targets that will be used to start the service; this is similar to the `After` option in the `[Unit]` section, but is used to **specify systemd targets**;
+* `RequiredBy` - contains the targets that will be used to start the service; this is similar to the `Before` option in the `[Unit]` section, but is used to **specify systemd targets**;
