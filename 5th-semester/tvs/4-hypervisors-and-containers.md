@@ -2,13 +2,13 @@
 
 Types of software and execution environments:
 
-| Software          | Representation       | Execution Environment | Depends on OS? | Depends on Architecture? |
-| ----------------- | -------------------- | --------------------- | -------------- | ------------------------ |
-| JavaScript        | `.js`                | Node.js               | No             | No                       |
-| Java              | `.jar` with `.class` | Java Virtual Machine  | No             | No                       |
-| C/C++/Rust/Go/... | executables and libs | OS                    | Yes            | Yes                      |
-| Dockerfile        | docker image         | Docker                | **Yes**        | **Yes**                  |
-| assembly          | binary               | machine               | No             | Yes                      |
+| Software          | Representation       | Execution Environment | Depends on OS? | Depends on Architecture? | Supported by an OS process? |
+| ----------------- | -------------------- | --------------------- | -------------- | ------------------------ | --------------------------- |
+| JavaScript        | `.js`                | Node.js               | No             | No                       | Yes                         |
+| Java              | `.jar` with `.class` | Java Virtual Machine  | No             | No                       | Yes                         |
+| C/C++/Rust/Go/... | executables and libs | OS                    | Yes            | Yes                      | Yes                         |
+| Dockerfile        | docker image         | Docker System         | **Yes**        | **Yes**                  | No                          |
+| Assembly          | binary               | Machine               | No             | Yes                      | No                          |
 
 
 ### Virtual Machines
@@ -24,6 +24,15 @@ There are two types of VMs:
   * They are isolated from the host OS, they cannot access the host OS resources;
   * These VMs are managed by a **Virtual Machine Monitor** (VMM) also known as **Hypervisor**;
 
+A VM can also be classified into two types:
+
+* **Translates the IS** (e.g. Android Emulator, JVM, etc.) - they translate the **Instruction Set** of the guest OS to the **Instruction Set** of the host OS;
+* **Does not translate the IS** (e.g. QEMU, VirtualBox, etc.) - they do not translate the **Instruction Set** of the guest OS to the **Instruction Set** of the host OS;
+
+> **Note:** Emulator vs. Simulator
+> * **Emulator** - it is a software that emulates the **hardware** of a device;
+> * **Simulator** - it is a software that simulates the **behavior** of a device;
+
 ---
 
 ## Hypervisors
@@ -38,17 +47,21 @@ There are two types of VMs:
 There are **two types** of hypervisors:
 
 * **Type 1** - native or bare-metal hypervisors:
+  * VMM and VMs **run directly on the hardware**;
   * Runs directly on the host's hardware to control the hardware and manage the guest operating systems;
 * **Type 2** - hosted hypervisors:
+  * VMM run on top of an **operating system** and VMs run on top of the VMM;
   * Runs on top of an existing operating system (OS) as a software application;
-  * The host OS is responsible for managing the hardware and the hypervisor is responsible for managing the guest OSes.
-
+  * The host OS is responsible for managing the hardware and the hypervisor is responsible for managing the guest OSes;
+  * Address translation occurs twice: once by the host OS and once by the hypervisor;
 
 <p align="center">
     <img src="./docs/tvs-diagrams-Hypervisors.svg" alt="Hypervisors" align="center"/>
 </p>
 
---- 
+> **Note:** In AMD64 architecture, the **EL2** is for **type 1 hypervisors**.
+
+---
 
 ## Containers
 
@@ -62,9 +75,7 @@ There are **two types** of hypervisors:
     <img src="./docs/tvs-diagrams-Containers.svg" alt="Containers" align="center"/>
 </p>
 
----
-
-## Main Differences
+### Main Differences
 
 |                   | Hypervisors | Containers |
 | ----------------- | ----------- | ---------- |
@@ -72,3 +83,21 @@ There are **two types** of hypervisors:
 | **Disk space**    | Large       | Small      |
 
 The isolation of VMs is achieved by the **virtualization** of the entire hardware, while the isolation of containers is achieved by the **virtualization** of individual processes, increasing portability and efficiency.
+
+---
+
+## [WSL - Windows Subsystem for Linux](https://learn.microsoft.com/en-us/windows/wsl/)
+
+> The Windows Subsystem for Linux lets developers run a GNU/Linux environment -- including most command-line tools, utilities, and applications -- directly on Windows, unmodified, without the overhead of a virtual machine.
+
+There are **two versions** of WSL:
+
+* **WSL 1**:
+  * It is a **compatibility layer** for running **Linux binary executables** (ELF format) natively on Windows;
+* **WSL 2**:
+  * Includes **full Linux kernel** with **system call** compatibility with Windows, running in a **lightweight virtual machine** (VM);
+  * Runs on top of **Hyper-V** - a **hypervisor** that allows **multiple VMs** to run on a single host machine (Windows);
+
+<p align="center">
+    <img src="./docs/tvs-diagrams-WSL.svg" alt="WSL" align="center"/>
+</p>
