@@ -10,4 +10,5 @@
 4. [SSL/TLS](4-ssl-tls.md);
 5. [Authentication](5-authentication.md);
 6. [Web Authentication](6-web-authentication.md);
-7. [OpenID Connect](7-openid-connect.md);
+7. [OAuth 2.0](7-oauth-2.0.md);
+8. [OpenID Connect](8-openid-connect.md);
