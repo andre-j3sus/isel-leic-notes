@@ -6,4 +6,5 @@
 2. [Web APIs](2-web-apis.md);
 3. [Web Architecture](3-web-architecture.md);
 4. [The Browser Application Platform](4-browser-application-platform.md);
-5. [React](5-react.md).
+5. [TypeScript](5-typescript.md);
+6. [React](6-react.md).

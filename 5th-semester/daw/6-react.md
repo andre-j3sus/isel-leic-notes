@@ -152,9 +152,93 @@ function Example() {
 
 **You can also build your own Hooks to reuse stateful behavior between different components.**
 
+#### [Reducer Hook (`useReducer`)](https://beta.reactjs.org/learn/extracting-state-logic-into-a-reducer)
+
+* The `useReducer()` hook is an alternative to the `useState()` hook;
+* Reducers are **pure functions** that **take the previous state and an action**, and return the **next state**;
+
 ---
 ---
 
-## React Router
+## [React Context](https://beta.reactjs.org/learn/passing-data-deeply-with-context)  
 
-_(Todo)_
+> Context provides a way to **pass data through the component tree** without having to pass props down manually at every level.
+
+* Created by calling `React.createContext()`;
+* To make a context available to all components in the subtree below a certain component, you need to **use the `Provider` component**:
+
+```jsx
+const ThemeContext = React.createContext('light');
+
+function App() {
+  return (
+    <ThemeContext.Provider value="dark">
+      <Toolbar />
+    </ThemeContext.Provider>
+  );
+}
+```
+
+In this example, the **default value** for the current theme is `'light'`, but the **`Toolbar`** component is inside a **`ThemeContext.Provider`** with a value of `'dark'`. So the **`Toolbar`** will **receive `'dark'`** as its current context value.
+
+* To use a context value, we need to use the `useContext()` hook, which takes a context object (the value returned from `React.createContext()`) and returns the current context value for that context:
+
+```jsx
+const theme = useContext(ThemeContext);
+```
+
+---
+---
+
+## [React Router](https://reactrouter.com/en/main)
+
+> React Router is a collection of navigational components that compose declaratively with your application.
+
+* To create a router,we use the `createBrowserRouter()` function, and we use it via `Router.Provider`:
+
+```jsx
+import { createBrowserRouter } from 'react-router';
+
+const Router = createBrowserRouter();
+
+function App() {
+  return (
+    <Router.Provider>
+      <div>
+        <Link to="/">Home</Link>
+        <Link to="/about">About</Link>
+        <Link to="/users">Users</Link>
+      </div>
+      <Router.Switch>
+        <Router.Route path="/" exact>
+          <Home />
+        </Router.Route>
+        <Router.Route path="/about">
+          <About />
+        </Router.Route>
+        <Router.Route path="/users">
+          <Users />
+        </Router.Route>
+      </Router.Switch>
+    </Router.Provider>
+  );
+}
+```
+
+To navigate between pages, we use the `Link` component:
+
+```jsx
+<Link to="/about">About</Link>
+```
+
+Or we can use the `useNavigate()` hook:
+
+```jsx
+const navigate = useNavigate();
+
+function handleClick() {
+  navigate('/about');
+}
+```
+
+<!--Add more content (Loaders, Outlet, etc)-->
