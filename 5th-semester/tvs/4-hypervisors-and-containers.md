@@ -101,3 +101,38 @@ There are **two versions** of WSL:
 <p align="center">
     <img src="./docs/tvs-diagrams-WSL.svg" alt="WSL" align="center"/>
 </p>
+
+---
+
+## [Docker](https://www.docker.com/)
+
+> Docker is a set of platform as a service (PaaS) products that use **OS-level virtualization to deliver software in packages** called **containers**.
+
+### Container
+
+> _A **container** is a **sandboxed process** on your machine that is **isolated** (file system, network, process tree, etc.) from all other processes on the machine;_
+
+* Is a runnable instance of an **image**;
+* You can create, start, stop, move, or delete a container using the Docker API or CLI;
+* Is portable;
+* Is isolated from other containers, running its own software, binaries and configurations.
+
+### Image
+
+> _An **image** is a **read-only template** with instructions for creating a Docker container;_
+
+* Contains everything needed to run an application - all dependencies, configurations, scripts, binaries, etc;
+* Provides a filesystem and a set of parameters which can be used to create a container;
+* Also contains other configuration, such as **environment variables** and **entrypoint**;
+* To create a container, you need an image;
+* To create an image, you need a `Dockerfile` - a text document that contains all the commands a user could call on the command line to assemble an image;
+* The `docker build` command builds an image from a `Dockerfile` and a **context**;
+
+### Basic Docker Commands
+
+* `docker run` - **creates** and runs a container;
+* `docker ps` - **lists** all running containers;
+  * To list all containers, use the `-a` flag;
+* `docker image list` - **lists** all images;
+
+<!--To be continued...-->
