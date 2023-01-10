@@ -3,12 +3,12 @@
 > This chapter contains a review of the Web Architecture, studied in the [Introduction to Internet Programming](../../3rd-semester/ipw/) course.
 
 * Web as an **information space** where the items of interest are **resources**;
-* **Resource identification** via **Uniform Resource Identifiers** (URI) - **universal** resource identifiers;
-* **Interaction** between agents and resources via interaction **protocols**, such as **HTTP**;
+* **Resource identification** via **Uniform Resource Identifiers** (URI);
+  * URIs are universal, i.e., they can be used to identify resources in any information space;
+* **Interaction** between agents and resources via **interaction protocols**, such as **HTTP** (to discover more about the http protocol, check the [HTTP Protocol](../../3rd-semester/ipw/1-http.md) section of the [Introduction to Internet Programming](../../3rd-semester/ipw/) course);
 * Use of **formats** to represent state, namely resource state;
-* **Media-types** as identifiers for formats;
-* Use of **links in representations** as a way to relate resources in the information space;
-* To discover more about the http protocol, check the [HTTP Protocol](../../3rd-semester/ipw/1-http.md) section.
+  * **Media-types** as identifiers for formats;
+  * Use of **links in representations** as a way to relate resources in the information space;
 
 ---
 ---
@@ -34,6 +34,8 @@
 * The `links` property is used to represent **navigational links** to other resources;
 * Media type: `application/vnd.siren+json`.
 
+> **Note - Links vs Actions**: _The difference between links and actions is that links are navigational and actions are state-changing. Links are used to navigate to other resources, while actions are used to change the state of the current resource. The distinction is important because it allows clients to understand the purpose of a link or action and how it should be handled._
+
 ---
 
 ### [Problem Details for HTTP APIs](https://www.rfc-editor.org/rfc/rfc7807)
@@ -46,6 +48,19 @@
   * `detail`: a human-readable explanation specific to this occurrence of the problem;
   * `instance`: a URI reference that identifies the specific occurrence of the problem;
 * Media type: `application/problem+json`.
+
+---
+---
+
+## Orthogonal Specifications
+
+> _Identification, interaction, and representation are orthogonal concepts, meaning that technologies used for identification, interaction, and representation may evolve independently._
+
+The [IANA (Internet Assigned Numbers Authority)](https://www.iana.org/) manages a set of registries with Web specifications, such as:
+
+* [URI Schemes](https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml);
+* [Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml);
+* [HTTP Status Codes](https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml).
 
 ---
 ---
@@ -84,7 +99,8 @@ _The terms **upstream** and **downstream** are used to describe directional requ
 
 ### [NGINX](https://www.nginx.com/)
 
-* A **web server** that can also be used as a [**reverse proxy**](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/), **load balancer**, **mail proxy**, and **HTTP cache**;
+> _NGINX is a web server that can also be used as a [**reverse proxy**](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/), load balancer, mail proxy, and HTTP cache._
+
 * [Controlling NGINX Processes at Runtime](https://docs.nginx.com/nginx/admin-guide/basic-functionality/runtime-control/);
   * `nginx -s <SIGNAL>` - sends a signal to the master process;
   * The following signals are supported:

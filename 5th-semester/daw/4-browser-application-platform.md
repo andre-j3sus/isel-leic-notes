@@ -12,6 +12,8 @@
 
 ## Modularity
 
+> _A module is a mechanist to **organize and isolate code**._
+
 * By default, on the browser all the code runs in the **top-level scope**, which is the global scope - multiple `script` elements exist in the **same scope**;
 * A **module system** provides:
   * **Isolation**;
@@ -20,6 +22,12 @@
   * **Export** behavior and data to other modules;
 * Node.js uses the **CommonJS** (CJS) module system;
 * Browser uses the **ES6** (ESM) module system.
+
+### ESM
+
+* The ESM module system is **built-in** in the browser;
+* To import a module, we use the `import` statement;
+* A module is a mechanist to organize and isolate code, however if the application has a lot of modules, the browser will need to **load a lot of files**, which will **impact the performance** of the application;
 * We **should not** need to reduce the module count for efficiency purposes. The solution to this is **bundling multiple modules** into a single load level modules;
 * This means that a **build process** is required to bundle the modules into a single file.
 

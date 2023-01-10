@@ -9,6 +9,18 @@
 * **Stateless** protocol, meaning that each time a request is made, the server has **no knowledge of the previous request**;
 * **Sessionful** protocol, meaning that the server can hold information about the client, by using **cookies**;
 
+> The target of an HTTP request is called a "resource". HTTP does not limit the nature of a resource; it merely defines an interface that might be used to interact with resources. Each resource is identified by a Uniform Resource Identifier (URI), as described in Section 2.7 of [RFC7230].
+
+---
+
+## Uniform Interface
+
+> HTTP provides a uniform interface for interacting with a resource, regardless of its type, nature, or implementation, via the manipulation and transfer of representations.
+
+* The HTTP is nor resource-specific, meaning that it can be used to transfer any type of data;
+* Requests are directed to resources using a generic interface, with standard semantics;
+* This helps to decouple the client and the server, allowing them to evolve independently;
+
 ---
 ---
 
