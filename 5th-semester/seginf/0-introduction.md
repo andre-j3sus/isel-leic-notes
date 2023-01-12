@@ -25,6 +25,8 @@
 * 3 main properties:
   * **Confidentially**;
   * **Integrity**;
+    * **Authenticity**;
+    * **Non-repudiation**;
   * **Availability**.
 
 ### Confidentially
@@ -39,10 +41,10 @@
 
 * Ensure that the information/data received is **exactly** as the data sent from an authorized entity;
   * The content cannot be modified, corrupted or lost by others;
-* Ensures authenticity:
+* Ensures **authenticity**:
   * Ensures that the involved entity is, in fact, the one she claims to be;
   * Authenticity is often defined ad a fourth principle;
-* Also includes prevent that entities refuse to generate information: non-repudiation.
+* Also includes prevent that entities refuse to generate information: **non-repudiation**.
 
 ### Availability
 

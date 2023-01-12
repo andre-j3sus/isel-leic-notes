@@ -93,3 +93,18 @@ There are four ways (**grant flows**) to obtain an access token:
 
 * Communication channel between the **client and the authorization server**;
 * HTTP basic authentication is used to authenticate the client: `client_id` (username) and `client_secret` (password);
+
+---
+
+## Authorization Request
+
+The client constructs the authorization request by adding the following parameters to the query string of the authorization endpoint URI:
+
+* `response_type`: REQUIRED. The value MUST be one of `code`, `token`, or `id_token`;
+* `client_id`: REQUIRED. The client identifier as described in [Section 2.2](https://tools.ietf.org/html/rfc6749#section-2.2);
+* `redirect_uri`: OPTIONAL. As described in [Section 3.1.2](https://tools.ietf.org/html/rfc6749#section-3.1.2);
+  * this parameter is also known as the **callback URI**;
+* `scope`: OPTIONAL. The scope of the access request as described by [Section 3.3](https://tools.ietf.org/html/rfc6749#section-3.3);
+* `state`: RECOMMENDED. An opaque value used by the client to maintain state between the request and callback. The authorization server includes this value when redirecting the user-agent back to the client. The parameter SHOULD be used for preventing **cross-site request forgery** as described in [Section 10.12](https://tools.ietf.org/html/rfc6749#section-10.12).
+* `response_mode`: OPTIONAL. Informs the authorization server of the mechanism to be used for returning parameters from the authorization endpoint.
+* `nonce`: OPTIONAL. String value used to associate a Client session with an ID Token, and to mitigate replay attacks. The value is passed through unmodified from the Authentication Request to the ID Token. Sufficient entropy MUST be present in the nonce values used to prevent attackers from guessing values.
