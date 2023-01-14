@@ -19,6 +19,7 @@ There are two types of VMs:
 
 * **Process VMs** (e.g. Java Virtual Machine, Node.js, Python, Ruby, etc.) - they are not real VMs, they are just processes that run on the host OS;
   * They are not isolated from the host OS, they can access the host OS resources;
+  * The main purpose of these VMs is to **translate the Instruction Set** of the guest OS to the **Instruction Set** of the host OS; 
   * Also known as **Virtual Execution Environments**;
 * **System VMs** (e.g. VirtualBox, VMware, QEMU, etc.) - they are real VMs, they run on the host OS and are isolated from the host OS;
   * They are isolated from the host OS, they cannot access the host OS resources;
@@ -59,7 +60,14 @@ There are **two types** of hypervisors:
     <img src="./docs/tvs-diagrams-Hypervisors.svg" alt="Hypervisors" align="center"/>
 </p>
 
-> **Note:** In AMD64 architecture, the **EL2** is for **type 1 hypervisors**.
+> **Note: Paravirtualization**
+> Paravirtualization is a type of virtualization technique that allows virtual machines (VMs) to run on a host computer with **minimal modification to the host's kernel**. This is achieved by creating a thin layer of software between the virtual machine and the host's hardware, which allows the **virtual machine to communicate with the host's resources directly**, rather than emulating them.
+> 
+> In contrast to full virtualization, paravirtualization **requires that the guest operating system be modified to work in the virtualized environment**, and it requires a paravirtualized hypervisor.
+>
+> One of the main **advantages** of paravirtualization is that it can i**mprove the performance** of virtual machines by **reducing the overhead caused by hardware emulation**. It also allows for greater control over the virtualized environment, which can be useful in high-performance computing and other resource-intensive applications.
+
+However, paravirtualization also has some **disadvantages**, such as the **requirement of modification of the guest operating system** and the fact that it **is not as flexible as full virtualization**. It also typically only works with specific operating systems and hypervisors.
 
 ---
 
@@ -70,6 +78,10 @@ There are **two types** of hypervisors:
 * Containers are **isolated** from each other and bundle their own software, libraries and configuration files;
 * They **share the OS kernel** with other containers, running as **lightweight processes**;
 * Containers are **more portable** than VMs, and can run on any OS that supports containers;
+* The main purpose of containers is to **distribute and install software in an isolated execution context**, in a much **more efficient and scalable** way compared to the use of virtual machines;
+* _Containers provide isolated environments, with all the resources (file system, networks, etc.) necessary for the execution of a given application or (micro-)service._
+
+> In Linux, the support for the construction of containers is performed through a set of kernel services that allow, in particular, the **creation of different namespaces for various resources**, thus delimiting the resources accessible to the processes, and the definition of access quotas (**cgroups**) to certain physical resources.
 
 <p align="center">
     <img src="./docs/tvs-diagrams-Containers.svg" alt="Containers" align="center"/>
@@ -174,7 +186,7 @@ _Docker uses a client-server architecture: the **Docker client** talks to the **
 * A **union file system** is a file system that operates by **creating layers**, making them **seamlessly** **stackable**;
 * A **Docker image is built up from a series of layers**. Each layer represents an instruction in the image’s Dockerfile. Each layer except the very last one is read-only;
 * When you make a change to an image, a new layer is created that applies specifically to that change;
-* The **union file system** combines the layers into a single view;
+* The **union file system** combines the layers into a single view (**upper**);
 * The **union file system** uses a **copy-on-write** strategy, which means that it only copies a file the first time you modify it - after that, it keeps writing to the same copy.
 
 ---

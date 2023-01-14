@@ -49,7 +49,7 @@ In Linux systems, services are also called **daemons**;
 
 ---
 
-### Unit Blocks
+### [Unit Blocks](https://docs.fedoraproject.org/en-US/quick-docs/understanding-and-administering-systemd/)
 
 > A unit is a configuration file that describes a system resource, such as a device, a mount point, a socket, a swap file, a service, or a target.
 
@@ -66,6 +66,7 @@ In Linux systems, services are also called **daemons**;
   * When a socket is inactive, it is not listening for connections, and so the service cannot be started;
 * **Target**
   * `.target`;
+  * _A synchronization point for other units. Usually used to start enabled services on boot._
   * Targets are used for **grouping and ordering units**. They are somewhat of a rough equivalent to runlevels in that at different targets, different services, sockets, and other units are started. Unlike runlevels, they are much more free-form and you can easily make your own targets for ordering units, and targets have dependencies among themselves.
 
 ---
@@ -87,6 +88,11 @@ Some of the most common status headers are:
   * Usually, **a service is triggered by a socket**;
 * `Triggers` - contains the units that the unit triggers;
   * Usually, **a socket triggers a service**;
+
+> **Note - Enabled vs Loaded vs Active**:
+> * **Enabled** and **disabled** indicate whether the unit is configured to start automatically when the system boots. 
+> * **Loaded** and **not-found** indicate whether the unit is loaded into the system.
+> * **Active** and **inactive** indicate whether the unit is currently running.
 
 ---
 
