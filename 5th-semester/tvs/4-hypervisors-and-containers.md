@@ -61,13 +61,14 @@ There are **two types** of hypervisors:
 </p>
 
 > **Note: Paravirtualization**
+> 
 > Paravirtualization is a type of virtualization technique that allows virtual machines (VMs) to run on a host computer with **minimal modification to the host's kernel**. This is achieved by creating a thin layer of software between the virtual machine and the host's hardware, which allows the **virtual machine to communicate with the host's resources directly**, rather than emulating them.
 > 
 > In contrast to full virtualization, paravirtualization **requires that the guest operating system be modified to work in the virtualized environment**, and it requires a paravirtualized hypervisor.
 >
 > One of the main **advantages** of paravirtualization is that it can i**mprove the performance** of virtual machines by **reducing the overhead caused by hardware emulation**. It also allows for greater control over the virtualized environment, which can be useful in high-performance computing and other resource-intensive applications.
-
-However, paravirtualization also has some **disadvantages**, such as the **requirement of modification of the guest operating system** and the fact that it **is not as flexible as full virtualization**. It also typically only works with specific operating systems and hypervisors.
+> 
+> However, paravirtualization also has some **disadvantages**, such as the **requirement of modification of the guest operating system** and the fact that it **is not as flexible as full virtualization**. It also typically only works with specific operating systems and hypervisors.
 
 ---
 
