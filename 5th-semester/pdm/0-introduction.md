@@ -24,7 +24,6 @@
 * Fast and feature-rich **emulator**;
 * Powerful **profiler**;
 * Android Studio is **free** and **open source**.
-* **Included in the APK generated in the build process.**
 
 ### Project Structure
 
@@ -53,6 +52,9 @@ The manifest file declares the following:
 * The **components of the app**, which include all activities, services, broadcast receivers, and content providers.
 * The **permissions** that the app needs in order to access protected parts of the system and other apps.
 * The **hardware and software features that the app requires**, which affects the app's installation on a device.
+
+
+**Included in the APK generated in the build process.**
 
 ### App Components
 

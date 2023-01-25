@@ -85,12 +85,6 @@ They have the following attributes:
 * `android:category` - The category that the component belongs to. For example, `android.intent.category.LAUNCHER` is the category that identifies the main activity of an app.
 * `android:data` - The data that the component handles. For example, `content://com.example.app.provider/words` is the data that identifies a content provider.
 
-An intent can be explicit or implicit:
-
-* An **explicit intent** specifies the component to start, such as `new Intent(this, MyActivity.class)`;
-* An **implicit intent** specifies the action to perform, but not the component to start, such as `new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"))` - the system finds an activity that can handle the intent.
-  * **Requires at least one intent filter in the manifest file.**
-
 ---
 
 ## [Tasks and the back stack](https://developer.android.com/guide/components/activities/tasks-and-back-stack)
@@ -167,7 +161,7 @@ The [`collectAsState()`](https://developer.android.com/reference/kotlin/androidx
 
 > _Lifecycle-aware components perform actions in response to a change in the lifecycle status of another component, such as activities and fragments. These components help you produce better-organized, and often lighter-weight code, that is easier to maintain._
 
-_`[Lifecycle`](https://developer.android.com/topic/libraries/architecture/lifecycle#lc) is a class that holds the information about the lifecycle state of a component (like an activity or a fragment) and allows other objects to observe this state._
+_[`Lifecycle`](https://developer.android.com/topic/libraries/architecture/lifecycle#lc) is a class that holds the information about the lifecycle state of a component (like an activity or a fragment) and allows other objects to observe this state._
 
 A Lifecycle uses two main enumerations:
 
@@ -177,10 +171,3 @@ A Lifecycle uses two main enumerations:
 _`LifecycleOwner` is a single method interface that denotes that the class has a Lifecycle. It has one method, `getLifecycle()`, which must be implemented by the class._
 
 A `LifecycleScope` is defined for each `Lifecycle` object. Any coroutine launched in this scope is canceled when the `Lifecycle` is destroyed. You can access the `CoroutineScope` of the `Lifecycle` either via `lifecycle.coroutineScope` or `lifecycleOwner.lifecycleScope` properties.
-
----
-
-## [Automated Testing in Android](https://developer.android.com/training/testing)
-
-* **Local tests** are **faster** and **more reliable** than instrumented tests;
-* [**Instrumented tests**](https://developer.android.com/training/testing/instrumented-tests) are **more realistic** and **more comprehensive** than local tests.
