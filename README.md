@@ -55,5 +55,5 @@
 
 ### 📆 6th Semester
 
-* Option B _(coming soon)_;
-* Option C _(coming soon)_.
+* _Option B_ - [**CN** - Computação na Nuvem / Cloud Computing](./6th-semester/cn);
+* _Option C_ - [**IA** - Inteligência Artificial / Artificial Intelligence](./6th-semester/ia);
