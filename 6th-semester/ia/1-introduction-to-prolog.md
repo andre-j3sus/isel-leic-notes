@@ -55,7 +55,8 @@ true
 ?- bigger(horse, elephant).
 false
 ?- bigger(elephant, donkey).
-false   % Problem, because elephant is bigger than donkey
+false   
+% Problem, because elephant is bigger than donkey
 ```
 
 > **Transitive closure**: if A is bigger than B and B is bigger than C, then A is bigger than C.
