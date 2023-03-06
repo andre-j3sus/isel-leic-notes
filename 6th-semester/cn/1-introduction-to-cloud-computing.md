@@ -2,6 +2,11 @@
 
 > *Cloud Computing refers to both the **application delivered as services** over the Internet and the **hardware and systems software in the datacenters** that provide those services.*
 
+<p align="center">
+    <img src="https://b.cloudcomputing.id/images/eece902c-0a29-4255-9163-e57597e79b7d/layanan-cloud-computing-l-min.jpg" alt="Cloud Computing" align="center" width="400" />
+</p>
+
+
 * Scalability/elasticity - **infinite** virtual resources;
 * Pay-per-use - utility prices;
 * Self-service interfaces;
@@ -80,4 +85,6 @@ The top 3 Cloud Service Providers are:
 * Microsoft Azure
 * GCP - Google Cloud Platform (used in this course)
 
-<!--Add image-->
+<p align="center">
+    <img src="https://miro.medium.com/max/1400/1*YTVgxkvq3YLyHxJi9r1ktw.png" alt="Cloud Service Providers" align="center" width="400" />
+</p>

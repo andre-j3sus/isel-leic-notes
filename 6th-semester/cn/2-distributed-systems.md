@@ -130,7 +130,7 @@ Some important QoS metrics:
 > The CAP Theorem states that it is impossible for a distributed system to simultaneously provide more than two out of the following three guarantees: **Consistency**, **Availability** and **Partition Tolerance**.
 
 <p align="center">
-    <img src="https://hazelcast.com/wp-content/uploads/2021/12/cap-theorem-diagram-800x753-1.png" alt="CAP Theorem" align="center"/>
+    <img src="https://hazelcast.com/wp-content/uploads/2021/12/cap-theorem-diagram-800x753-1.png" alt="CAP Theorem" align="center" width="300" />
 </p>
 
 * **Consistency**: all nodes see the same data at the same time;
