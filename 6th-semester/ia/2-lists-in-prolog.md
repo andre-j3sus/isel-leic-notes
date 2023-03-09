@@ -1,4 +1,4 @@
-# Lists
+# Lists in Prolog
 
 > List is a simple data structure widely used in non-numeric programming. It is a collection of items in a particular order. The items in a list are called elements or sometimes items.
 
