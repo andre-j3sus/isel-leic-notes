@@ -43,7 +43,7 @@ características) num nível de abstração, ações atómicas num nível de abs
 ### Propriedades (ACID - Atomicity, Consistency, Isolation, Durability)
 
 * **Atomicidade (Atomicity)**: uma transação é indivisível no seu processamento, isto é, a transação é executada
-  completamente, ou não é executada de todo ou em parte;
+  completamente, ou não é executada de todo;
 * **Consistência (Consistency preservation)**: uma transação conduz a base de dados de um estado consistente para outro
   estado consistente;
 * **Isolamento (Isolation)**: transações concorrentes não devem interferir umas com as outras durante a sua execução;
@@ -277,7 +277,7 @@ Cada transação protege-se das outras tanto quanto necessário, escolhendo o n�
 
 #### 2PL - PostgreSQL
 
-* Todas as escritas são de duas fazes e colocam um lock;
+* Todas as escritas são de duas fases e colocam um lock;
 * Como é usado uma variante do protocolo de controlo de concorrência multiversões, designada **Snapshot** (veremos
   adiante), nunca há dirty reads e, por omissão, as leituras não colocam locks, mas podem ser usadas cláusulas na
   instrução SELECT que conduzem à utilização de locks de duas fases.
