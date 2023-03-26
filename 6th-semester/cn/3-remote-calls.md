@@ -36,6 +36,10 @@
 
 > A **remote object** is an **object** that **resides** in a **different address space**, providing an accessible **remote interface** allowing **remote method invocation**.
 
+<p align="center">
+    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20211028122357/workingofRMI.jpg" width="600" alt="RMI"/>
+</p>
+
 ### Proxy (Client) and Skeleton (Server)
 
 * A **proxy** is an **object** that **resides** in the **client address space** and **implements** the **remote interface**;
@@ -55,35 +59,125 @@
 
 ---
 
-## Remote Calls Semantics vs. Fault Tolerance
+### Remote Calls Semantics vs. Fault Tolerance
 
-### Exactly Once
+#### Exactly Once
 
 * In a call, is assured that the **target** is **executed** **exactly once**;
 * Calls in a local environment use this semantics;
 * But in a remote environment faults can occur, and need to be handled using retransmission or other techniques;
 
-### Maybe Once
+#### Maybe Once
 
 * In a call, it's not possible to assure that the **target** is executer or not;
 
-### At Least Once
+#### At Least Once
 
 * In a call, is assured that the **target** is **executed** **at least once**, always receiving a result or an exception;
 
-### At Most Once
+#### At Most Once
 
 * In a call, a result is always received, knowing that the **target** is executed only once, or an exception is received;
 * This semantics is the most used actually;
 
 ---
 
-## Coupling
+### Coupling
 
-### Tight Coupling
+#### Tight Coupling
 
 * When both parts are **highly dependent**, with implementation dependencies, or the connections are **stateful**;
 
-### Loosely Coupling
+#### Loosely Coupling
 
 * When both parts don't have implementation dependencies, only depending on the **interface**, and the connections are **stateless**;
+
+---
+
+## [Java RMI](https://docs.oracle.com/javase/7/docs/technotes/guides/rmi/hello/hello-world.html)
+
+> **Java RMI** is a **Java API** that **enables** a **Java application** to **invoke methods** on **objects** that **reside** in **different address spaces**.
+
+A **Java RMI** application consists of:
+
+* **Remote interfaces** that **extend** the `java.rmi.Remote` interface;
+* **Server** - **remote objects** that **implement** the **remote interfaces**;
+* **Client** - client that invokes **remote methods** on **remote objects**;
+
+### Remote Interface
+
+* A **remote interface** extends the interface `java.rmi.Remote` and declares a set of remote methods;
+* Each remote method must declare `java.rmi.RemoteException` (or a superclass of `RemoteException`) in its throws clause, in addition to any application-specific exceptions.
+
+An example of a **remote interface**:
+
+```java
+public interface Hello extends Remote {
+    String sayHello() throws RemoteException;
+}
+```
+
+### Server - Remote Object
+
+The server's main method does the following:
+
+* Create and export a **remote object**;
+* Register the **remote object** with the **RMI registry**.
+
+```java
+public class HelloServer implements Hello {
+    public HelloServer() {}
+
+    public String sayHello() {
+        return "Hello, world!";
+    }
+
+    public static void main(String args[]) {
+        try {
+            HelloServer obj = new HelloServer();
+            Hello stub = (Hello) UnicastRemoteObject.exportObject(obj, 0);
+
+            // Bind the remote object's stub in the registry
+            Registry registry = LocateRegistry.getRegistry();
+            registry.bind("Hello", stub);
+
+            System.err.println("Server ready");
+        } catch (Exception e) {
+            System.err.println("Server exception: " + e.toString());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+As you can see, the remote object is exported using the `UnicastRemoteObject.exportObject()` method, which returns a **stub** for the remote object in the local address space.
+
+Then the **stub** is bound in the **registry** using the `Registry.bind()` method.
+
+### Client
+
+The client program obtains the **stub** for the remote object from the **registry** and invokes the remote method on the remote object.
+
+```java
+public class HelloClient {
+    private HelloClient() {}
+
+    public static void main(String args[]) {
+        try {
+            // Getting the registry
+            Registry registry = LocateRegistry.getRegistry();
+
+            // Looking up the registry for the remote object
+            Hello stub = (Hello) registry.lookup("Hello");
+
+            // Calling the remote method using the obtained object
+            stub.sayHello();
+
+            System.err.println("Server response: " + response);
+        } catch (Exception e) {
+            System.err.println("Client exception: " + e.toString());
+            e.printStackTrace();
+        }
+    }
+}
+```
