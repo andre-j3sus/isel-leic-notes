@@ -2,6 +2,10 @@
 
 > The minimax principle is a decision rule used in decision theory, game theory, statistics, and philosophy for minimizing the possible loss for a worst case (maximum loss) scenario. When dealing with gains, it is referred to as "maximin"—to maximize the minimum gain. The principle is also known as the principle of pessimism, the principle of prudence, and the principle of maximum entropy.
 
+> **Note**: Good video about the minimax principle: [Algorithms Explained – minimax and alpha-beta pruning](https://www.youtube.com/watch?v=l-hh51ncgDI) by Sebastian Lague.
+
+---
+
 ## Two-Player Zero-Sum Games
 
 > The games most commonly studied within AI are what game theorists call deterministic, two-player, turn-taking, perfect information, zero-sum games.
@@ -70,4 +74,10 @@ MINIMAX(s) =
 
 > Alpha-beta pruning is a search algorithm that seeks to decrease the number of nodes that are evaluated by the minimax algorithm in its search tree. It is an adversarial search algorithm used commonly for machine playing of two-player games (Tic-tac-toe, Chess, Go, etc.).
 
-<!--TODO: Add diagram-->
+<p align="center">
+    <img src="docs/alpha-beta.png" width="400" alt="Alpha-Beta Pruning"/>
+</p>
+
+* The alpha-beta pruning algorithm is a modification of the minimax algorithm that allows us to prune the search tree, reducing the number of nodes that we need to evaluate;
+* It keeps track of two values, `alpha` and `beta`, which represent the best possible score that the MAX player can guarantee and the best possible score that the MIN player can guarantee, respectively;
+* The `alpha` value represents the best choice that the MAX player can make at that point in the game, and the `beta` value represents the best choice that the MIN player can make at that point in the game.

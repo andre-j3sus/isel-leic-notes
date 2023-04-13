@@ -125,4 +125,22 @@ Yes
 * Prolog uses **backtracking** to **find solutions to a query**;
 * If a **goal matches a fact**, then it is satisfied;
 * If a goal **matches a rule**, then it is **satisfied if the body of the rule is satisfied**;
-* If a goal consists of **multiple subgoals**, then it is satisfied if **all subgoals are satisfied**;
+* If a goal consists of **multiple subgoals**, then it is satisfied if **all subgoals are satisfied**.
+
+---
+
+### [Built-in Predicates](https://www.swi-prolog.org/pldoc/man?section=builtin)
+
+In this section, we will see some relevant built-in predicates:
+
+* `is/2` - used to assign a value to a variable;
+* `nth0/3` - used to get the Nth element of a list; also has `nth1/3`;
+* `!` - used to **cut** the search tree - **stops backtracking**;
+* `->` - if-then-else;
+* `;` - used to **add alternatives** to a goal; logical OR;
+* `,` - used to **add subgoals** to a goal; logical AND;
+* `findall/3` - used to **find all solutions** to a goal;
+* `assert/1` - used to **add a fact** to the database;
+* `retract/1` - used to **remove a fact** from the database;
+* `consult/1` - used to **load a file** into the current session;
+* _(to be continued)_
