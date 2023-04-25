@@ -8,3 +8,4 @@
 4. [Google Cloud Platform](4-google-cloud-platform.md);
 5. [Distributed File Systems](5-distributed-file-systems.md);
 6. [Google Cloud Storage](6-google-cloud-storage.md);
+7. [NoSQL Databases](7-nosql-datastores.md);
