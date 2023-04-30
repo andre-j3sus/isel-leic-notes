@@ -1,1 +1,22 @@
 # Simulated Annealing
+
+> Simulated annealing is a probabilistic technique for approximating the global optimum of a given function. Specifically, it is a metaheuristic to approximate global optimization in a large search space for an optimization problem. It is often used when the search space is discrete (e.g., all tours that visit a given set of cities). For problems where finding an approximate global optimum is more important than finding a precise local optimum in a fixed amount of time, simulated annealing may be preferable to alternatives such as gradient descent.
+
+* At the beginning, SA accepts **worse and better** solutions because the **temperature is high**;
+* At the end of the optimization process, the **temperature is very low** and SA only accepts **better** solutions - behaves like **hill climbing**;
+* The probability function of temperature is exponential: $P(\Delta E, T) = e^{-\frac{f(s') - f(s)}{T}}$.
+
+## Implementation
+
+1. Make a **random initial solution** $s$;
+2. Make $T = Tmax$;
+3. Select a neighbor $s'$ of $s$;
+   1. If $f(s') < f(s)$, then $s = s'$;
+   2. Else, $s = s'$ with probability $e^{-\frac{f(s') - f(s)}{T}}$;
+   3. Repeat step 3 k times;
+4. Temperature is updated: $T = T * \alpha$;
+5. If $T < Tmin$, then stop; else, go to step 3.
+
+A well known approach to vary temperature is to use a **exponentially-decreasing function**: $T(t) = Tmax * exp(-R * t)$, where $R$ is a temperature reduction rate (constant), and $Tmax$ is the initial temperature - a large value compared to $R$.
+
+<!--Add more info-->

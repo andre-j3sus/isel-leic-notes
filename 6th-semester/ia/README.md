@@ -7,3 +7,4 @@
 5. [Heuristic Search and the A* Algorithm](5-heuristic-search-and-the-a-star-algorithm.md);
 6. [Optimization Algorithms](6-optimization-algorithms.md);
 7. [Simulated Annealing](7-simulated-annealing.md);
+8. [Genetic Algorithms](8-genetic-algorithms.md);
