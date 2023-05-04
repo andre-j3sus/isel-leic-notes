@@ -9,3 +9,4 @@
 5. [Distributed File Systems](5-distributed-file-systems.md);
 6. [Google Cloud Storage](6-google-cloud-storage.md);
 7. [NoSQL Databases](7-nosql-databases.md);
+8. [Pub/Sub](8-pub-sub.md);
