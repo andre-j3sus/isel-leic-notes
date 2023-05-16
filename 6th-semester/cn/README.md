@@ -10,3 +10,4 @@
 6. [Google Cloud Storage](6-google-cloud-storage.md);
 7. [NoSQL Databases](7-nosql-databases.md);
 8. [Pub/Sub](8-pub-sub.md);
+9. [Compute Engine](9-compute-engine.md);
