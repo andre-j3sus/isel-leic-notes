@@ -119,6 +119,13 @@ The *Autoscaling* feature allows to automatically increase or decrease the numbe
 * **On**: create and destroy VM instances automatically;
 * **Off**: the number of VM instances is fixed and the applications running on them are responsible for scaling.
 
+To create an instance group from a VM instance:
+
+1. Create a **VM instance**;
+2. Create an **Image** using the **disk** associated with the VM instance; the image contains the OS and runtime environment;
+3. Create an **Instance Template** using the image;
+4. Create an **Instance Group** using the instance template.
+
 ---
 
 ### Templates

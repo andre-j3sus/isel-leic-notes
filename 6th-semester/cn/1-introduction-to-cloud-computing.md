@@ -8,6 +8,9 @@
 
 
 * Scalability/elasticity - **infinite** virtual resources;
+  * **Scale up** - increase the resources of a single node;
+  * **Scale down** - increase the number of nodes;
+  * **Workloads** - the amount of work performed by a computer system;
 * Pay-per-use - utility prices;
 * Self-service interfaces;
 * Virtualization - avoid acquisition/installation/maintenance of datacenters.
@@ -50,6 +53,10 @@ There are multiple execution environments:
 | **SaaS** (Software as a Service)       | Web Browser              | **Cloud Applications** (social networks, email, ...)                                         |
 | **PaaS** (Platform as a Service)       | Development Environments | **Cloud Platform** (programming languages, frameworks, Web APIs, ...)                        |
 | **IaaS** (Infrastructure as a Service) | Virtualization Manager   | **Cloud Infrastructure** (computer servers, data storage, firewall, load balancer, VPN, ...) |
+
+<p align="center">
+    <img src="docs/saas-vs-iaas-vs-paas.png" align="center" alt="Cloud Computing Stack" width="400" />
+</p>
 
 ---
 
