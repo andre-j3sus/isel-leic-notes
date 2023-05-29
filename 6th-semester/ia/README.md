@@ -8,3 +8,4 @@
 6. [Optimization Algorithms](6-optimization-algorithms.md);
 7. [Simulated Annealing](7-simulated-annealing.md);
 8. [Genetic Algorithms](8-genetic-algorithms.md);
+9. [Planning](9-planning.md);
