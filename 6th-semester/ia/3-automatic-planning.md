@@ -73,3 +73,13 @@ Three blocks `A`, `B` and `C` are on a table. The goal is to stack `A` on `B` on
 **Plan**:
   * `move(A, table, B)`;
   * `move(B, table, C)`.
+
+---
+
+## Problem with Completeness
+
+* **Completeness** - if there is a solution, the algorithm will find it.
+
+The problem with completeness is **locality** (a.k.a. **linearity**) - the planner keeps working myopically on just one goal, without considering the global picture. This can lead to **dead ends**.
+
+The solution is to use **goal regression** - the planner works backwards from the goal, trying to find a sequence of actions that will achieve it. This ensures that the planner will consider the global picture - **global planning**.
