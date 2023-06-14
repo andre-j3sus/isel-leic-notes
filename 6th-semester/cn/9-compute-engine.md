@@ -53,7 +53,9 @@ Virtualization can be applied to different levels of the hardware and software s
 * **ABI** (Application Binary Interface): defines the interface between the operating system and the application;
 * **API** (Application Programming Interface): defines the interface between the application and the libraries.
 
-<!--Add diagram-->
+<p align="center">
+    <img src="docs/isa-abi-api.png" alt="Computational Systems Interfaces" width="400"/>
+</p>
 
 ---
 
@@ -88,6 +90,11 @@ To more information about virtualization, see the [System Virtualization Techniq
 
 * Each project defines a set of firewall rules that apply to different VMs and different networks;
 * There is a default set of firewall rules that apply to all the VMs in the project; this set can be modified.
+* Creating a new firewall rule:
+  * **Name**: the name of the firewall rule;
+  * **Targets**: the VMs to which the rule applies; default is *All instances in the network*;
+  * **Source IP ranges**: the IP ranges from which the traffic is allowed; e.g. `0.0.0.0/0` allows all traffic;
+  * **Protocols and ports**: the protocols and ports to which the traffic is allowed; e.g. `tcp:80` allows TCP traffic on port 80.
 
 ---
 
@@ -99,7 +106,7 @@ To create a simple VM instance:
 * **Series**: E2;
 * **Type**: e2-small (2 vCPUs, 2 GB memory);
 * **Boot disk**: CentOS Stream 8;
-* **Firewall**: Allow HTTP traffic;
+* **Firewall**: Allow HTTP traffic; Allow HTTPS traffic.
 * Add SSH keys to allow SSH access to the VM.
 
 After creating the VM instance, it is possible to connect to it through SSH.
@@ -130,9 +137,14 @@ To create an instance group from a VM instance:
 
 ### Templates
 
-A **template** is a configuration file that defines the properties of a VM instance.
+* A **template** is a configuration file that defines the properties of a VM instance.
+* Its created in a similar way as a VM instance, selecting an image in the *Boot disk* section. Number of CPUs, memory and disk size can also be defined.
+* **Start up and shutdown scripts** can be defined in the *Management* section. Example of a start up script:
 
-Its created in a similar way as a VM instance, selecting an image in the *Boot disk* section. Number of CPUs, memory and disk size can also be defined.
+```bash
+#!/bin/bash
+# Some commands in bash
+```
 
 ---
 
@@ -147,3 +159,79 @@ The Compute Engine provides two types of instance groups:
   * Can be used in both **stateless** and **stateful** applications;
 * **Unmanaged instance groups**: VM instances created from different templates.
 
+---
+---
+
+## Java API
+
+```java
+// List VM instances
+try (InstancesClient client = InstancesClient.create) {
+  for (Instance instance : client.list(PROJECT_ID, ZONE).iterateAll()) {
+    System.out.println(instance.getName());
+    String ip = instance.getNetworkInterfacesList().get(0).getAccessConfigs(0).getNatIP();
+    System.out.println(ip);
+    System.out.println("Status: " + instance.getStatus());
+  }
+}
+
+// Start/stop stopped/running VM instance
+try (InstancesClient client = InstancesClient.create) {
+  StartInstanceRequest request = StartInstanceRequest.newBuilder()
+                            .setProject(projectID)
+                            .setZone(zone)
+                            .setInstance(instanceName)
+                            .build();
+  OperationFuture<Operation, Operation> response = client.startAsync(request); // stopAsync to stop
+  while (!response.isDone()) {
+    Thread.sleep(4 * 1000); // wait 4 seconds
+  }
+}
+
+// List instance groups
+try (InstanceGroupManagerClient client = InstanceGroupManagerClient.create()) {
+  for (InstanceGroupManager instanceGroupManager : client.list(PROJECT_ID, ZONE).iterateAll()) {
+    System.out.println(instanceGroupManager.getName());
+    System.out.println("Template: " + instanceGroupManager.getInstanceTemplate());
+  }
+}
+
+// List VM instances in an instance group
+InstanceGroupManagersClient managersClient = InstanceGroupManagersClient.create();
+ListManagedInstancesInstanceGroupManagersRequest request =
+        ListManagedInstancesInstanceGroupManagersRequest.newBuilder()
+                .setInstanceGroupManager(grpName)
+                .setProject(projectId)
+                .setReturnPartialSuccess(true)
+                .setZone(zone)
+                .build();
+System.out.println("Instances of instance group: " + grpName);
+for (ManagedInstance instance :
+        managersClient.listManagedInstances(request).iterateAll()) {
+    System.out.println(instance.getInstance() + " with STATUS = " + instance.getInstanceStatus());
+}
+
+// Resize instance group
+InstanceGroupManagersClient managersClient = InstanceGroupManagersClient.create();
+OperationFuture<Operation, Operation> result = managersClient.resizeAsync(
+        project,
+        zone,
+        instanceGroupName,
+        newSize
+);
+Operation oper = result.get();
+System.out.println("Resizing with status " + oper.getStatus());
+
+// List IP addresses of VM instances in an instance group
+try (InstancesClient client = InstancesClient.create()) {
+    for (Instance curInst : client.list(projectID, zone).iterateAll()) {
+        if (curInst.getName().contains(groupName)) {
+            System.out.println("Name: " + curInst.getName() + "  VMId:" + curInst.getId());
+            System.out.println("    Number of network interfaces: " + curInst.getNetworkInterfacesCount());
+            String ip = curInst.getNetworkInterfaces(0).getAccessConfigs(0).getNatIP();
+            System.out.println("    IP: " + ip);
+            System.out.println("    Status: " + curInst.getStatus() + " : Last Start time: " + curInst.getLastStartTimestamp());
+        }
+    }
+}
+```
