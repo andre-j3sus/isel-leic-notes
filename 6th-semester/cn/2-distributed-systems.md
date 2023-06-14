@@ -46,6 +46,11 @@ Through numerous norms and standards, the interoperability between different sys
 * **Authorization**: the ability to prevent a user or process from accessing resources that it is not authorized to access;
 * **Availability**: the ability to prevent denial of service attacks.
 
+Challenges:
+
+* Denial of service attacks;
+* Identity theft.
+
 ---
 
 ### Scalability
@@ -55,11 +60,13 @@ Through numerous norms and standards, the interoperability between different sys
 * **Load balancing**: the distribution of the load among multiple servers;
 * **Replication**: the duplication of data and services in multiple servers.
 
-> The **elasticity** of a system is the ability to adapt its resources to the current load. The increase/decrease of resources is dynamic, based on some conditions:
+> The **elasticity** of a system is the ability to adapt its resources to the current load **automatically**. The increase/decrease of resources is dynamic, based on some conditions:
 >
 > * Increase of CPU usage;
 > * At a certain time of the day, or day of the week;
 > * Increase of the number of users.
+
+The [key difference between scalability and elasticity](https://www.datamyte.com/cloud-scalability-vs-cloud-elasticity/#:~:text=Scalability%20is%20the%20ability%20to,is%20the%20level%20of%20automation.) is that scalability is **manual** and elasticity is **automatic**.
 
 ---
 
@@ -84,6 +91,12 @@ A system only has to tolerate Byzantine faults if it stays working even if some 
 ### Concurrency
 
 > Concurrency is the ability of a system to execute multiple processes at the same time. This characteristic is achieved through the use of **synchronization** and **asynchronization**.
+
+The main challenges of concurrency are:
+
+* Transaction management;
+* Concurrent access to shared resources;
+* Consistency of data.
 
 ---
 

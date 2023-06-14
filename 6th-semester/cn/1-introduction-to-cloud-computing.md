@@ -33,7 +33,8 @@ There are multiple execution environments:
 
 * Scale up and scale down;
 * Algorithms to control and allocate resources with loads - **workloads**;
-* Requires the computation and data distribution through multiple nodes.
+* Requires the computation and data distribution through multiple nodes;
+* Coordination between nodes is critical.
 
 ---
 
@@ -42,7 +43,7 @@ There are multiple execution environments:
 * **Private Cloud** - exclusive to an organization;
 * **Community Cloud** - exclusive to a consumer community that share the same goals;
 * **Public Cloud** - belongs to a provider, with multiple processing centers located in different countries; the consumers access the cloud using pay-per-use models, with different service layers (SLA - Service Level Agreement);
-* **Hybrid Cloud**.
+* **Hybrid Cloud** - combination of two or more clouds, that operate through models and technologies that facilitate the data and application portability.
 
 ---
 
@@ -69,12 +70,28 @@ There are multiple execution environments:
 
 ---
 
-## Challenges & Opportunities
+## Opportunities
+
+* **Pay-per-use** - pay only for what you use;
+* Elasticity - infinite resources;
+* Self-service interfaces;
+* Avoids the acquisition, installation and maintenance of datacenters.
+
+## Challenges
 
 * Avoid *vendor lock-in* - the interoperability between providers is very hard/inexistent;
 * Uncertainty about physical control of the hardware, software and data;
 * Migrate applications to public clouds is a complex process;
-* *A dead Internet connection means no work*.
+* Security and privacy issues;
+* Uncertainty about legal issues;
+* Difficulty in defining SLAs (Service Level Agreement);
+* Lack of standards and interoperability between providers;
+* **Multi-tenancy** - multiple users share the same resources;
+* *A dead Internet connection means no work* - the Internet is the only way to access the cloud.
+
+<p align="center">
+    <img src="./docs/swot.png" alt="SWOT" align="center" width="400" />
+</p>
 
 ---
 
