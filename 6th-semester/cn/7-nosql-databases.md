@@ -12,7 +12,8 @@
 * **Integration** - different technologies can access the database;
 * **Standards** - SQL is a standard language for relational databases;
 * **Impedance Mismatch** - the difference between the relational model and the object-oriented model;
-  * **Object-relational mapping** - a technique to map objects to relational databases.
+  * Limitation of the relational model - it is not possible to store objects (aggregated data) in a relational database;
+  * **Object-relational mapping (ORM)** - a technique to map objects to relational databases.
 
 ---
 
@@ -56,8 +57,8 @@ Some systems use a combination of sharding and replication.
 * Does not use the relational model;
 * Supports **horizontal scaling**, using clusters;
 * Multiple open-source implementations;
-* **Schema-less**;
-* **Polyglot persistence** - different types of data can be stored in different types of databases.
+* **Schemaless** - there is no rigid schema, allowing to store different types of data in the same collection;
+* **Polyglot persistence** - different types of data can be stored in different types of databases - e.g. relational, document, graph, etc.
 
 ### BASE Properties
 
@@ -82,5 +83,116 @@ NoSQl databases support aggregate data models, which can be classified in the fo
 
 * The database is a set of **collections**;
 * Collections contain **documents**, which are aggregates of **fields** and **values** (with various types - string, number, boolean, timestamp, reference, geo-point, array, map, etc) - similar to JSON objects;
-* A document can reference other collections and documents;
-* Documents should be small, because they are replicated across the cluster - more than 1 MiB is not recommended.
+* Documents in the same collection can have different fields - schemaless;
+* A document can reference other **collections** - until **100 levels of nesting**;
+* Documents should be small, because they are replicated across the cluster - more than **1 MiB** is not recommended;
+* Documents are identified by **IDs** - they can be generated automatically, or manually by the user.
+
+---
+---
+
+## Java API
+
+```java	
+public class FirestoreClient {
+  public static void main(String[] args) {
+        FirestoreOptions options = FirestoreOptions.getDefaultInstance().getService();
+        Firestore db = options.getService();
+      
+        // Get collection
+        CollectionReference collection = db.collection("users");
+
+        // List documents
+        Iterable<DocumentReference> documents = collection.listDocuments();
+        for (DocumentReference document : documents) {
+            ApiFuture<DocumentSnapshot> future = document.get();
+            DocumentSnapshot documentSnapshot = future.get();
+            if (documentSnapshot.exists()) {
+                System.out.println("Document data: " + documentSnapshot.getData());
+            } else {
+                System.out.println("No such document!");
+            }
+        }
+
+        // Get document
+        DocumentReference document = collection.document("user1"); // user1 is the ID of the document
+
+        // Get document data
+        ApiFuture<DocumentSnapshot> future = document.get();
+        DocumentSnapshot documentSnapshot = future.get();
+        if (documentSnapshot.exists()) {
+            System.out.println("Document data: " + documentSnapshot.getData());
+        } else {
+            System.out.println("No such document!");
+        }
+
+        // Add document
+        Map<String, Object> data = new HashMap<>();
+        data.put("name", "John");
+        data.put("age", 30);
+        ApiFuture<WriteResult> result = document.set(data);
+        System.out.println("Update time: " + result.get().getUpdateTime());
+
+        // Update document
+        ApiFuture<WriteResult> update = document.update("age", 40);
+        System.out.println("Update time: " + update.get().getUpdateTime());
+
+        // Delete document
+        ApiFuture<WriteResult> delete = document.delete();
+        System.out.println("Update time: " + delete.get().getUpdateTime());
+
+        // Add document with ID
+        DocumentReference document2 = collection.document("user2");
+        Map<String, Object> data2 = new HashMap<>();
+        data2.put("name", "Mary");
+        data2.put("age", 25);
+        ApiFuture<WriteResult> result2 = document2.set(data2);
+        System.out.println("Update time: " + result2.get().getUpdateTime());
+
+        // Add document with auto-generated ID
+        Map<String, Object> data3 = new HashMap<>();
+        data3.put("name", "Peter");
+        data3.put("age", 35);
+        ApiFuture<DocumentReference> addedDocRef = collection.add(data3);
+        System.out.println("Added document with ID: " + addedDocRef.get().getId());
+
+        // Read field from document
+        ApiFuture<DocumentSnapshot> future2 = document.get();
+        DocumentSnapshot documentSnapshot2 = future2.get();
+        if (documentSnapshot2.exists()) {
+            System.out.println("Document data: " + documentSnapshot2.getData());
+            System.out.println("Name: " + documentSnapshot2.getString("name"));
+            System.out.println("Age: " + documentSnapshot2.getLong("age"));
+        } else {
+            System.out.println("No such document!");
+        }
+        // or
+        documentSnapshot2.toObject(User.class);
+
+        // Delete field from document
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("age", FieldValue.delete());
+        ApiFuture<WriteResult> writeResult = document.update(updates);
+        System.out.println("Update time: " + writeResult.get().getUpdateTime());
+
+        // Simple query
+        Query query = collection.whereEqualTo("age", 30); // whereLessThan, whereLessThanOrEqualTo, whereGreaterThan, whereGreaterThanOrEqualTo, whereArrayContains, whereArrayContainsAny, whereIn, whereNotIn
+        ApiFuture<QuerySnapshot> querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents2 = querySnapshot.get().getDocuments();
+
+        // Simple query of complex field (nested)
+        FieldPath fieldPath = FieldPath.of("address", "city"); // address.city
+        Query query2 = collection.whereEqualTo(fieldPath, "New York");
+        
+        // Complex query
+        Query query3 = collection.whereEqualTo("age", 30).whereEqualTo("name", "John");
+    }
+}
+```
+
+> In order to use complex queries (more than one field/condition), it is necessary to create an index in the Firestore console.
+
+## Limitations
+
+* It is not possible to use equality operators (`whereEqualTo`, `whereLessThan`, etc) on multiple fields in the same query;
+* Read for more limitations [here](https://firebase.google.com/docs/firestore/query-data/queries#limitations).

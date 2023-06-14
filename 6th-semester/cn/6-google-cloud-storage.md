@@ -13,6 +13,7 @@
 * In hierarchical file systems, files are stored in folders;
 * The cloud storage uses a **flat structure** (or **data lake**), where files are stored in **buckets**;
 * A BLOB is identified by a **unique ID** (key) and a **set of metadata** (name, size, type, etc.);
+  * Immutable - cannot be changed.
 
 ---
 ---
@@ -58,10 +59,14 @@ Each storage class has a different **cost** and **performance** - [pricing](http
 Buckets and BLOBs can be created and accessed via:
 
 * GCP Console;
-* URL;
+* URL of **public** BLOBs;
 * [gsutil command-line tool](https://cloud.google.com/sdk/);
   * Command list [here](https://cloud.google.com/storage/docs/gsutil/commands/ls);
-* gRPC or REST APIs.
+* gRPC or REST APIs;
+
+> Bucket names must be **globally unique**.
+>
+> Blob names must be **unique** within a bucket.
 
 ---
 
@@ -144,3 +149,135 @@ Operations with **eventual consistency**:
 * Creation and deletion of objects is **rate-limited**;
 * Ramp up request rate gradually;
 * **Sharding** BLOBs into multiple servers.
+
+---
+---
+
+## Java API
+
+```java
+public class StorageClient {
+    static StorageOperations soper;
+
+    public static void main(String[] args) {
+        StorageOptions options = StorageOptions.getDefaultInstance();
+        Storage storage = options.getService();
+        String projectId = options.getProjectId();
+
+        soper = new StorageOperations(storage);
+
+        // ...
+    }
+}
+
+public class StorageOperations {
+    Storage storage;
+
+    public StorageOperations(Storage storage) {
+        this.storage = storage;
+    }
+
+    public Bucket createBucket(String bucketName) {
+        return storage.create(
+            BucketInfo.newBuilder(bucketName)
+                .setStorageClass(StorageClass.STANDARD) // STANDARD, NEARLINE, COLDLINE, ARCHIVE
+                .setLocation("EUROPE-WEST1")
+                .build()
+        );
+    }
+
+    public void deleteBucket(String bucketName) {
+        Bucket bucket = storage.get(bucketName);
+        bucket.delete();
+    }
+
+    public void uploadBlobToBucket(String bucketName, String blobName, String absFileName) throws IOException {
+        Path uploadFrom = Paths.get(absFileName);
+        String contentType = Files.probeContentType(uploadFrom);
+        BlobId blobId = BlobId.of(bucketName, blobName);
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(contentType).build();
+
+        if (Files.size(uploadFrom) > 1_000_000) {
+            // When content is not available or large (1MB or more) it is recommended
+            // to write it in chunks via the blob's channel writer.
+            try (WriteChannel writer = storage.writer(blobInfo)) {
+                byte[] buffer = new byte[1024];
+                try (InputStream input = Files.newInputStream(uploadFrom)) {
+                    int limit;
+                    while ((limit = input.read(buffer)) >= 0) {
+                        try {
+                            writer.write(ByteBuffer.wrap(buffer, 0, limit));
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                }
+            }
+        } else {
+            byte[] bytes = Files.readAllBytes(uploadFrom);
+            storage.create(blobInfo, bytes);
+        }
+    }
+
+    public void downloadBlobFromBucket(String bucketName, String blobName, String absFileName) throws IOException {
+        Path downloadTo = Paths.get(absFileName);
+        BlobId blobId = BlobId.of(bucketName, blobName);
+        Blob blob = storage.get(blobId);
+        if (blob == null)
+            throw new IllegalArgumentException("No such Blob exists !");
+
+        if (!Files.exists(downloadTo.getParent()))
+            Files.createDirectories(downloadTo.getParent());
+
+        // Check if the file exists and create it if not
+        if (!Files.exists(downloadTo))
+            Files.createFile(downloadTo);
+
+        PrintStream writeTo = new PrintStream(Files.newOutputStream(downloadTo));
+        if (blob.getSize() < 1_000_000) {
+            // Blob is small read all its content in one request
+            byte[] content = blob.getContent();
+            writeTo.write(content);
+        } else {
+            // When Blob size is big or unknown use the blob's channel reader.
+            try (ReadChannel reader = blob.reader()) {
+                WritableByteChannel channel = Channels.newChannel(writeTo);
+                ByteBuffer bytes = ByteBuffer.allocate(64 * 1024);
+                while (reader.read(bytes) > 0) {
+                    bytes.flip();
+                    channel.write(bytes);
+                    bytes.clear();
+                }
+            }
+        }
+        writeTo.close();
+    }
+
+    public void makeBlobPublic(String bucketName, String blobName) {
+        BlobId blobId = BlobId.of(bucketName, blobName);
+        Blob blob = storage.get(blobId);
+        if (blob == null)
+            throw new IllegalArgumentException("No such Blob exists !");
+
+        Acl.Entity aclEnt = Acl.User.ofAllUsers();
+        Acl.Role role = Acl.Role.READER;
+
+        Acl acl = Acl.newBuilder(aclEnt, role).build();
+        blob.createAcl(acl);
+    }
+
+    public boolean checkBlobExists(String bucketName, String blobName) {
+        BlobId blobId = BlobId.of(bucketName, blobName);
+        Blob blob = storage.get(blobId);
+        return blob != null;
+    }
+
+    public void listBuckets(String projID) {
+    for (Bucket bucket : storage.list().iterateAll()) {
+        System.out.println(" " + bucket.toString());
+        for (Blob blob : bucket.list().iterateAll()) {
+            System.out.println(" "+blob.toString());
+        }
+    }
+    }
+```
