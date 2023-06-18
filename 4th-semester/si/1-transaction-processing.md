@@ -169,7 +169,7 @@ transação termine com sucesso antes do término da que lê.
 ### Dirty write
 
 * Conflito W/W;
-* _Overwriting uncommited data_;
+* _Overwriting uncommitted data_;
 * _Lost update_;
 * É consensual que não deve ocorrer com a norma ISO SQL;
 * Escalonamentos não estritos, ainda que _cascadeless_;
@@ -181,7 +181,7 @@ transação termine com sucesso antes do término da que lê.
 
 * Conflito W/R;
 * _Uncommited dependency_;
-* _Temporary updade_;
+* _Temporary update_;
 * Escalonamentos não _cascadeless_;
 * `<w(t1, x1), r(t2, x1), ...>`.
 
