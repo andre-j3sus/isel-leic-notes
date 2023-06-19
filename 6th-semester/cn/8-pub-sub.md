@@ -150,7 +150,14 @@ The message flow in Google Pub/Sub is as follows:
 
 ---
 
-### Push Subscription
+### [Types of Subscription](https://cloud.google.com/pubsub/docs/subscriber#push_pull)
+
+|                | **PULL**                                                          | **PUSH**                                 |
+| -------------- | ----------------------------------------------------------------- | ---------------------------------------- |
+| Use case       | Large volume of data                                              | Cloud Functions, App Engine, Cloud Run   |
+| Load balancing | Multiple subscribers can pull messages from the same subscription | The push endpoint can be a load balancer |
+
+#### Push Subscription
 
 The message is sent to the subscriber by the infrastructure, using a **POST** request to the **push endpoint** defined in the subscription.
 

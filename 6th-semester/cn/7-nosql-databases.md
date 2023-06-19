@@ -191,6 +191,8 @@ public class FirestoreClient {
 ```
 
 > In order to use complex queries (more than one field/condition), it is necessary to create an index in the Firestore console.
+>
+> **Indexing** refers to the process of creating additional data structures that enable efficient data retrieval. Essentially, it's a way to assist the database in quickly locating the data you require without having to scan the entire database.
 
 ## Limitations
 

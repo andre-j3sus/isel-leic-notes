@@ -124,7 +124,16 @@ A **disk** is a block storage device that can be attached to a VM instance.
 The *Autoscaling* feature allows to automatically increase or decrease the number of VM instances in an instance group based on the load.
 
 * **On**: create and destroy VM instances automatically;
+* **Scale out**: only increase the number of VM instances;
 * **Off**: the number of VM instances is fixed and the applications running on them are responsible for scaling.
+
+If the autoscaling is on, metrics can be defined to control the number of VM instances:
+* CPU utilization;
+* HTTP load balancing serving capacity;
+* Cloud Pub/Sub queue size;
+* Stackdriver Monitoring metric.
+
+> **Fast increasing** the number of instances, but **slow decreasing** them.
 
 To create an instance group from a VM instance:
 
@@ -155,8 +164,13 @@ An **instance group** is a collection of VM instances that are managed as a sing
 The Compute Engine provides two types of instance groups:
 
 * **Managed instance groups**: VM instances created from a template, sharing the same configuration;
-  * The number of VM instances can be increased or decreased automatically;
+  * The number of VM instances can be increased or decreased automatically - *autoscaling*;
+    * **On**: create and destroy VM instances automatically;
+    * **Scale out**: only increase the number of VM instances;
+    * **Off**: the number of VM instances is fixed and the applications running on them are responsible for scaling;
   * Can be used in both **stateless** and **stateful** applications;
+    * **Stateless**: the application does not store any data in the VM instance; can use pub/sub for example;
+    * **Stateful**: the application stores data in the VM instance.
 * **Unmanaged instance groups**: VM instances created from different templates.
 
 ---
