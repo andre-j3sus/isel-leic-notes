@@ -301,7 +301,7 @@ END;
 $$;
 ```
 
-Para chamar um procedimento armazenado, usa-se o comando `PERFORM query`.
+Para chamar uma função, usa-se o comando `PERFORM query`.
 Também é possível usar o comando `SELECT query`.
 
 ---
