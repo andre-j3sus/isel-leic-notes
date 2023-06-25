@@ -19,49 +19,49 @@ Please note that the notes may not have the same formatting, and some of them ma
 
 ---
 
-## Courses 📚
+## 📚 Courses 
 
 ### 📆 1st Semester 
 
-* **CDI** - Cálculo Diferencial e Integral / Differential and Integral Calculus _(coming soon)_
-* **TMD** - Tópicos de Matemática Discreta / Topics in Discrete Mathematics _(coming soon)_
-* **LSD** - Lógica e Sistemas Digitais / Logic and Digital Systems _(coming soon)_
-* [**Pg** - Programação / Programming](./1st-semester/pg)
-* [**El** - Eletrónica / Electronics](./1st-semester/e)
+* [🧮 **CDI** - Cálculo Diferencial e Integral / Differential and Integral Calculus](./1st-semester/cdi)
+* [🔢 **TMD** - Tópicos de Matemática Discreta / Topics in Discrete Mathematics](./1st-semester/tmd)
+* [💡 **LSD** - Lógica e Sistemas Digitais / Logic and Digital Systems](./1st-semester/lsd)
+* [💻 **Pg** - Programação / Programming](./1st-semester/pg)
+* [⚡ **El** - Eletrónica / Electronics](./1st-semester/el)
 
 ### 📆 2nd Semester 
 
-* [**ALGA** - Algebra Linear e Geometria Analítica / Linear Algebra and Analytic Geometry](./2nd-semester/alga)
-* **AED** - Algoritmos e Estruturas de Dados / Algorithms and Data Structures _(coming soon)_
-* [**AC** - Arquitetura de Computadores / Computer Architecture](./2nd-semester/ac/)
-* **LIC** - Laboratório de Informática e Computadores / Informatics and Computer Laboratory _(coming soon)_
-* **RCp** - Redes de Computadores / Computer Networks _(coming soon)_
+* [📐 **ALGA** - Algebra Linear e Geometria Analítica / Linear Algebra and Analytic Geometry](./2nd-semester/alga)
+* [📈 **AED** - Algoritmos e Estruturas de Dados / Algorithms and Data Structures](./2nd-semester/aed)
+* [🖥️ **AC** - Arquitetura de Computadores / Computer Architecture](./2nd-semester/ac/)
+* [⚙️ **LIC** - Laboratório de Informática e Computadores / Informatics and Computer Laboratory](./2nd-semester/lic)
+* [📡 **RCp** - Redes de Computadores / Computer Networks](./2nd-semester/rcp)
 
 ### 📆 3rd Semester 
 
-* **PE** - Probabilidade e Estatística / Probability and Statistics _(coming soon)_
-* [**IPW** - Introdução à Programação na Web / Introduction to Internet Programming](./3rd-semester/ipw)
-* **ISI** - Introdução aos Sistemas de Informação / Introduction to Information Systems _(coming soon)_
-* [**PSC** - Programação de Sistemas Computacionais / Computer Systems Programming](./3rd-semester/psc/)
-* **TDS** - Técnicas de Desenvolvimento de Software / Software Development Techniques _(coming soon)_
+* [🎲 **PE** - Probabilidade e Estatística / Probability and Statistics](./3rd-semester/pe)
+* [🌐 **IPW** - Introdução à Programação na Web / Introduction to Internet Programming](./3rd-semester/ipw)
+* [🛢 **ISI** - Introdução aos Sistemas de Informação / Introduction to Information Systems](./3rd-semester/isi)
+* [💾 **PSC** - Programação de Sistemas Computacionais / Computer Systems Programming](./3rd-semester/psc/)
+* [💻 **TDS** - Técnicas de Desenvolvimento de Software / Software Development Techniques](./3rd-semester/tds)
 
 ### 📆 4th Semester
 
-* **CD** - Comunicação Digital / Digital Communication _(coming soon)_
-* **LS** - Laboratório de Software / Software Laboratory _(coming soon)_
-* [**LAE** - Linguagens e Ambientes de Execução / Languages and Managed Runtimes](./4th-semester/lae)
-* [**PC** - Programação Concorrente / Concurrent Programming](./4th-semester/pc)
-* [**SI** - Sistemas de Informação / Information Systems](./4th-semester/si)
+* [📡 **CD** - Comunicação Digital / Digital Communication](./4th-semester/cd)
+* [💻 **LS** - Laboratório de Software / Software Laboratory](./4th-semester/ls)
+* [☕ **LAE** - Linguagens e Ambientes de Execução / Languages and Managed Runtimes](./4th-semester/lae)
+* [🔀 **PC** - Programação Concorrente / Concurrent Programming](./4th-semester/pc)
+* [🗃️ **SI** - Sistemas de Informação / Information Systems](./4th-semester/si)
 
 ### 📆 5th Semester
 
-* [**DAW** - Desenvolvimento de Aplicações Web / Web Application Development](./5th-semester/daw)
-* [**PDM** - Programação em Dispositivos Móveis / Mobile Devices Programming](./5th-semester/pdm)
-* [**SegInf** - Segurança Informática / Computer Security](./5th-semester/seginf)
-* [**TVS** - Técnicas de Virtualização de Sistemas / Systems Virtualization Techniques](./5th-semester/tvs)
-* _Option A_ - [**Emp** - Empreendedorismo / Entrepreneurship](./5th-semester/emp)
+* [🌐 **DAW** - Desenvolvimento de Aplicações Web / Web Application Development](./5th-semester/daw)
+* [📱 **PDM** - Programação em Dispositivos Móveis / Mobile Devices Programming](./5th-semester/pdm)
+* [🛡️ **SegInf** - Segurança Informática / Computer Security](./5th-semester/seginf)
+* [🖥️ **TVS** - Técnicas de Virtualização de Sistemas / Systems Virtualization Techniques](./5th-semester/tvs)
+* _Option A_ - [💼 **Emp** - Empreendedorismo / Entrepreneurship](./5th-semester/emp)
 
 ### 📆 6th Semester
 
-* _Option B_ - [**CN** - Computação na Nuvem / Cloud Computing](./6th-semester/cn)
-* _Option C_ - [**IA** - Inteligência Artificial / Artificial Intelligence](./6th-semester/ia)
+* _Option B_ - [☁️ **CN** - Computação na Nuvem / Cloud Computing](./6th-semester/cn)
+* _Option C_ - [🤖 **IA** - Inteligência Artificial / Artificial Intelligence](./6th-semester/ia)
