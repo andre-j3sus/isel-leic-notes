@@ -1,4 +1,11 @@
-# Syllabus
+# [Computer Security](https://www.isel.pt/en/leic/computer-security)
+
+* **Scientific Area:** Computer Science and Engineering
+* **ECTS:** 6.0
+* **Year:** 3rd
+* **Semester:** 1st
+
+## Syllabus
 
 0. [Introduction](0-introduction.md);
 1. [Cryptography](1.0-cryptography.md);

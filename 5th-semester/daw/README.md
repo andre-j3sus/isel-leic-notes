@@ -1,4 +1,11 @@
-# Syllabus
+# [Web Application Development](https://www.isel.pt/en/leic/web-application-development)
+
+* **Scientific Area:** Computer Science and Engineering
+* **ECTS:** 6.0
+* **Year:** 3rd
+* **Semester:** 1st
+
+## Syllabus
 
 1. [Spring](1.0-spring.md);
    1. [Spring Context](1.1-spring-context.md);

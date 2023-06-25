@@ -1,4 +1,11 @@
-# Syllabus
+# [Introduction to Internet Programming](https://www.isel.pt/en/leic/introduction-internet-programming)
+
+* **Scientific Area:** Computer Science and Engineering
+* **ECTS:** 6.0
+* **Year:** 2nd
+* **Semester:** 1st
+
+## Syllabus
 
 1. [HTTP](1-http.md);
 2. [JavaScript](2-javascript.md);

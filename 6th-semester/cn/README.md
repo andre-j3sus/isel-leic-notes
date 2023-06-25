@@ -1,4 +1,11 @@
-# Syllabus
+# [Cloud Computing](https://www.isel.pt/en/leic/cloud-computing)
+
+* **Scientific Area:** Computer Science and Engineering
+* **ECTS:** 6.0
+* **Year:** 3rd
+* **Semester:** 2nd
+
+## Syllabus
 
 1. [Introduction to Cloud Computing](1-introduction-to-cloud-computing.md);
 2. [Distributed Systems](2-distributed-systems.md);

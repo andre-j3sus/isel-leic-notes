@@ -1,4 +1,11 @@
-# Syllabus
+# [Languages and Managed Runtimes](https://www.isel.pt/en/leic/languages-and-managed-runtimes)
+
+* **Scientific Area:** Computer Science and Engineering
+* **ECTS:** 6.0
+* **Year:** 2nd
+* **Semester:** 2nd
+
+## Syllabus
 
 1. [Virtual Machines](1-virtual-machines.md);
 2. [Reflection and Annotations](2-reflection-and-annotations.md);

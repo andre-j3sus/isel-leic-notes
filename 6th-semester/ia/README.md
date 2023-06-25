@@ -1,4 +1,11 @@
-# Syllabus
+# [Artificial Intelligence](https://www.isel.pt/en/leic/artificial-intelligence)
+
+* **Scientific Area:** Computer Science and Engineering
+* **ECTS:** 6.0
+* **Year:** 3rd
+* **Semester:** 2nd
+
+## Syllabus
 
 1. [Introduction to Artificial Intelligence](1-introduction-to-ai.md);
    1. [Introduction to Prolog](1.1-introduction-to-prolog.md);

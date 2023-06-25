@@ -1,4 +1,11 @@
-# Syllabus
+# [Concurrent Programming](https://www.isel.pt/en/leic/concurrent-programming)
+
+* **Scientific Area:** Computer Science and Engineering
+* **ECTS:** 6.0
+* **Year:** 2nd
+* **Semester:** 2nd
+
+## Syllabus
 
 1. [Threads](1-threads.md);
 2. [Data Synchonization](2-data-synchronization.md);

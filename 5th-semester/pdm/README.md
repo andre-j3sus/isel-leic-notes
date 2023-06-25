@@ -1,4 +1,11 @@
-# Syllabus
+# [Mobile Devices Programming](https://www.isel.pt/en/leic/mobile-devices-programming)
+
+* **Scientific Area:** Computer Science and Engineering
+* **ECTS:** 6.0
+* **Year:** 3rd
+* **Semester:** 1st
+
+## Syllabus
 
 0. [Introduction](0-introduction.md);
 1. [Execution in Android](1-execution-in-android.md);

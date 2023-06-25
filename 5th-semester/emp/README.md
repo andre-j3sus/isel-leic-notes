@@ -1,4 +1,9 @@
-# Entrepreneurship
+# [Entrepreneurship](https://www.isel.pt/en/leic/entrepreneurship)
+
+* **Scientific Area:** Social and Legal Sciences, Arts and Humanities or Other
+* **ECTS:** 6.0
+* **Year:** 3rd
+* **Semester:** 1st
 
 ## Syllabus
 
