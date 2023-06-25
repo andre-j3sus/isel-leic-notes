@@ -4,3 +4,8 @@
 * **ECTS:** 6.0
 * **Year:** 2nd
 * **Semester:** 2nd
+
+## Useful Resources
+
+* [Git](https://git-scm.com/)
+* [DOM](https://www.w3schools.com/js/js_htmldom.asp)

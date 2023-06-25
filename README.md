@@ -1,6 +1,6 @@
 # isel-leic-notes 🗒️
 
-> This repository contains notes from my journey through the BSc in Computer Science and Computer Engineering (Licenciatura em Engenharia Informática e de Computadores - LEIC) at ISEL, from 2020 to 2023.
+> This repository contains notes from my journey through the [BSc in Computer Science and Computer Engineering (Licenciatura em Engenharia Informática e de Computadores - LEIC)](https://www.isel.pt/en/curso/bsc-degree/computer-science-and-computer-engineering) at [ISEL](https://www.isel.pt/en), from 2020 to 2023.
 
 I started taking notes to study for different subjects and later decided to share them to help my classmates and future students in their studies. Here, I present the notes I took during my time at ISEL, hoping that they can be helpful to others, whether they are students or simply curious individuals interested in studying these topics.
 
@@ -19,7 +19,7 @@ Please note that the notes may not have the same formatting, and some of them ma
 
 ---
 
-## 📚 Courses 
+## 📚 Study Plan 
 
 ### 📆 1st Semester 
 
