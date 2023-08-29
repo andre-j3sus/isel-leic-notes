@@ -2,7 +2,9 @@
 
 > This repository contains notes from my journey through the [BSc in Computer Science and Computer Engineering (Licenciatura em Engenharia Informática e de Computadores - LEIC)](https://www.isel.pt/en/curso/bsc-degree/computer-science-and-computer-engineering) at [ISEL](https://www.isel.pt/en), from 2020 to 2023.
 
-I started taking notes to study for different subjects and later decided to share them to help my classmates and future students in their studies. Here, I present the notes I took during my time at ISEL, hoping that they can be helpful to others, whether they are students or simply curious individuals interested in studying these topics.
+> Additionally, I've started a project called [ist-meic-notes](https://github.com/andre-j3sus/ist-meic-notes) to compile notes specifically from my master's degree in Computer Science and Engineering at IST, building upon the foundation laid during my BSc studies.
+
+I started taking notes to study for different courses and later decided to share them to help my classmates and future students in their studies. Here, I present the notes I took during my time at ISEL, hoping that they can be helpful to others, whether they are students or simply curious individuals interested in studying these topics.
 
 Please note that the notes may not have the same formatting, and some of them may even be incomplete, as I only started writing them in Markdown in the second year. While some subjects have well-organized and written Markdown notes, others may have PDFs of handwritten notes or useful attached resources. 
 
