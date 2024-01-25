@@ -12,7 +12,7 @@ React is **declarative**, meaning that we define the UI by describing the tree:
 * We don't manipulate the DOM directly, but we manipulate the **[virtual DOM](https://reactjs.org/docs/faq-internals.html)**;
 * The virtual DOM is a tree that is kept in memory and is updated when the UI changes;
 * React then compares the virtual DOM with the real DOM and updates the real DOM only where necessary;
-* **The virtual tree elements are never mutated after hey are created -> changing the UI is done by creating a new virtual tree.**
+* **The virtual tree elements are never mutated after they are created -> changing the UI is done by creating a new virtual tree.**
 
 ### Component-Based
 
@@ -29,7 +29,7 @@ React is **component-based**, meaning that we define the UI by composing compone
 React is divided into a **host-independent** package and a **host-dependent** package:
 
 * **[react](https://www.npmjs.com/package/react)** is the host-dependent package, and knows how to **manipulate the DOM tree** (or any other tree, like Android's View tree) - it is the **core** of React and its called a **_renderer_**;
-* **[react-dom](https://www.npmjs.com/package/react-dom)** is the host-independent package, and it used to create **tree representations**, before they are applied to a host specific tree - it is called a **_reconciler_** (reconciliation is the process of updating the DOM tree to match the virtual DOM tree);
+* **[react-dom](https://www.npmjs.com/package/react-dom)** is the host-independent package, and it is used to create **tree representations**, before they are applied to a host specific tree - it is called a **_reconciler_** (reconciliation is the process of updating the DOM tree to match the virtual DOM tree);
 
 ---
 ---
