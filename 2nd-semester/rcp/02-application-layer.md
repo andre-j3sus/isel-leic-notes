@@ -90,20 +90,104 @@
 
 ## Email
 
-...
+There are three main components of an email system:
+
+* **User Agents** - email clients (e.g., Outlook, Thunderbird);
+  * Compose, read, reply, forward, save, and delete emails;
+* **Mail Servers** - store and forward emails;
+  * **Mailbox** - stores incoming emails;
+  * **Message queue** - stores outgoing emails;
+* **Simple Mail Transfer Protocol (SMTP)** - the protocol used to send emails between mail servers;
+  * Uses **TCP** as the transport layer protocol, port 25;
+  * **Persistent Connections** - multiple emails can be sent over the same connection;
+  * 7-bit ASCII encoding;
+  * Interaction with the server:
+    * **Handshake** - client connects to the server;
+    * **Mail Transfer** - client sends the email;
+    * **Closure** - client disconnects from the server;
+  * **Commands** and **Responses**, similar to HTTP;
+  * Messages are sent in **MIME** format: headers and body;
+* **Mail Access Protocols** - used by the user agent to retrieve emails from the server;
+  * **Post Office Protocol (POP)** - authorization and download of emails;
+    * **POP3** - version 3;
+  * **Internet Message Access Protocol (IMAP)** - keeps emails on the server and synchronizes them with the client;
+  * **HTTP** - web-based email clients.
 
 ---
 
-## DNS
+## [DNS](https://www.youtube.com/watch?v=UVR9lhUGAyU)
 
-...
+* **Domain Name System (DNS)** - translates domain names into IP addresses;
+* DNS is a **distributed database** implemented in a hierarchy of servers;
+* Hosts **query** the DNS servers to **resolve** domain names;
+* **DNS Services**:
+  * **Hostname to IP Address Translation** - the most common service;
+  * **Mail Server Alias** - maps domain names to mail servers;
+  * **Load Balancing** - maps domain names to multiple IP addresses;
+* Its distributed nature allows for **scalability** and **reliability**;
+* **DNS Hierarchy**:
+  * **Root Servers** - the top-level servers;
+  * **Top-Level Domain (TLD) Servers** - servers for each TLD - `.com`, `.org`, `.net`, etc.;
+  * **Authoritative Servers** - servers for each domain - `example.com`, `example.org`, etc.;
+  * **Local DNS Servers** - the user's ISP DNS server;
+* Example:
+  * Client wants to resolve `www.example.com`;
+  * First, checks its **cache**, but the entry is not there;
+  * Then, asks the **local DNS server** to resolve the domain;
+  * The local DNS server asks the **root server** for the **com** TLD server;
+  * The com TLD server asks the **authoritative server** for the **example.com** domain;
+  * The authoritative server responds with the IP address;
+  * The local DNS server caches the response and sends it to the client.
+
+<p align="center">
+  <img src="https://miro.medium.com/v2/resize:fit:1400/0*w4_IIjmSUdtMp-hT" alt="DNS" width="300px">
+</p>
+
+* Once a DNS server resolves a domain name, it **caches** the result for a certain amount of time - the **Time to Live (TTL)**;
+* **DNS record** - a mapping between a domain name and an IP address, with the format: `(name, value, type, TTL)`;
+  * Types:
+    * **A** - `name` is hostname, `value` is IP address;
+    * **NS** - `name` is domain, `value` is authoritative server;
+    * **MX** - `name` is domain, `value` is mail server;
+    * **CNAME** - `name` is alias, `value` is canonical name;
+    * **PTR** - `name` is IP address, `value` is hostname;
+* **DNS protocol** - uses **UDP** as the transport layer protocol, port 53;
+  * **Query** - client sends a query to the server;
+  * **Reply** - server sends a response to the client;
+  * **Message Format** for both queries and replies:
+    * **Header** - identification, flags, number of questions, answers, authority, and additional records;
+    * **Question** - domain name and type;
+    * **Answer** - domain name, type, class, TTL, and value;
+    * **Authority** - domain name, type, class, TTL, and value;
+    * **Additional** - domain name, type, class, TTL, and value;
+* To insert a new domain into the DNS system, the domain owner must:
+  * **Register** the domain with a **registrar**;
+  * **Provide** the registrar with the **IP address** of the **authoritative server**;
+  * The registrar **notifies** the **TLD server** of the new domain;
+* There are several attacks that can be performed on the DNS system:
+  * **DDoS** - Distributed Denial of Service - bombard the DNS servers with requests, not very effective in root servers, but is more dangerous on TLD servers;
+  * **Redirect** - redirect the DNS queries to malicious servers - **DNS poisoning**.
 
 ---
 
 ## P2P
 
-...
+* **Decentralized** - no central server;
+* Arbitrary end systems can **directly communicate**;
+* Examples:
+  * **File Sharing** - e.g., BitTorrent;
+  * **Streaming** - e.g., Skype, Zoom;
+  * **Collaboration** - e.g., Google Docs;
+* **Torrent** - a group of peers exchanging **chunks** of a file;
+  * **Seeder** - peer with the complete file;
+  * **Tracker** - server that coordinates the peers;
+  * Peers **download** and **upload** chunks of the file;
+  * **Churn** - peers join and leave the network;
+  * **Tit-for-Tat** - peers prefer to upload to other peers that upload to them.
 
 ---
 
-## CDN
+## [CDN](https://www.cloudflare.com/learning/cdn/what-is-a-cdn/)
+
+* **Content Distribution Networks (CDNs)** are **geographically distributed** network of proxy servers and their data centers;
+* The goal is to provide **high availability** and **performance** by distributing the service spatially relative to end users.
