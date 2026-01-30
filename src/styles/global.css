@@ -1,0 +1,317 @@
+/* ISEL Brand Colors */
+:root {
+  /* Primary ISEL color */
+  --isel-primary: #5f1437;
+  --isel-primary-light: #8a2d55;
+  --isel-primary-dark: #3d0d24;
+  
+  /* Light theme */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f6f8fa;
+  --bg-tertiary: #eaeef2;
+  --text-primary: #1f2328;
+  --text-secondary: #656d76;
+  --text-muted: #8b949e;
+  --border-color: #d0d7de;
+  --border-color-light: #e8eaed;
+  
+  /* Code blocks */
+  --code-bg: #f6f8fa;
+  --code-text: #1f2328;
+  
+  /* Links */
+  --link-color: var(--isel-primary);
+  --link-hover: var(--isel-primary-light);
+  
+  /* Sidebar */
+  --sidebar-bg: #f6f8fa;
+  --sidebar-hover: #e8eaed;
+  --sidebar-active: rgba(95, 20, 55, 0.1);
+  
+  /* Cards */
+  --card-bg: #ffffff;
+  --card-border: #d0d7de;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --bg-tertiary: #21262d;
+  --text-primary: #e6edf3;
+  --text-secondary: #8b949e;
+  --text-muted: #6e7681;
+  --border-color: #30363d;
+  --border-color-light: #21262d;
+  
+  --code-bg: #161b22;
+  --code-text: #e6edf3;
+  
+  --link-color: #d75a8a;
+  --link-hover: #e88aaf;
+  
+  --sidebar-bg: #161b22;
+  --sidebar-hover: #21262d;
+  --sidebar-active: rgba(215, 90, 138, 0.15);
+  
+  --card-bg: #161b22;
+  --card-border: #30363d;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* System preference detection */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #21262d;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --border-color: #30363d;
+    --border-color-light: #21262d;
+    
+    --code-bg: #161b22;
+    --code-text: #e6edf3;
+    
+    --link-color: #d75a8a;
+    --link-hover: #e88aaf;
+    
+    --sidebar-bg: #161b22;
+    --sidebar-hover: #21262d;
+    --sidebar-active: rgba(215, 90, 138, 0.15);
+    
+    --card-bg: #161b22;
+    --card-border: #30363d;
+    --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Reset and base styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.3em; }
+h3 { font-size: 1.25rem; }
+h4 { font-size: 1rem; }
+h5 { font-size: 0.875rem; }
+h6 { font-size: 0.85rem; color: var(--text-secondary); }
+
+p {
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+/* Links */
+a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+/* Lists */
+ul, ol {
+  margin-top: 0;
+  margin-bottom: 1em;
+  padding-left: 2em;
+}
+
+li {
+  margin-bottom: 0.25em;
+}
+
+li > ul, li > ol {
+  margin-bottom: 0;
+}
+
+/* Code */
+code {
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  font-size: 0.875em;
+  background-color: var(--code-bg);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  background-color: var(--code-bg);
+  border-radius: 6px;
+  padding: 1em;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* Shiki dual theme support */
+/* Light mode: use light theme colors */
+pre.astro-code,
+pre.shiki {
+  background-color: var(--shiki-light-bg, var(--code-bg)) !important;
+}
+
+pre.astro-code span,
+pre.shiki span {
+  color: var(--shiki-light, inherit) !important;
+}
+
+/* Dark mode: use dark theme colors */
+:root[data-theme="dark"] pre.astro-code,
+:root[data-theme="dark"] pre.shiki {
+  background-color: var(--shiki-dark-bg, var(--code-bg)) !important;
+}
+
+:root[data-theme="dark"] pre.astro-code span,
+:root[data-theme="dark"] pre.shiki span {
+  color: var(--shiki-dark, inherit) !important;
+}
+
+/* System preference dark mode (when no explicit theme set) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) pre.astro-code,
+  :root:not([data-theme="light"]) pre.shiki {
+    background-color: var(--shiki-dark-bg, var(--code-bg)) !important;
+  }
+  
+  :root:not([data-theme="light"]) pre.astro-code span,
+  :root:not([data-theme="light"]) pre.shiki span {
+    color: var(--shiki-dark, inherit) !important;
+  }
+}
+
+/* Blockquotes */
+blockquote {
+  margin: 1em 0;
+  padding: 0.5em 1em;
+  border-left: 4px solid var(--isel-primary);
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+}
+
+blockquote > :first-child {
+  margin-top: 0;
+}
+
+blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+}
+
+th, td {
+  padding: 0.5em 1em;
+  border: 1px solid var(--border-color);
+  text-align: left;
+}
+
+th {
+  background-color: var(--bg-secondary);
+  font-weight: 600;
+}
+
+tr:nth-child(even) {
+  background-color: var(--bg-secondary);
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+/* Horizontal rule */
+hr {
+  border: 0;
+  border-top: 1px solid var(--border-color);
+  margin: 2em 0;
+}
+
+/* Selection */
+::selection {
+  background-color: rgba(95, 20, 55, 0.3);
+  color: inherit;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid var(--isel-primary);
+  outline-offset: 2px;
+}
+
+/* Utility classes */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

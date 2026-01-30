@@ -1,0 +1,193 @@
+---
+import type { Semester } from '@lib/navigation';
+
+interface Props {
+  semester: Semester;
+  notesCounts: Record<string, number>;
+}
+
+const { semester, notesCounts } = Astro.props;
+
+const semesterNumber = semester.name.split(' ')[0];
+---
+
+<div class="semester-card" id={semester.name.toLowerCase().replace(/\s+/g, '-')}>
+  <div class="card-header">
+    <span class="semester-badge">{semesterNumber}</span>
+    <h2 class="semester-title">{semester.name}</h2>
+  </div>
+  
+  <ul class="subjects-list">
+    {semester.subjects.map(subject => {
+      const count = notesCounts[subject.path] || 0;
+      return (
+        <li class="subject-item">
+          <a href={count > 0 ? `/${subject.path}/readme` : `/${subject.path}`} class="subject-link">
+            <div class="subject-info">
+              <span class="subject-code">{subject.code}</span>
+              <span class="subject-name">{subject.name}</span>
+            </div>
+            <div class="subject-meta">
+              {count > 0 ? (
+                <span class="notes-count">{count} {count === 1 ? 'note' : 'notes'}</span>
+              ) : (
+                <span class="pdf-only">PDF</span>
+              )}
+              <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </div>
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+</div>
+
+<style>
+  .semester-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    transition: box-shadow 0.2s;
+  }
+  
+  .semester-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  :global([data-theme="dark"]) .semester-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .semester-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background-color: var(--isel-primary);
+    color: white;
+    font-weight: 700;
+    font-size: 0.875rem;
+    border-radius: 8px;
+  }
+  
+  .semester-title {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  
+  .subjects-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .subject-item {
+    border-bottom: 1px solid var(--border-color-light);
+  }
+  
+  .subject-item:last-child {
+    border-bottom: none;
+  }
+  
+  .subject-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 1.25rem;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.15s;
+  }
+  
+  .subject-link:hover {
+    background-color: var(--bg-secondary);
+    text-decoration: none;
+  }
+  
+  .subject-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: 0;
+  }
+  
+  .subject-code {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--isel-primary);
+  }
+  
+  :global([data-theme="dark"]) .subject-code {
+    color: var(--link-color);
+  }
+  
+  .subject-name {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .subject-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+  
+  .notes-count {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding: 0.25rem 0.5rem;
+    background-color: var(--bg-tertiary);
+    border-radius: 4px;
+  }
+  
+  .pdf-only {
+    font-size: 0.75rem;
+    color: var(--isel-primary);
+    padding: 0.25rem 0.5rem;
+    background-color: rgba(95, 20, 55, 0.1);
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  
+  :global([data-theme="dark"]) .pdf-only {
+    color: var(--link-color);
+    background-color: rgba(215, 90, 138, 0.15);
+  }
+  
+  .arrow {
+    color: var(--text-muted);
+    transition: transform 0.15s;
+  }
+  
+  .subject-link:hover .arrow {
+    transform: translateX(2px);
+    color: var(--text-secondary);
+  }
+  
+  @media (max-width: 640px) {
+    .subject-name {
+      display: none;
+    }
+  }
+</style>

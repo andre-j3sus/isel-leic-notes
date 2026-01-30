@@ -4,3 +4,11 @@
 * **ECTS:** 6.0
 * **Year:** 1st
 * **Semester:** 1st
+
+---
+
+> **Note:** Only PDF notes are available for this subject at the moment.
+
+## Available Resources
+
+- [TMD Notes (PDF)](/1st-semester/tmd/tmd)

@@ -1,0 +1,270 @@
+---
+import { getCollection } from 'astro:content';
+import { semesters, sortNotes, extractTitle } from '@lib/navigation';
+
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = '' } = Astro.props;
+
+// Get all notes and organize by path
+const allNotes = await getCollection('notes');
+
+// Build navigation structure
+interface NavNote {
+  id: string;
+  title: string;
+  href: string;
+}
+
+interface SubjectNav {
+  code: string;
+  name: string;
+  path: string;
+  notes: NavNote[];
+}
+
+interface SemesterNav {
+  name: string;
+  subjects: SubjectNav[];
+}
+
+const navigation: SemesterNav[] = semesters.map(semester => ({
+  name: semester.name,
+  subjects: semester.subjects.map(subject => {
+    const subjectNotes = allNotes.filter(note => note.id.startsWith(subject.path + '/'));
+    const sortedNotes = sortNotes(subjectNotes);
+    
+    return {
+      code: subject.code,
+      name: subject.name,
+      path: subject.path,
+      notes: sortedNotes.map(note => {
+        const filename = note.id.split('/').pop() || '';
+        const isReadme = filename.toLowerCase() === 'readme.md';
+        return {
+          id: note.id,
+          title: isReadme ? 'Overview' : extractTitle(note.body || '', filename),
+          href: '/' + note.id.replace(/\.md$/, ''),
+        };
+      }),
+    };
+  }),
+}));
+
+// Determine which sections should be expanded
+function isExpanded(semesterName: string, subjectPath: string): boolean {
+  return currentPath.startsWith(subjectPath);
+}
+
+function isSemesterExpanded(semester: SemesterNav): boolean {
+  return semester.subjects.some(s => currentPath.startsWith(s.path));
+}
+---
+
+<nav class="navigation" aria-label="Notes navigation">
+  <div class="nav-header">
+    <span class="nav-title">Contents</span>
+  </div>
+  
+  <ul class="nav-list">
+    {navigation.map(semester => (
+      <li class="nav-semester">
+        <details open={isSemesterExpanded(semester)}>
+          <summary class="semester-title">
+            <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            {semester.name}
+          </summary>
+          
+          <ul class="subject-list">
+            {semester.subjects.map(subject => (
+              <li class="nav-subject">
+                <details open={isExpanded(semester.name, subject.path)}>
+                  <summary class="subject-title">
+                    <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                    <span class="subject-code">{subject.code}</span>
+                    <span class="subject-name">{subject.name}</span>
+                  </summary>
+                  
+                  {subject.notes.length > 0 ? (
+                    <ul class="note-list">
+                      {subject.notes.map(note => (
+                        <li>
+                          <a 
+                            href={note.href}
+                            class:list={['note-link', { active: currentPath === note.id.replace(/\.md$/, '') }]}
+                          >
+                            {note.title}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p class="no-notes">PDF notes only</p>
+                  )}
+                </details>
+              </li>
+            ))}
+          </ul>
+        </details>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .navigation {
+    width: 280px;
+    flex-shrink: 0;
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color);
+    height: calc(100vh - 57px);
+    overflow-y: auto;
+    position: sticky;
+    top: 57px;
+  }
+  
+  .nav-header {
+    padding: 1rem 1rem 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .nav-title {
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+  }
+  
+  .nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .nav-semester {
+    border-bottom: 1px solid var(--border-color-light);
+  }
+  
+  details {
+    display: block;
+  }
+  
+  summary {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+  }
+  
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  
+  .chevron {
+    flex-shrink: 0;
+    transition: transform 0.2s;
+  }
+  
+  details[open] > summary .chevron {
+    transform: rotate(90deg);
+  }
+  
+  .semester-title {
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+  }
+  
+  .semester-title:hover {
+    background-color: var(--sidebar-hover);
+  }
+  
+  .subject-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .subject-title {
+    padding: 0.5rem 1rem 0.5rem 1.5rem;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+  }
+  
+  .subject-title:hover {
+    background-color: var(--sidebar-hover);
+  }
+  
+  .subject-code {
+    font-weight: 600;
+    color: var(--isel-primary);
+    margin-right: 0.25rem;
+  }
+  
+  :global([data-theme="dark"]) .subject-code {
+    color: var(--link-color);
+  }
+  
+  .subject-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .note-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .note-link {
+    display: block;
+    padding: 0.375rem 1rem 0.375rem 3rem;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .note-link:hover {
+    background-color: var(--sidebar-hover);
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+  
+  .note-link.active {
+    background-color: var(--sidebar-active);
+    color: var(--isel-primary);
+    font-weight: 500;
+  }
+  
+  :global([data-theme="dark"]) .note-link.active {
+    color: var(--link-color);
+  }
+  
+  .no-notes {
+    padding: 0.375rem 1rem 0.375rem 3rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin: 0;
+  }
+  
+  @media (max-width: 1024px) {
+    .navigation {
+      display: none;
+    }
+  }
+</style>

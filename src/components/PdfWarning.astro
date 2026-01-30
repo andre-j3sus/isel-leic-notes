@@ -1,0 +1,169 @@
+---
+import { GITHUB_REPO_URL, getPathInfo } from '@lib/navigation';
+
+interface Props {
+  pdfPath: string;
+  filename: string;
+}
+
+const { pdfPath, filename } = Astro.props;
+const { semester, subject } = getPathInfo(pdfPath);
+
+const githubUrl = `${GITHUB_REPO_URL}/${pdfPath}`;
+const backUrl = subject ? `/${subject.path}/README` : '/';
+---
+
+<div class="pdf-warning">
+  <div class="warning-icon">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="16" y1="13" x2="8" y2="13"></line>
+      <line x1="16" y1="17" x2="8" y2="17"></line>
+      <polyline points="10 9 9 9 8 9"></polyline>
+    </svg>
+  </div>
+  
+  <h1 class="warning-title">{filename}</h1>
+  
+  <p class="warning-message">
+    This note is available as a <strong>PDF file</strong> and cannot be displayed directly in the browser.
+  </p>
+  
+  {subject && (
+    <p class="subject-context">
+      Part of <strong>{subject.code}</strong> - {subject.name}
+    </p>
+  )}
+  
+  <div class="warning-actions">
+    <a href={githubUrl} class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <line x1="10" y1="14" x2="21" y2="3"></line>
+      </svg>
+      View on GitHub
+    </a>
+    
+    <a href={backUrl} class="btn btn-secondary">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Back to {subject ? subject.code : 'Home'}
+    </a>
+  </div>
+  
+  <p class="warning-hint">
+    You can download the PDF directly from GitHub or view it in GitHub's PDF viewer.
+  </p>
+</div>
+
+<style>
+  .pdf-warning {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 3rem 1.5rem;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .warning-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    background-color: rgba(95, 20, 55, 0.1);
+    color: var(--isel-primary);
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+  }
+  
+  :global([data-theme="dark"]) .warning-icon {
+    background-color: rgba(215, 90, 138, 0.15);
+    color: var(--link-color);
+  }
+  
+  .warning-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 1rem;
+    color: var(--text-primary);
+    word-break: break-word;
+  }
+  
+  .warning-message {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin: 0 0 0.5rem;
+    line-height: 1.6;
+  }
+  
+  .subject-context {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin: 0 0 1.5rem;
+  }
+  
+  .subject-context strong {
+    color: var(--isel-primary);
+  }
+  
+  :global([data-theme="dark"]) .subject-context strong {
+    color: var(--link-color);
+  }
+  
+  .warning-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  
+  .btn:hover {
+    text-decoration: none;
+  }
+  
+  .btn-primary {
+    background-color: var(--isel-primary);
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--isel-primary-light);
+    color: white;
+  }
+  
+  .btn-secondary {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+  }
+  
+  .btn-secondary:hover {
+    background-color: var(--bg-tertiary);
+  }
+  
+  .warning-hint {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+</style>

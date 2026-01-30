@@ -1,0 +1,241 @@
+---
+import Layout from '@layouts/Layout.astro';
+import SemesterCard from '@components/SemesterCard.astro';
+import { getCollection } from 'astro:content';
+import { semesters } from '@lib/navigation';
+
+// Get all notes to count them per subject
+const allNotes = await getCollection('notes');
+
+// Count notes per subject path
+const notesCounts: Record<string, number> = {};
+for (const semester of semesters) {
+  for (const subject of semester.subjects) {
+    const count = allNotes.filter(note => note.id.startsWith(subject.path + '/')).length;
+    notesCounts[subject.path] = count;
+  }
+}
+
+const totalNotes = allNotes.length;
+const totalSubjects = semesters.reduce((acc, s) => acc + s.subjects.length, 0);
+---
+
+<Layout title="Home">
+  <main class="home">
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">ISEL LEIC Notes</h1>
+        <p class="hero-description">
+          Notes from my journey through the BSc in Computer Science and Computer Engineering 
+          at <a href="https://www.isel.pt/en" target="_blank" rel="noopener noreferrer">ISEL</a>, 
+          from 2020 to 2023.
+        </p>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-value">{totalNotes}</span>
+            <span class="stat-label">Notes</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">{totalSubjects}</span>
+            <span class="stat-label">Subjects</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">6</span>
+            <span class="stat-label">Semesters</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="semesters">
+      <h2 class="section-title">Study Plan</h2>
+      <p class="section-description">
+        Browse notes by semester and subject. Some early courses only have PDF handwritten notes, 
+        while later semesters have detailed Markdown notes.
+      </p>
+      
+      <div class="semester-grid">
+        {semesters.map(semester => (
+          <SemesterCard semester={semester} notesCounts={notesCounts} />
+        ))}
+      </div>
+    </section>
+    
+    <section class="about">
+      <h2 class="section-title">About These Notes</h2>
+      <div class="about-content">
+        <div class="about-card">
+          <h3>Purpose</h3>
+          <p>
+            These notes are intended as a <strong>summary</strong> of the subjects and are not meant 
+            to be a substitute for official course materials. They were created to help with studying 
+            and shared to assist classmates and future students.
+          </p>
+        </div>
+        <div class="about-card">
+          <h3>Languages</h3>
+          <p>
+            Some notes are in <strong>Portuguese</strong> and others in <strong>English</strong>. 
+            Earlier semesters tend to be in Portuguese, while later semesters are primarily in English.
+          </p>
+        </div>
+        <div class="about-card">
+          <h3>Contributing</h3>
+          <p>
+            Found an error or want to improve the notes? Contributions are welcome! 
+            Feel free to open an <a href="https://github.com/andre-j3sus/isel-leic-notes/issues" target="_blank" rel="noopener noreferrer">issue</a> or 
+            <a href="https://github.com/andre-j3sus/isel-leic-notes/pulls" target="_blank" rel="noopener noreferrer">pull request</a>.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .home {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  
+  /* Hero Section */
+  .hero {
+    padding: 3rem 0;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .hero-content {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  
+  .hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+    color: var(--text-primary);
+  }
+  
+  .hero-description {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0 0 2rem;
+  }
+  
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+  }
+  
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  
+  .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--isel-primary);
+  }
+  
+  :global([data-theme="dark"]) .stat-value {
+    color: var(--link-color);
+  }
+  
+  .stat-label {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  /* Semesters Section */
+  .semesters {
+    padding: 3rem 0;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+    color: var(--text-primary);
+  }
+  
+  .section-description {
+    color: var(--text-secondary);
+    margin: 0 0 2rem;
+    max-width: 700px;
+  }
+  
+  .semester-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  /* About Section */
+  .about {
+    padding: 3rem 0;
+    border-top: 1px solid var(--border-color);
+  }
+  
+  .about-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  
+  .about-card {
+    padding: 1.5rem;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+  }
+  
+  .about-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.75rem;
+    color: var(--isel-primary);
+  }
+  
+  :global([data-theme="dark"]) .about-card h3 {
+    color: var(--link-color);
+  }
+  
+  .about-card p {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.6;
+  }
+  
+  @media (max-width: 768px) {
+    .hero {
+      padding: 2rem 0;
+    }
+    
+    .hero-title {
+      font-size: 2rem;
+    }
+    
+    .hero-stats {
+      gap: 2rem;
+    }
+    
+    .stat-value {
+      font-size: 1.5rem;
+    }
+    
+    .semester-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

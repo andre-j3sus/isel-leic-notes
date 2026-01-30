@@ -1,0 +1,250 @@
+---
+import Layout from './Layout.astro';
+import Navigation from '@components/Navigation.astro';
+import PrevNextNav from '@components/PrevNextNav.astro';
+import TableOfContents, { type TocItem } from '@components/TableOfContents.astro';
+import { getPathInfo, GITHUB_REPO_URL, type PrevNextNav as PrevNextNavType } from '@lib/navigation';
+
+interface Props {
+  title: string;
+  path: string;
+  lastUpdated?: string | null;
+  prevNext?: PrevNextNavType;
+  headings?: TocItem[];
+}
+
+const { title, path, lastUpdated, prevNext, headings = [] } = Astro.props;
+const { semester, subject } = getPathInfo(path);
+
+// Format the last updated date
+let formattedDate: string | null = null;
+if (lastUpdated) {
+  const date = new Date(lastUpdated);
+  formattedDate = date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+// Build breadcrumb
+const breadcrumbs = [
+  { label: 'Home', href: '/' },
+];
+
+if (semester) {
+  breadcrumbs.push({ label: semester.name, href: `/#${semester.name.toLowerCase().replace(/\s+/g, '-')}` });
+}
+
+if (subject) {
+  breadcrumbs.push({ label: subject.code, href: `/${subject.path}/readme` });
+}
+
+breadcrumbs.push({ label: title, href: '' });
+
+const githubUrl = `${GITHUB_REPO_URL}/${path}.md`;
+---
+
+<Layout title={title}>
+  <div class="layout-container">
+    <Navigation currentPath={path} />
+    
+    <main class="main-content">
+      <div class="content-header">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            {breadcrumbs.map((crumb, index) => (
+              <li>
+                {index < breadcrumbs.length - 1 ? (
+                  <>
+                    <a href={crumb.href}>{crumb.label}</a>
+                    <span class="separator">/</span>
+                  </>
+                ) : (
+                  <span class="current">{crumb.label}</span>
+                )}
+              </li>
+            ))}
+          </ol>
+        </nav>
+        
+        <a href={githubUrl} class="edit-link" target="_blank" rel="noopener noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+          </svg>
+          Edit on GitHub
+        </a>
+      </div>
+      
+      {headings.length > 0 && <TableOfContents headings={headings} />}
+      
+      <article class="note-content">
+        <slot />
+      </article>
+      
+      {prevNext && <PrevNextNav nav={prevNext} />}
+      
+      <footer class="page-footer">
+        {subject && (
+          <p class="subject-info">
+            <strong>{subject.code}</strong> - {subject.name}
+            <span class="subject-pt">({subject.namePt})</span>
+          </p>
+        )}
+        
+        <p class="last-updated">
+          {formattedDate ? (
+            <>Last updated: {formattedDate}</>
+          ) : (
+            <>Recently added</>
+          )}
+        </p>
+      </footer>
+    </main>
+  </div>
+</Layout>
+
+<style>
+  .layout-container {
+    display: flex;
+    min-height: calc(100vh - 57px - 120px);
+  }
+  
+  .main-content {
+    flex: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    width: 100%;
+  }
+  
+  .content-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .breadcrumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.875rem;
+  }
+  
+  .breadcrumbs li {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  
+  .breadcrumbs a {
+    color: var(--text-secondary);
+  }
+  
+  .breadcrumbs a:hover {
+    color: var(--link-color);
+  }
+  
+  .breadcrumbs .separator {
+    color: var(--text-muted);
+  }
+  
+  .breadcrumbs .current {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  
+  .edit-link {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  
+  .edit-link:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+  
+  .note-content {
+    line-height: 1.7;
+  }
+  
+  .note-content :global(h1:first-child) {
+    margin-top: 0;
+  }
+  
+  .note-content :global(img) {
+    display: block;
+    margin: 1.5rem auto;
+    max-width: 100%;
+  }
+  
+  .page-footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .subject-info {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+  
+  .subject-info strong {
+    color: var(--isel-primary);
+  }
+  
+  :global([data-theme="dark"]) .subject-info strong {
+    color: var(--link-color);
+  }
+  
+  .subject-pt {
+    color: var(--text-muted);
+  }
+  
+  .last-updated {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+  
+  @media (max-width: 1024px) {
+    .main-content {
+      padding: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .content-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .main-content {
+      padding: 1rem;
+    }
+  }
+</style>

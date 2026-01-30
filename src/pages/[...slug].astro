@@ -1,0 +1,101 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '@layouts/Layout.astro';
+import NoteLayout from '@layouts/NoteLayout.astro';
+import PdfWarning from '@components/PdfWarning.astro';
+import { extractTitle, pdfFiles, getPrevNextNav, type PrevNextNav } from '@lib/navigation';
+import gitDates from '@data/git-dates.json';
+import type { TocItem } from '@components/TableOfContents.astro';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notes');
+  
+  // Build list of all paths with titles for navigation
+  const allMdPaths: { path: string; title: string }[] = [];
+  const allPdfPaths: { path: string; title: string }[] = [];
+  
+  // Generate paths for markdown files
+  const mdPaths = await Promise.all(notes.map(async (note) => {
+    const slug = note.id.replace(/\.md$/, '');
+    const { Content, headings } = await render(note);
+    const filename = note.id.split('/').pop() || '';
+    const isReadme = filename.toLowerCase() === 'readme.md';
+    const title = isReadme ? 'Overview' : extractTitle(note.body || '', filename);
+    
+    allMdPaths.push({ path: slug, title });
+    
+    return {
+      params: { slug },
+      props: { 
+        type: 'markdown' as const, 
+        title,
+        path: slug,
+        Content,
+        headings: headings as TocItem[],
+      },
+    };
+  }));
+  
+  // Generate paths for PDF files
+  const pdfPaths = pdfFiles.map((pdfPath: string) => {
+    const slug = pdfPath.replace(/\.pdf$/, '');
+    const filename = pdfPath.split('/').pop() || pdfPath;
+    const title = filename.replace(/\.pdf$/, '');
+    
+    allPdfPaths.push({ path: slug, title });
+    
+    return {
+      params: { slug },
+      props: { 
+        type: 'pdf' as const, 
+        pdfPath, 
+        filename: title,
+        title,
+        path: slug,
+      },
+    };
+  });
+  
+  // Now add prev/next navigation to each path
+  const allPaths = [...mdPaths, ...pdfPaths].map(item => {
+    const prevNext = getPrevNextNav(item.props.path, allMdPaths, allPdfPaths);
+    return {
+      ...item,
+      props: {
+        ...item.props,
+        prevNext,
+      },
+    };
+  });
+  
+  return allPaths;
+}
+
+interface Props {
+  type: 'markdown' | 'pdf';
+  title: string;
+  path: string;
+  Content?: any;
+  headings?: TocItem[];
+  pdfPath?: string;
+  filename?: string;
+  prevNext?: PrevNextNav;
+}
+
+const { type, title, path, Content, headings, pdfPath, filename, prevNext } = Astro.props;
+
+// Get the git date for this file
+const lastUpdated = (gitDates as Record<string, string | null>)[path] || null;
+---
+
+{type === 'markdown' && Content ? (
+  <NoteLayout title={title} path={path} lastUpdated={lastUpdated} prevNext={prevNext} headings={headings}>
+    <Content />
+  </NoteLayout>
+) : (
+  <NoteLayout title={title} path={path} lastUpdated={lastUpdated} prevNext={prevNext}>
+    <PdfWarning pdfPath={pdfPath!} filename={filename!} />
+  </NoteLayout>
+)}
+
+

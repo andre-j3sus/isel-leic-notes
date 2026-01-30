@@ -1,5 +1,7 @@
 # isel-leic-notes 🗒️
 
+**[ 🌐 View the website](https://isel-leic-notes.andrejesus.com/)** — Hosted on [Cloudflare Workers](https://workers.cloudflare.com/)
+
 > This repository contains notes from my journey through the [BSc in Computer Science and Computer Engineering (Licenciatura em Engenharia Informática e de Computadores - LEIC)](https://www.isel.pt/en/curso/bsc-degree/computer-science-and-computer-engineering) at [ISEL](https://www.isel.pt/en), from 2020 to 2023.
 
 > Additionally, I've started a project called [ist-meic-notes](https://github.com/andre-j3sus/ist-meic-notes) to compile notes specifically from my master's degree in Computer Science and Engineering at IST, building upon the foundation laid during my BSc studies.

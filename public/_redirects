@@ -1,0 +1,5 @@
+# Redirect .md URLs to clean URLs
+/*.md /:splat 301
+/*/*.md /:splat 301
+/*/*/*.md /:splat 301
+/*/*/*/*.md /:splat 301

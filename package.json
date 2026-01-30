@@ -1,0 +1,20 @@
+{
+  "name": "isel-leic-notes",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Notes from BSc in Computer Science and Computer Engineering at ISEL",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "node scripts/generate-git-dates.js && astro build",
+    "preview": "wrangler pages dev dist",
+    "deploy": "astro build && wrangler deploy",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^12.6.12",
+    "astro": "^5.17.1"
+  },
+  "devDependencies": {
+    "wrangler": "^4.61.1"
+  }
+}
