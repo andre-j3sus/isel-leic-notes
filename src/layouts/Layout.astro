@@ -36,10 +36,23 @@ const fullTitle = title === 'Home' ? 'ISEL LEIC Notes' : `${title} | ISEL LEIC N
   <body>
     <header class="header">
       <div class="header-content">
-        <a href="/" class="logo">
-          <span class="logo-icon">ISEL</span>
-          <span class="logo-text">LEIC Notes</span>
-        </a>
+        <div class="header-left">
+          <button class="sidebar-toggle-mobile" id="sidebar-toggle-mobile" aria-label="Toggle navigation menu">
+            <svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+            <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          <a href="/" class="logo">
+            <span class="logo-icon">ISEL</span>
+            <span class="logo-text">LEIC Notes</span>
+          </a>
+        </div>
         <div class="header-actions">
           <a href="https://github.com/andre-j3sus/isel-leic-notes" class="github-link" target="_blank" rel="noopener noreferrer">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -53,6 +66,13 @@ const fullTitle = title === 'Home' ? 'ISEL LEIC Notes' : `${title} | ISEL LEIC N
     </header>
     
     <slot />
+    
+    <!-- Sidebar expand button (shown when collapsed on desktop) -->
+    <button class="sidebar-expand-btn" id="sidebar-expand-btn" aria-label="Expand sidebar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
     
     <footer class="footer">
       <div class="footer-content">
@@ -69,6 +89,59 @@ const fullTitle = title === 'Home' ? 'ISEL LEIC Notes' : `${title} | ISEL LEIC N
         </p>
       </div>
     </footer>
+    
+    <script>
+      // Sidebar state management
+      function initSidebar() {
+        const html = document.documentElement;
+        const mobileToggle = document.getElementById('sidebar-toggle-mobile');
+        const expandBtn = document.getElementById('sidebar-expand-btn');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        
+        // Load saved desktop collapsed state
+        const savedCollapsed = localStorage.getItem('sidebar-collapsed');
+        if (savedCollapsed === 'true') {
+          html.setAttribute('data-sidebar-collapsed', '');
+        }
+        
+        // Mobile toggle
+        mobileToggle?.addEventListener('click', () => {
+          if (html.hasAttribute('data-sidebar-open')) {
+            html.removeAttribute('data-sidebar-open');
+            document.body.style.overflow = '';
+          } else {
+            html.setAttribute('data-sidebar-open', '');
+            document.body.style.overflow = 'hidden';
+          }
+        });
+        
+        // Desktop expand button
+        expandBtn?.addEventListener('click', () => {
+          html.removeAttribute('data-sidebar-collapsed');
+          localStorage.setItem('sidebar-collapsed', 'false');
+        });
+        
+        // Close mobile sidebar on backdrop click
+        backdrop?.addEventListener('click', () => {
+          html.removeAttribute('data-sidebar-open');
+          document.body.style.overflow = '';
+        });
+        
+        // Close mobile sidebar on escape key
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && html.hasAttribute('data-sidebar-open')) {
+            html.removeAttribute('data-sidebar-open');
+            document.body.style.overflow = '';
+          }
+        });
+      }
+      
+      // Initialize on page load
+      initSidebar();
+      
+      // Re-initialize on Astro page transitions
+      document.addEventListener('astro:page-load', initSidebar);
+    </script>
   </body>
 </html>
 
@@ -88,6 +161,12 @@ const fullTitle = title === 'Home' ? 'ISEL LEIC Notes' : `${title} | ISEL LEIC N
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+  
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
   
   .logo {
@@ -142,9 +221,83 @@ const fullTitle = title === 'Home' ? 'ISEL LEIC Notes' : `${title} | ISEL LEIC N
     font-size: 0.875rem;
   }
   
+  .sidebar-toggle-mobile {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  
+  .sidebar-toggle-mobile:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+  
+  .sidebar-toggle-mobile .icon-close {
+    display: none;
+  }
+  
+  :global([data-sidebar-open]) .sidebar-toggle-mobile .icon-menu {
+    display: none;
+  }
+  
+  :global([data-sidebar-open]) .sidebar-toggle-mobile .icon-close {
+    display: block;
+  }
+  
+  @media (max-width: 1024px) {
+    .sidebar-toggle-mobile {
+      display: flex;
+    }
+  }
+  
   @media (max-width: 640px) {
     .github-text {
       display: none;
+    }
+  }
+  
+  /* Sidebar expand button - shown when collapsed on desktop */
+  .sidebar-expand-btn {
+    display: none;
+    position: fixed;
+    left: 0;
+    bottom: 1rem;
+    z-index: 80;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-left: none;
+    border-radius: 0 6px 6px 0;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  
+  .sidebar-expand-btn:hover {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+  
+  :global([data-sidebar-collapsed]) .sidebar-expand-btn {
+    display: flex;
+  }
+  
+  @media (max-width: 1024px) {
+    .sidebar-expand-btn {
+      display: none !important;
     }
   }
   

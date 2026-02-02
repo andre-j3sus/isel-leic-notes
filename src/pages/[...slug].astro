@@ -2,25 +2,52 @@
 import { getCollection, render } from 'astro:content';
 import Layout from '@layouts/Layout.astro';
 import NoteLayout from '@layouts/NoteLayout.astro';
+import Navigation from '@components/Navigation.astro';
 import PdfWarning from '@components/PdfWarning.astro';
-import { extractTitle, pdfFiles, getPrevNextNav, type PrevNextNav } from '@lib/navigation';
+import SubjectIndex from '@components/SubjectIndex.astro';
+import SemesterIndex from '@components/SemesterIndex.astro';
+import type { NoteCard, PdfResource } from '@components/SubjectIndex.astro';
+import { 
+  extractTitle, 
+  pdfFiles, 
+  getPrevNextNav, 
+  isReadme, 
+  extractNumber,
+  getPdfsForSubject,
+  semesters,
+  type PrevNextNav,
+  type Subject,
+  type Semester,
+} from '@lib/navigation';
 import gitDates from '@data/git-dates.json';
 import type { TocItem } from '@components/TableOfContents.astro';
+
+interface SubjectCard {
+  code: string;
+  name: string;
+  namePt: string;
+  href: string;
+  noteCount: number;
+  hasPdfs: boolean;
+}
 
 export async function getStaticPaths() {
   const notes = await getCollection('notes');
   
-  // Build list of all paths with titles for navigation
+  // Build list of all paths with titles for navigation (excluding READMEs)
   const allMdPaths: { path: string; title: string }[] = [];
   const allPdfPaths: { path: string; title: string }[] = [];
   
-  // Generate paths for markdown files
-  const mdPaths = await Promise.all(notes.map(async (note) => {
+  // Separate README files from content notes
+  const readmeNotes = notes.filter(note => isReadme(note.id));
+  const contentNotes = notes.filter(note => !isReadme(note.id));
+  
+  // Generate paths for markdown files (excluding READMEs)
+  const mdPaths = await Promise.all(contentNotes.map(async (note) => {
     const slug = note.id.replace(/\.md$/, '');
     const { Content, headings } = await render(note);
     const filename = note.id.split('/').pop() || '';
-    const isReadme = filename.toLowerCase() === 'readme.md';
-    const title = isReadme ? 'Overview' : extractTitle(note.body || '', filename);
+    const title = extractTitle(note.body || '', filename);
     
     allMdPaths.push({ path: slug, title });
     
@@ -56,8 +83,76 @@ export async function getStaticPaths() {
     };
   });
   
-  // Now add prev/next navigation to each path
-  const allPaths = [...mdPaths, ...pdfPaths].map(item => {
+  // Generate subject index pages
+  const subjectIndexPaths = semesters.flatMap(semester => 
+    semester.subjects.map(subject => {
+      // Get all notes for this subject (excluding READMEs)
+      const subjectNotes = contentNotes.filter(note => 
+        note.id.startsWith(subject.path + '/')
+      );
+      
+      // Build note cards with metadata
+      const noteCards: NoteCard[] = subjectNotes.map(note => {
+        const filename = note.id.split('/').pop() || '';
+        const slug = note.id.replace(/\.md$/, '');
+        return {
+          number: extractNumber(filename),
+          title: extractTitle(note.body || '', filename),
+          href: '/' + slug,
+        };
+      });
+      
+      // Get PDFs for this subject
+      const pdfs: PdfResource[] = getPdfsForSubject(subject.path);
+      
+      return {
+        params: { slug: subject.path },
+        props: {
+          type: 'subject-index' as const,
+          title: subject.name,
+          path: subject.path,
+          subject,
+          semester,
+          notes: noteCards,
+          pdfs,
+        },
+      };
+    })
+  );
+  
+  // Generate semester index pages
+  const semesterIndexPaths = semesters.map(semester => {
+    // Build subject cards with note counts
+    const subjectCards: SubjectCard[] = semester.subjects.map(subject => {
+      const subjectNotes = contentNotes.filter(note => 
+        note.id.startsWith(subject.path + '/')
+      );
+      const pdfs = getPdfsForSubject(subject.path);
+      
+      return {
+        code: subject.code,
+        name: subject.name,
+        namePt: subject.namePt,
+        href: '/' + subject.path,
+        noteCount: subjectNotes.length,
+        hasPdfs: pdfs.length > 0,
+      };
+    });
+    
+    return {
+      params: { slug: semester.path },
+      props: {
+        type: 'semester-index' as const,
+        title: semester.name,
+        path: semester.path,
+        semester,
+        subjectCards,
+      },
+    };
+  });
+  
+  // Add prev/next navigation to markdown and PDF paths
+  const contentPaths = [...mdPaths, ...pdfPaths].map(item => {
     const prevNext = getPrevNextNav(item.props.path, allMdPaths, allPdfPaths);
     return {
       ...item,
@@ -68,11 +163,11 @@ export async function getStaticPaths() {
     };
   });
   
-  return allPaths;
+  return [...semesterIndexPaths, ...subjectIndexPaths, ...contentPaths];
 }
 
 interface Props {
-  type: 'markdown' | 'pdf';
+  type: 'markdown' | 'pdf' | 'subject-index' | 'semester-index';
   title: string;
   path: string;
   Content?: any;
@@ -80,15 +175,46 @@ interface Props {
   pdfPath?: string;
   filename?: string;
   prevNext?: PrevNextNav;
+  subject?: Subject;
+  semester?: Semester;
+  notes?: NoteCard[];
+  pdfs?: PdfResource[];
+  subjectCards?: SubjectCard[];
 }
 
-const { type, title, path, Content, headings, pdfPath, filename, prevNext } = Astro.props;
+const { type, title, path, Content, headings, pdfPath, filename, prevNext, subject, semester, notes, pdfs, subjectCards } = Astro.props;
 
-// Get the git date for this file
-const lastUpdated = (gitDates as Record<string, string | null>)[path] || null;
+// Get the git date for this file (not applicable for index pages)
+const lastUpdated = type !== 'index' ? (gitDates as Record<string, string | null>)[path] || null : null;
 ---
 
-{type === 'markdown' && Content ? (
+{type === 'semester-index' && semester && subjectCards ? (
+  <Layout title={semester.name}>
+    <div class="layout-container">
+      <Navigation currentPath={semester.path} />
+      <main class="main-content">
+        <SemesterIndex 
+          semester={semester} 
+          subjects={subjectCards} 
+        />
+      </main>
+    </div>
+  </Layout>
+) : type === 'subject-index' && subject && semester && notes && pdfs ? (
+  <Layout title={subject.name}>
+    <div class="layout-container">
+      <Navigation currentPath={subject.path} />
+      <main class="main-content">
+        <SubjectIndex 
+          subject={subject} 
+          semester={semester} 
+          notes={notes} 
+          pdfs={pdfs} 
+        />
+      </main>
+    </div>
+  </Layout>
+) : type === 'markdown' && Content ? (
   <NoteLayout title={title} path={path} lastUpdated={lastUpdated} prevNext={prevNext} headings={headings}>
     <Content />
   </NoteLayout>
@@ -98,4 +224,31 @@ const lastUpdated = (gitDates as Record<string, string | null>)[path] || null;
   </NoteLayout>
 )}
 
-
+<style>
+  .layout-container {
+    display: grid;
+    grid-template-columns: var(--sidebar-width, 280px) minmax(0, 1fr);
+    min-height: calc(100vh - var(--header-height, 57px) - 120px);
+    transition: grid-template-columns 0.2s;
+  }
+  
+  /* Desktop collapsed state */
+  :global([data-sidebar-collapsed]) .layout-container {
+    grid-template-columns: 0 minmax(0, 1fr);
+  }
+  
+  .main-content {
+    width: 100%;
+  }
+  
+  @media (max-width: 1024px) {
+    .layout-container {
+      grid-template-columns: 1fr;
+    }
+    
+    /* Ignore collapsed state on mobile */
+    :global([data-sidebar-collapsed]) .layout-container {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

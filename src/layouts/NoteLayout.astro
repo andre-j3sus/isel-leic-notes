@@ -37,12 +37,14 @@ if (semester) {
 }
 
 if (subject) {
-  breadcrumbs.push({ label: subject.code, href: `/${subject.path}/readme` });
+  breadcrumbs.push({ label: subject.code, href: `/${subject.path}` });
 }
 
 breadcrumbs.push({ label: title, href: '' });
 
-const githubUrl = `${GITHUB_REPO_URL}/${path}.md`;
+// Fix README casing for GitHub URL (Astro normalizes to lowercase, but GitHub is case-sensitive)
+const fixedPath = path.replace(/\/readme$/, '/README');
+const githubUrl = `${GITHUB_REPO_URL}/${fixedPath}.md`;
 ---
 
 <Layout title={title}>
@@ -77,7 +79,8 @@ const githubUrl = `${GITHUB_REPO_URL}/${path}.md`;
         </a>
       </div>
       
-      {headings.length > 0 && <TableOfContents headings={headings} />}
+      {/* Mobile TOC - inline collapsible, shown below 1200px */}
+      {headings.length > 0 && <TableOfContents headings={headings} variant="mobile" />}
       
       <article class="note-content">
         <slot />
@@ -97,22 +100,54 @@ const githubUrl = `${GITHUB_REPO_URL}/${path}.md`;
           {formattedDate ? (
             <>Last updated: {formattedDate}</>
           ) : (
-            <>Recently added</>
+            <>Recently updated</>
           )}
         </p>
       </footer>
     </main>
+    
+    {/* Desktop TOC - sticky sidebar, shown at 1200px and above */}
+    {headings.length > 0 && <TableOfContents headings={headings} variant="desktop" />}
   </div>
 </Layout>
 
 <style>
   .layout-container {
-    display: flex;
-    min-height: calc(100vh - 57px - 120px);
+    display: grid;
+    grid-template-columns: var(--sidebar-width, 280px) minmax(0, 1fr);
+    min-height: calc(100vh - var(--header-height, 57px) - 120px);
+    transition: grid-template-columns 0.2s;
+  }
+  
+  /* Desktop collapsed state */
+  :global([data-sidebar-collapsed]) .layout-container {
+    grid-template-columns: 0 minmax(0, 1fr);
+  }
+  
+  /* Three-column layout when TOC sidebar is visible */
+  @media (min-width: 1200px) {
+    .layout-container {
+      grid-template-columns: var(--sidebar-width, 280px) minmax(0, 1fr) 220px;
+    }
+    
+    :global([data-sidebar-collapsed]) .layout-container {
+      grid-template-columns: 0 minmax(0, 1fr) 220px;
+    }
+  }
+  
+  /* Single column when sidebar is hidden on mobile */
+  @media (max-width: 1024px) {
+    .layout-container {
+      grid-template-columns: 1fr;
+    }
+    
+    /* Ignore collapsed state on mobile */
+    :global([data-sidebar-collapsed]) .layout-container {
+      grid-template-columns: 1fr;
+    }
   }
   
   .main-content {
-    flex: 1;
     max-width: 900px;
     margin: 0 auto;
     padding: 2rem;

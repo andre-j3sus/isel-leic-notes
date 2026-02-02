@@ -10,7 +10,7 @@ const { pdfPath, filename } = Astro.props;
 const { semester, subject } = getPathInfo(pdfPath);
 
 const githubUrl = `${GITHUB_REPO_URL}/${pdfPath}`;
-const backUrl = subject ? `/${subject.path}/README` : '/';
+const backUrl = subject ? `/${subject.path}` : '/';
 ---
 
 <div class="pdf-warning">

@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { semesters, sortNotes, extractTitle } from '@lib/navigation';
+import { semesters, sortNotes, extractTitle, isReadme } from '@lib/navigation';
 
 interface Props {
   currentPath?: string;
@@ -22,30 +22,38 @@ interface SubjectNav {
   code: string;
   name: string;
   path: string;
+  href: string;
   notes: NavNote[];
 }
 
 interface SemesterNav {
   name: string;
+  path: string;
+  href: string;
   subjects: SubjectNav[];
 }
 
 const navigation: SemesterNav[] = semesters.map(semester => ({
   name: semester.name,
+  path: semester.path,
+  href: '/' + semester.path,
   subjects: semester.subjects.map(subject => {
-    const subjectNotes = allNotes.filter(note => note.id.startsWith(subject.path + '/'));
+    // Filter out READMEs from the note list
+    const subjectNotes = allNotes.filter(note => 
+      note.id.startsWith(subject.path + '/') && !isReadme(note.id)
+    );
     const sortedNotes = sortNotes(subjectNotes);
     
     return {
       code: subject.code,
       name: subject.name,
       path: subject.path,
+      href: '/' + subject.path, // Link to index page, not README
       notes: sortedNotes.map(note => {
         const filename = note.id.split('/').pop() || '';
-        const isReadme = filename.toLowerCase() === 'readme.md';
         return {
           id: note.id,
-          title: isReadme ? 'Overview' : extractTitle(note.body || '', filename),
+          title: extractTitle(note.body || '', filename),
           href: '/' + note.id.replace(/\.md$/, ''),
         };
       }),
@@ -59,79 +67,175 @@ function isExpanded(semesterName: string, subjectPath: string): boolean {
 }
 
 function isSemesterExpanded(semester: SemesterNav): boolean {
-  return semester.subjects.some(s => currentPath.startsWith(s.path));
+  return currentPath === semester.path || semester.subjects.some(s => currentPath.startsWith(s.path));
+}
+
+// Check if on an index page
+function isIndexPage(subjectPath: string): boolean {
+  return currentPath === subjectPath;
+}
+
+// Check if on a semester index page
+function isSemesterIndexPage(semesterPath: string): boolean {
+  return currentPath === semesterPath;
 }
 ---
+
+<!-- Mobile backdrop -->
+<div class="sidebar-backdrop" id="sidebar-backdrop"></div>
 
 <nav class="navigation" aria-label="Notes navigation">
   <div class="nav-header">
     <span class="nav-title">Contents</span>
   </div>
   
-  <ul class="nav-list">
-    {navigation.map(semester => (
-      <li class="nav-semester">
-        <details open={isSemesterExpanded(semester)}>
-          <summary class="semester-title">
-            <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-            {semester.name}
-          </summary>
-          
-          <ul class="subject-list">
-            {semester.subjects.map(subject => (
-              <li class="nav-subject">
-                <details open={isExpanded(semester.name, subject.path)}>
-                  <summary class="subject-title">
-                    <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                    <span class="subject-code">{subject.code}</span>
-                    <span class="subject-name">{subject.name}</span>
-                  </summary>
-                  
-                  {subject.notes.length > 0 ? (
-                    <ul class="note-list">
-                      {subject.notes.map(note => (
-                        <li>
-                          <a 
-                            href={note.href}
-                            class:list={['note-link', { active: currentPath === note.id.replace(/\.md$/, '') }]}
-                          >
-                            {note.title}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p class="no-notes">PDF notes only</p>
-                  )}
-                </details>
-              </li>
-            ))}
-          </ul>
-        </details>
-      </li>
-    ))}
-  </ul>
+  <div class="nav-scroll">
+    <ul class="nav-list">
+      {navigation.map(semester => (
+        <li class="nav-semester">
+          <details open={isSemesterExpanded(semester)}>
+            <summary class="semester-title">
+              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+              <a 
+                href={semester.href}
+                class:list={['semester-link', { active: isSemesterIndexPage(semester.path) }]}
+              >
+                {semester.name}
+              </a>
+            </summary>
+            
+            <ul class="subject-list">
+              {semester.subjects.map(subject => (
+                <li class="nav-subject">
+                  <details open={isExpanded(semester.name, subject.path)}>
+                    <summary class="subject-title">
+                      <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                      </svg>
+                      <a 
+                        href={subject.href}
+                        class:list={['subject-link', { active: isIndexPage(subject.path) }]}
+                      >
+                        <span class="subject-code">{subject.code}</span>
+                        <span class="subject-name">{subject.name}</span>
+                      </a>
+                    </summary>
+                    
+                    {subject.notes.length > 0 ? (
+                      <ul class="note-list">
+                        {subject.notes.map(note => (
+                          <li>
+                            <a 
+                              href={note.href}
+                              class:list={['note-link', { active: currentPath === note.id.replace(/\.md$/, '') }]}
+                            >
+                              {note.title}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p class="no-notes">PDF resources only</p>
+                    )}
+                  </details>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </li>
+      ))}
+    </ul>
+  </div>
+  
+  <!-- Desktop collapse button -->
+  <button class="sidebar-collapse-btn" id="sidebar-collapse-btn" aria-label="Collapse sidebar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+    <span>Collapse</span>
+  </button>
 </nav>
 
+<script>
+  function initNavigation() {
+    const html = document.documentElement;
+    const collapseBtn = document.getElementById('sidebar-collapse-btn');
+    const backdrop = document.getElementById('sidebar-backdrop');
+    const nav = document.querySelector('.navigation');
+    
+    // Desktop collapse button
+    collapseBtn?.addEventListener('click', () => {
+      html.setAttribute('data-sidebar-collapsed', '');
+      localStorage.setItem('sidebar-collapsed', 'true');
+    });
+    
+    // Mobile: close sidebar on backdrop click
+    backdrop?.addEventListener('click', () => {
+      html.removeAttribute('data-sidebar-open');
+      document.body.style.overflow = '';
+    });
+    
+    // Close mobile sidebar when clicking a link
+    nav?.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('a') && html.hasAttribute('data-sidebar-open')) {
+        html.removeAttribute('data-sidebar-open');
+        document.body.style.overflow = '';
+      }
+    });
+  }
+  
+  // Initialize on page load
+  initNavigation();
+  
+  // Re-initialize on Astro page transitions
+  document.addEventListener('astro:page-load', initNavigation);
+</script>
+
 <style>
+  /* Mobile backdrop */
+  .sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    top: var(--header-height, 57px);
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 89;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  
+  :global([data-sidebar-open]) .sidebar-backdrop {
+    display: block;
+    opacity: 1;
+  }
+  
   .navigation {
-    width: 280px;
+    width: var(--sidebar-width, 280px);
     flex-shrink: 0;
     background-color: var(--sidebar-bg);
     border-right: 1px solid var(--border-color);
-    height: calc(100vh - 57px);
-    overflow-y: auto;
+    height: calc(100vh - var(--header-height, 57px));
     position: sticky;
-    top: 57px;
+    top: var(--header-height, 57px);
+    display: flex;
+    flex-direction: column;
+    transition: width 0.2s, transform 0.2s;
+    overflow: hidden;
+  }
+  
+  /* Desktop collapsed state */
+  :global([data-sidebar-collapsed]) .navigation {
+    width: 0;
+    border-right: none;
   }
   
   .nav-header {
     padding: 1rem 1rem 0.5rem;
     border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
   }
   
   .nav-title {
@@ -140,12 +244,46 @@ function isSemesterExpanded(semester: SemesterNav): boolean {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-muted);
+    white-space: nowrap;
+  }
+  
+  .nav-scroll {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   
   .nav-list {
     list-style: none;
     padding: 0;
     margin: 0;
+  }
+  
+  /* Desktop collapse button */
+  .sidebar-collapse-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    width: 100%;
+    background: none;
+    border: none;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  
+  .sidebar-collapse-btn:hover {
+    background-color: var(--sidebar-hover);
+    color: var(--text-primary);
+  }
+  
+  :global([data-sidebar-collapsed]) .sidebar-collapse-btn {
+    display: none;
   }
   
   .nav-semester {
@@ -189,6 +327,23 @@ function isSemesterExpanded(semester: SemesterNav): boolean {
     background-color: var(--sidebar-hover);
   }
   
+  .semester-link {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .semester-link:hover {
+    text-decoration: none;
+  }
+  
+  .semester-link.active {
+    color: var(--isel-primary);
+  }
+  
+  :global([data-theme="dark"]) .semester-link.active {
+    color: var(--link-color);
+  }
+  
   .subject-list {
     list-style: none;
     padding: 0;
@@ -199,16 +354,41 @@ function isSemesterExpanded(semester: SemesterNav): boolean {
     padding: 0.5rem 1rem 0.5rem 1.5rem;
     font-size: 0.8125rem;
     color: var(--text-secondary);
+    overflow: hidden;
   }
   
   .subject-title:hover {
     background-color: var(--sidebar-hover);
   }
   
+  .subject-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    min-width: 0;
+    overflow: hidden;
+  }
+  
+  .subject-link:hover {
+    text-decoration: none;
+  }
+  
+  .subject-link.active .subject-code,
+  .subject-link.active .subject-name {
+    color: var(--isel-primary);
+  }
+  
+  :global([data-theme="dark"]) .subject-link.active .subject-code,
+  :global([data-theme="dark"]) .subject-link.active .subject-name {
+    color: var(--link-color);
+  }
+  
   .subject-code {
     font-weight: 600;
     color: var(--isel-primary);
     margin-right: 0.25rem;
+    flex-shrink: 0;
   }
   
   :global([data-theme="dark"]) .subject-code {
@@ -219,6 +399,7 @@ function isSemesterExpanded(semester: SemesterNav): boolean {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    min-width: 0;
   }
   
   .note-list {
@@ -262,9 +443,38 @@ function isSemesterExpanded(semester: SemesterNav): boolean {
     margin: 0;
   }
   
+  /* Mobile styles */
   @media (max-width: 1024px) {
     .navigation {
+      position: fixed;
+      left: 0;
+      top: var(--header-height, 57px);
+      z-index: 90;
+      transform: translateX(-100%);
+      width: var(--sidebar-width, 280px);
+      border-right: 1px solid var(--border-color);
+    }
+    
+    :global([data-sidebar-open]) .navigation {
+      transform: translateX(0);
+    }
+    
+    /* Hide collapse button on mobile */
+    .sidebar-collapse-btn {
       display: none;
+    }
+    
+    /* Ignore desktop collapsed state on mobile */
+    :global([data-sidebar-collapsed]) .navigation {
+      width: var(--sidebar-width, 280px);
+      border-right: 1px solid var(--border-color);
+    }
+  }
+  
+  /* Hide backdrop on desktop */
+  @media (min-width: 1025px) {
+    .sidebar-backdrop {
+      display: none !important;
     }
   }
 </style>

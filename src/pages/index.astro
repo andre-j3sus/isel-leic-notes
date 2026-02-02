@@ -2,21 +2,22 @@
 import Layout from '@layouts/Layout.astro';
 import SemesterCard from '@components/SemesterCard.astro';
 import { getCollection } from 'astro:content';
-import { semesters } from '@lib/navigation';
+import { semesters, isReadme } from '@lib/navigation';
 
-// Get all notes to count them per subject
+// Get all notes to count them per subject (excluding READMEs)
 const allNotes = await getCollection('notes');
+const contentNotes = allNotes.filter(note => !isReadme(note.id));
 
-// Count notes per subject path
+// Count notes per subject path (excluding READMEs)
 const notesCounts: Record<string, number> = {};
 for (const semester of semesters) {
   for (const subject of semester.subjects) {
-    const count = allNotes.filter(note => note.id.startsWith(subject.path + '/')).length;
+    const count = contentNotes.filter(note => note.id.startsWith(subject.path + '/')).length;
     notesCounts[subject.path] = count;
   }
 }
 
-const totalNotes = allNotes.length;
+const totalNotes = contentNotes.length;
 const totalSubjects = semesters.reduce((acc, s) => acc + s.subjects.length, 0);
 ---
 

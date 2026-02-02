@@ -14,7 +14,9 @@ const semesterNumber = semester.name.split(' ')[0];
 <div class="semester-card" id={semester.name.toLowerCase().replace(/\s+/g, '-')}>
   <div class="card-header">
     <span class="semester-badge">{semesterNumber}</span>
-    <h2 class="semester-title">{semester.name}</h2>
+    <h2 class="semester-title">
+      <a href={`/${semester.path}`} class="semester-title-link">{semester.name}</a>
+    </h2>
   </div>
   
   <ul class="subjects-list">
@@ -22,7 +24,7 @@ const semesterNumber = semester.name.split(' ')[0];
       const count = notesCounts[subject.path] || 0;
       return (
         <li class="subject-item">
-          <a href={count > 0 ? `/${subject.path}/readme` : `/${subject.path}`} class="subject-link">
+          <a href={`/${subject.path}`} class="subject-link">
             <div class="subject-info">
               <span class="subject-code">{subject.code}</span>
               <span class="subject-name">{subject.name}</span>
@@ -89,6 +91,20 @@ const semesterNumber = semester.name.split(' ')[0];
     font-size: 1.125rem;
     font-weight: 600;
     color: var(--text-primary);
+  }
+  
+  .semester-title-link {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  .semester-title-link:hover {
+    color: var(--isel-primary);
+    text-decoration: none;
+  }
+  
+  :global([data-theme="dark"]) .semester-title-link:hover {
+    color: var(--link-color);
   }
   
   .subjects-list {

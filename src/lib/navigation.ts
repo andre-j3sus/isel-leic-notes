@@ -9,6 +9,7 @@ export interface NavItem {
 
 export interface Semester {
   name: string;
+  path: string;
   emoji: string;
   subjects: Subject[];
 }
@@ -25,6 +26,7 @@ export interface Subject {
 export const semesters: Semester[] = [
   {
     name: '1st Semester',
+    path: '1st-semester',
     emoji: '1',
     subjects: [
       { code: 'CDI', name: 'Differential and Integral Calculus', namePt: 'Cálculo Diferencial e Integral', emoji: '1', path: '1st-semester/cdi' },
@@ -36,6 +38,7 @@ export const semesters: Semester[] = [
   },
   {
     name: '2nd Semester',
+    path: '2nd-semester',
     emoji: '2',
     subjects: [
       { code: 'ALGA', name: 'Linear Algebra and Analytic Geometry', namePt: 'Álgebra Linear e Geometria Analítica', emoji: '1', path: '2nd-semester/alga' },
@@ -47,6 +50,7 @@ export const semesters: Semester[] = [
   },
   {
     name: '3rd Semester',
+    path: '3rd-semester',
     emoji: '3',
     subjects: [
       { code: 'PE', name: 'Probability and Statistics', namePt: 'Probabilidade e Estatística', emoji: '1', path: '3rd-semester/pe' },
@@ -58,6 +62,7 @@ export const semesters: Semester[] = [
   },
   {
     name: '4th Semester',
+    path: '4th-semester',
     emoji: '4',
     subjects: [
       { code: 'CD', name: 'Digital Communication', namePt: 'Comunicação Digital', emoji: '1', path: '4th-semester/cd' },
@@ -69,6 +74,7 @@ export const semesters: Semester[] = [
   },
   {
     name: '5th Semester',
+    path: '5th-semester',
     emoji: '5',
     subjects: [
       { code: 'DAW', name: 'Web Application Development', namePt: 'Desenvolvimento de Aplicações Web', emoji: '1', path: '5th-semester/daw' },
@@ -80,6 +86,7 @@ export const semesters: Semester[] = [
   },
   {
     name: '6th Semester',
+    path: '6th-semester',
     emoji: '6',
     subjects: [
       { code: 'CN', name: 'Cloud Computing', namePt: 'Computação na Nuvem', emoji: '1', path: '6th-semester/cn' },
@@ -289,8 +296,9 @@ export function getPrevNextNav(
     return { prev: null, next: null };
   }
   
-  // Get all pages in this subject, sorted
-  const subjectPages = getSubjectPages(subject.path, allMdPaths, allPdfPaths);
+  // Get all pages in this subject, sorted (excluding READMEs)
+  const subjectPages = getSubjectPages(subject.path, allMdPaths, allPdfPaths)
+    .filter(p => !p.path.toLowerCase().endsWith('readme'));
   
   // Find current page index
   const currentIndex = subjectPages.findIndex(p => p.path === currentPath);
@@ -308,4 +316,105 @@ export function getPrevNextNav(
     : null;
   
   return { prev, next };
+}
+
+/**
+ * Check if a note is a README file
+ * Works with both "path/README.md" and "path/readme" formats
+ */
+export function isReadme(noteId: string): boolean {
+  const lower = noteId.toLowerCase();
+  return lower.endsWith('readme.md') || lower.endsWith('/readme') || lower === 'readme';
+}
+
+/**
+ * Extract a number from the beginning of a filename
+ * "1-http.md" -> 1
+ * "1.0-spring.md" -> 1
+ * "01-intro.md" -> 1
+ * "http.md" -> null
+ */
+export function extractNumber(filename: string): number | null {
+  const match = filename.match(/^(\d+(?:\.\d+)?)/);
+  if (match) {
+    return parseFloat(match[1]);
+  }
+  return null;
+}
+
+/**
+ * Extract a short excerpt from markdown content
+ * Returns the first meaningful paragraph (not a heading, blockquote, or list)
+ */
+export function extractExcerpt(content: string, maxLength: number = 120): string {
+  // Remove frontmatter if present
+  const withoutFrontmatter = content.replace(/^---[\s\S]*?---\n*/m, '');
+  
+  // Split into lines
+  const lines = withoutFrontmatter.split('\n');
+  
+  // Find the first paragraph-like content
+  let excerpt = '';
+  let inParagraph = false;
+  let inCodeBlock = false;
+  
+  for (const line of lines) {
+    const trimmed = line.trim();
+    
+    // Track code blocks
+    if (trimmed.startsWith('```')) {
+      inCodeBlock = !inCodeBlock;
+      continue;
+    }
+    if (inCodeBlock) continue;
+    
+    // Skip empty lines, headings, blockquotes, list items, horizontal rules, images, and HTML
+    if (!trimmed) {
+      if (inParagraph && excerpt) break;
+      continue;
+    }
+    if (trimmed.startsWith('#')) continue;
+    if (trimmed.startsWith('>')) continue;
+    if (trimmed.startsWith('*') || trimmed.startsWith('-') || trimmed.match(/^\d+\./)) continue;
+    if (trimmed.startsWith('---') || trimmed.startsWith('___')) continue;
+    if (trimmed.startsWith('![')) continue;
+    if (trimmed.startsWith('<')) continue; // Skip HTML tags
+    if (trimmed.startsWith('|')) continue; // Skip table rows
+    
+    // This looks like paragraph content
+    inParagraph = true;
+    excerpt += (excerpt ? ' ' : '') + trimmed;
+    
+    // If we have enough content, stop
+    if (excerpt.length >= maxLength) break;
+  }
+  
+  // Clean up the excerpt
+  excerpt = excerpt
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Remove links, keep text
+    .replace(/<[^>]+>/g, '') // Remove any remaining HTML tags
+    .replace(/[*_`]/g, '') // Remove formatting
+    .replace(/\s+/g, ' ') // Normalize whitespace
+    .trim();
+  
+  // Truncate if too long
+  if (excerpt.length > maxLength) {
+    excerpt = excerpt.slice(0, maxLength).replace(/\s+\S*$/, '') + '...';
+  }
+  
+  return excerpt;
+}
+
+/**
+ * Get PDFs for a specific subject
+ */
+export function getPdfsForSubject(subjectPath: string): { title: string; href: string }[] {
+  return pdfFiles
+    .filter(pdf => pdf.startsWith(subjectPath + '/'))
+    .map(pdf => {
+      const filename = pdf.split('/').pop() || pdf;
+      const title = filename.replace(/\.pdf$/, '');
+      const href = '/' + pdf.replace(/\.pdf$/, '');
+      return { title, href };
+    });
 }

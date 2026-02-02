@@ -1,0 +1,240 @@
+---
+import type { Semester } from '@lib/navigation';
+
+interface SubjectCard {
+  code: string;
+  name: string;
+  namePt: string;
+  href: string;
+  noteCount: number;
+  hasPdfs: boolean;
+}
+
+interface Props {
+  semester: Semester;
+  subjects: SubjectCard[];
+}
+
+const { semester, subjects } = Astro.props;
+
+const semesterNumber = semester.name.split(' ')[0];
+---
+
+<div class="semester-index">
+  <header class="semester-header">
+    <div class="header-top">
+      <span class="semester-badge">{semesterNumber}</span>
+      <div class="title-section">
+        <h1 class="semester-name">{semester.name}</h1>
+        <p class="semester-meta">{subjects.length} subjects</p>
+      </div>
+    </div>
+  </header>
+
+  <section class="subjects-section">
+    <h2 class="section-title">Subjects</h2>
+    <div class="subjects-grid">
+      {subjects.map((subject) => (
+        <a href={subject.href} class="subject-card">
+          <div class="card-content">
+            <span class="subject-code">{subject.code}</span>
+            <span class="subject-name">{subject.name}</span>
+            <span class="subject-name-pt">{subject.namePt}</span>
+          </div>
+          <div class="card-footer">
+            {subject.noteCount > 0 ? (
+              <span class="notes-count">{subject.noteCount} {subject.noteCount === 1 ? 'note' : 'notes'}</span>
+            ) : subject.hasPdfs ? (
+              <span class="pdf-only">PDF resources</span>
+            ) : (
+              <span class="coming-soon">Coming soon</span>
+            )}
+            <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</div>
+
+<style>
+  .semester-index {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .semester-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .semester-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 48px;
+    height: 48px;
+    background-color: var(--isel-primary);
+    color: white;
+    font-weight: 700;
+    font-size: 1.25rem;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+
+  .title-section {
+    flex: 1;
+  }
+
+  .semester-name {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 0.25rem 0;
+    line-height: 1.2;
+  }
+
+  .semester-meta {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .section-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 1rem 0;
+  }
+
+  .subjects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .subject-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .subject-card:hover {
+    border-color: var(--isel-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+  }
+
+  :global([data-theme="dark"]) .subject-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .subject-code {
+    display: inline-block;
+    background-color: var(--isel-primary);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.75rem;
+    width: fit-content;
+    margin-bottom: 0.25rem;
+  }
+
+  .subject-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.3;
+  }
+
+  .subject-name-pt {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-color-light);
+  }
+
+  .notes-count {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding: 0.25rem 0.5rem;
+    background-color: var(--bg-tertiary);
+    border-radius: 4px;
+  }
+
+  .pdf-only {
+    font-size: 0.75rem;
+    color: var(--isel-primary);
+    padding: 0.25rem 0.5rem;
+    background-color: rgba(95, 20, 55, 0.1);
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  :global([data-theme="dark"]) .pdf-only {
+    color: var(--link-color);
+    background-color: rgba(215, 90, 138, 0.15);
+  }
+
+  .coming-soon {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .arrow {
+    color: var(--text-muted);
+    transition: transform 0.15s;
+  }
+
+  .subject-card:hover .arrow {
+    transform: translateX(2px);
+    color: var(--text-secondary);
+  }
+
+  @media (max-width: 640px) {
+    .semester-index {
+      padding: 1rem;
+    }
+
+    .subjects-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .semester-name {
+      font-size: 1.5rem;
+    }
+  }
+</style>

@@ -5,6 +5,10 @@
   --isel-primary-light: #8a2d55;
   --isel-primary-dark: #3d0d24;
   
+  /* Layout dimensions */
+  --sidebar-width: 280px;
+  --header-height: 57px;
+  
   /* Light theme */
   --bg-primary: #ffffff;
   --bg-secondary: #f6f8fa;
@@ -96,6 +100,7 @@
 html {
   font-size: 16px;
   scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height, 57px) + 1rem);
 }
 
 body {
