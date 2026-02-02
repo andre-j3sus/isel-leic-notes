@@ -7,7 +7,7 @@
 > State space is a scheme for representing problems. A state space is a **graph** whose nodes correspond to **problem situations**, and a given problem is reduced to **finding a path** through the graph from the initial state to a goal state. Possible moves are represented by **edges**, that lead to the next state.
 
 <p align="center">
-  <img src="docs/state-space-graph.png" width="300" alt="State Space"/>
+  <img src="./docs/state-space-graph.png" width="300" alt="State Space"/>
 </p>
 
 * Problem solving involves graph searching and exploring alternatives;

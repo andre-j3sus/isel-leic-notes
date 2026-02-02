@@ -54,7 +54,7 @@ Virtualization can be applied to different levels of the hardware and software s
 * **API** (Application Programming Interface): defines the interface between the application and the libraries.
 
 <p align="center">
-    <img src="docs/isa-abi-api.png" alt="Computational Systems Interfaces" width="400"/>
+    <img src="./docs/isa-abi-api.png" alt="Computational Systems Interfaces" width="400"/>
 </p>
 
 ---

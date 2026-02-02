@@ -3,7 +3,7 @@
 > Google Cloud Storage (GCS) is a RESTful online file storage web service for storing and accessing data on Google Cloud Platform infrastructure. The service combines the performance and scalability of Google's cloud with advanced security and sharing capabilities.
 
 <p align="center">
-    <img src="docs/google-cloud-storage-logo.jpeg" alt="Google Cloud Storages" width="300"/>
+    <img src="./docs/google-cloud-storage-logo.jpeg" alt="Google Cloud Storages" width="300"/>
 </p>
 
 ## Binary Large Objects (BLOBs)
@@ -37,7 +37,7 @@
 * **Multi-regional** (e.g. `us`, `eu`, `asia`) - data is stored in multiple regions, with geographic replication; Availability in the presence of faults and **disaster recovery**; Ideal for frequently accessed data;
 
 <p align="center">
-    <img src="docs/google-cloud-storage-dual-region.png" alt="Location Types"/>
+    <img src="./docs/google-cloud-storage-dual-region.png" alt="Location Types"/>
 </p>
 
 ---
@@ -47,7 +47,7 @@
 There is a single API for all storage classes, but the data is stored in different storage tiers:
 
 <p align="center">
-    <img src="docs/gcs-storage-classes.jpg" alt="Storage Classes"/>
+    <img src="./docs/gcs-storage-classes.jpg" alt="Storage Classes"/>
 </p>
 
 Each storage class has a different **cost** and **performance** - [pricing](https://cloud.google.com/storage/pricing#price-tables).
@@ -76,7 +76,7 @@ Buckets and BLOBs can be created and accessed via:
 * The BLOBs names can contain a slash (`/`) to give the illusion of a hierarchical structure.
 
 <p align="center">
-    <img src="docs/gcs-storage-classes.jpg" alt="Storage Classes"/>
+    <img src="./docs/gcs-storage-classes.jpg" alt="Storage Classes"/>
 </p>
 
 ---

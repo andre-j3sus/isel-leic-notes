@@ -19,7 +19,7 @@
 ### NFS (Network File System)
 
 <p align="center">
-    <img src="docs/nfs.png" alt="NFS"/>
+    <img src="./docs/nfs.png" alt="NFS"/>
 </p>
 
 * NFS is a distributed file system protocol originally developed by Sun Microsystems (1984);
@@ -30,7 +30,7 @@
 ### SAN (Storage Area Network) vs. NAS (Network Attached Storage)
 
 <p align="center">
-    <img src="docs/san-vs-nas.png" alt="SAN vs NAS"/>
+    <img src="./docs/san-vs-nas.png" alt="SAN vs NAS"/>
 </p>
 
 * SAN (Storage Area Network) - high speed network that makes connections between storage devices and servers;
@@ -84,7 +84,7 @@
 * Supports **checkpoints**, **recovery** mechanisms and **garbage collection**;
 
 <p align="center">
-    <img src="docs/gfs-architecture.png" alt="GFS Architecture"/>
+    <img src="./docs/gfs-architecture.png" alt="GFS Architecture"/>
 </p>
 
 * A **master** is responsible for a set of **chunk servers**, maintaining the metadata of the files consistent;

@@ -4,15 +4,16 @@
   "version": "1.0.0",
   "description": "Notes from BSc in Computer Science and Computer Engineering at ISEL",
   "scripts": {
-    "dev": "astro dev",
-    "build": "node scripts/generate-git-dates.js && astro build",
+    "dev": "node scripts/copy-docs-assets.js && astro dev",
+    "build": "node scripts/copy-docs-assets.js && node scripts/generate-git-dates.js && astro build",
     "preview": "wrangler pages dev dist",
-    "deploy": "astro build && wrangler deploy",
+    "deploy": "npm run build && wrangler deploy",
     "astro": "astro"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.12",
-    "astro": "^5.17.1"
+    "astro": "^5.17.1",
+    "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
     "wrangler": "^4.61.1"

@@ -1,10 +1,12 @@
 import { defineConfig } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
+import { remarkFixRelativePaths } from './scripts/remark-fix-relative-paths.mjs';
 
 export default defineConfig({
   site: 'https://isel-leic-notes.pages.dev',
   adapter: cloudflare(),
   markdown: {
+    remarkPlugins: [remarkFixRelativePaths],
     shikiConfig: {
       themes: {
         light: 'github-light',

@@ -7,16 +7,17 @@ export interface TocItem {
 
 interface Props {
   headings: TocItem[];
+  variant?: 'mobile' | 'desktop';
 }
 
-const { headings } = Astro.props;
+const { headings, variant = 'mobile' } = Astro.props;
 
 // Filter to only show h2 and h3 (skip h1 as it's usually the title)
 const tocItems = headings.filter(h => h.depth >= 2 && h.depth <= 3);
 ---
 
 {tocItems.length > 0 && (
-  <aside class="toc-container">
+  <aside class="toc-container" data-variant={variant}>
     <details class="toc-details" open>
       <summary class="toc-header">
         <svg class="toc-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -46,7 +47,6 @@ const tocItems = headings.filter(h => h.depth >= 2 && h.depth <= 3);
 
 <style>
   .toc-container {
-    margin-bottom: 1.5rem;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     background-color: var(--bg-secondary);
@@ -145,33 +145,31 @@ const tocItems = headings.filter(h => h.depth >= 2 && h.depth <= 3);
     font-size: 0.75rem;
   }
 
-  /* Desktop: sticky sidebar TOC */
-  @media (min-width: 1400px) {
-    .toc-container {
-      position: fixed;
-      top: 100px;
-      /* Position to the right of the main content: 
-         - Sidebar is 280px
-         - Main content is max 900px centered
-         - Calculate: sidebar + half of remaining space + half of content width + gap */
-      left: calc(280px + ((100vw - 280px - 900px) / 2) + 900px + 2rem);
-      width: 220px;
-      max-height: calc(100vh - 140px);
-      overflow-y: auto;
-      margin-bottom: 0;
-    }
+  /* Mobile variant: inline collapsible at top of content */
+  .toc-container[data-variant="mobile"] {
+    margin-bottom: 1.5rem;
+  }
 
-    .toc-nav {
-      max-height: calc(100vh - 200px);
-      overflow-y: auto;
+  @media (min-width: 1200px) {
+    .toc-container[data-variant="mobile"] {
+      display: none;
     }
   }
-  
-  /* Hide TOC sidebar when there's not enough space */
-  @media (min-width: 1400px) and (max-width: 1599px) {
-    .toc-container {
-      width: 180px;
-      font-size: 0.9em;
+
+  /* Desktop variant: sticky sidebar in grid column */
+  .toc-container[data-variant="desktop"] {
+    display: none;
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    margin: 2rem 1rem;
+    align-self: start;
+  }
+
+  @media (min-width: 1200px) {
+    .toc-container[data-variant="desktop"] {
+      display: block;
     }
   }
 </style>

@@ -56,7 +56,7 @@ There are multiple execution environments:
 | **IaaS** (Infrastructure as a Service) | Virtualization Manager   | **Cloud Infrastructure** (computer servers, data storage, firewall, load balancer, VPN, ...) |
 
 <p align="center">
-    <img src="docs/saas-vs-iaas-vs-paas.png" align="center" alt="Cloud Computing Stack" width="400" />
+    <img src="./docs/saas-vs-iaas-vs-paas.png" align="center" alt="Cloud Computing Stack" width="400" />
 </p>
 
 ---

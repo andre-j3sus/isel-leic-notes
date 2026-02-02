@@ -24,7 +24,7 @@ Other models are:
 * **Disadvantage:** requires a middleware called **message broker** or **mediator** (e.g. RabbitMQ, Kafka, ActiveMQ, etc.).
 
 <p align="center">
-    <img src="docs/message-queues.png" alt="Message Queues"/>
+    <img src="./docs/message-queues.png" alt="Message Queues"/>
 </p>
 
 * Each client sends the name of its own **response queue** to the server in the request message;
@@ -64,13 +64,13 @@ The message flow in Google Pub/Sub is as follows:
 3. The infrastructure receives the message, assigns an unique **ID** in the topic and returns it to the producer, as confirmation of the message being published;
 
 <p align="center">
-    <img src="docs/pubsub-publish.png" alt="PubSub Publish"/>
+    <img src="./docs/pubsub-publish.png" alt="PubSub Publish"/>
 </p>
 
 4. A topic can have one or more **subscriptions**; each message published in a topic is replicated to all queues subscribed to that topic;
 
 <p align="center">
-    <img src="docs/pubsub-subscription.png" alt="PubSub Subscription"/>
+    <img src="./docs/pubsub-subscription.png" alt="PubSub Subscription"/>
 </p>
 
 1. The messages can be delivered to the subscribers in two ways:
@@ -78,7 +78,7 @@ The message flow in Google Pub/Sub is as follows:
    * **Push** - the messages are **pushed** to the subscriber.
 
 <p align="center">
-    <img src="docs/pubsub-push-pull.png" alt="PubSub Pull and Push"/>
+    <img src="./docs/pubsub-push-pull.png" alt="PubSub Pull and Push"/>
 </p>
 
 6. The subscriber receives the message and sends an **acknowledgement** to the infrastructure;
@@ -86,7 +86,7 @@ The message flow in Google Pub/Sub is as follows:
    * If the deadline is exceeded, the message is sent again to the subscriber; this way, the message is guaranteed to be delivered at least once.
 
 <p align="center">
-    <img src="docs/pubsub-ack.png" alt="PubSub Acknowledgement"/>
+    <img src="./docs/pubsub-ack.png" alt="PubSub Acknowledgement"/>
 </p>
 
 ---
@@ -94,7 +94,7 @@ The message flow in Google Pub/Sub is as follows:
 ### Multiple Subscriptions and Consumers
 
 <p align="center">
-    <img src="docs/pubsub.png" alt="PubSub"/>
+    <img src="./docs/pubsub.png" alt="PubSub"/>
 </p>
 
 * Each message published in topic 1, is replicated to all subscriptions of topic 1;
@@ -108,7 +108,7 @@ The message flow in Google Pub/Sub is as follows:
 * **Work queue pattern** - work is distributed among multiple workers; one subscription to all workers;
 
 <p align="center">
-    <img src="docs/pubsub-patterns.png" alt="Patterns"/>
+    <img src="./docs/pubsub-patterns.png" alt="Patterns"/>
 </p>
 
 ---
