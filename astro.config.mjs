@@ -3,7 +3,7 @@ import cloudflare from '@astrojs/cloudflare';
 import { remarkFixRelativePaths } from './scripts/remark-fix-relative-paths.mjs';
 
 export default defineConfig({
-  site: 'https://isel-leic-notes.pages.dev',
+  site: 'https://isel-leic-notes.andrejesus.com',
   adapter: cloudflare(),
   markdown: {
     remarkPlugins: [remarkFixRelativePaths],
