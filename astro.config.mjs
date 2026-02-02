@@ -1,10 +1,12 @@
 import { defineConfig } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
+import sitemap from '@astrojs/sitemap';
 import { remarkFixRelativePaths } from './scripts/remark-fix-relative-paths.mjs';
 
 export default defineConfig({
   site: 'https://isel-leic-notes.andrejesus.com',
   adapter: cloudflare(),
+  integrations: [sitemap()],
   markdown: {
     remarkPlugins: [remarkFixRelativePaths],
     shikiConfig: {

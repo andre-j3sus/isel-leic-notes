@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://isel-leic-notes.andrejesus.com/sitemap-index.xml

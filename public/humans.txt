@@ -1,0 +1,9 @@
+/* TEAM */
+Author: André Jesus
+Site: https://andrejesus.com
+Location: Lisbon, Portugal
+
+/* SITE */
+Last update: 2026/02/02
+Standards: HTML5, CSS3
+Software: Astro, Cloudflare Workers

@@ -9,6 +9,7 @@ interface Props {
 
 const { title, description = 'Notes from BSc in Computer Science and Computer Engineering at ISEL' } = Astro.props;
 const fullTitle = title === 'Home' ? 'ISEL LEIC Notes' : `${title} | ISEL LEIC Notes`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!DOCTYPE html>
@@ -17,10 +18,26 @@ const fullTitle = title === 'Home' ? 'ISEL LEIC Notes' : `${title} | ISEL LEIC N
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta name="author" content="André Jesus" />
+    <meta name="theme-color" content="#007bff" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalURL} />
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="ISEL LEIC Notes" />
+    <meta property="og:locale" content="en_US" />
+    
+    <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
+    
     <title>{fullTitle}</title>
     
     <!-- Theme initialization (prevents flash) -->
